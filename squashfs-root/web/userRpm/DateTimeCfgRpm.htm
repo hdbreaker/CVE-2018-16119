@@ -1,0 +1,755 @@
+
+<SCRIPT type="text/javascript">
+<!--//
+
+function doGetTime()
+{
+    location.href="GetGMTRpm.htm?GetTime=GetTime";
+}
+
+function isRYear(year)
+{
+	if ( (year%400) == 0)
+	{
+		return true;
+	}
+	else if ( (year%100) == 0)
+	{
+		return false;
+	}
+	else if ( (year%4) == 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+function isValidDate(year, month, day)
+{
+	month = month+1;
+	if ( (month == 1) || (month == 3) || (month == 5) 
+		|| (month == 7) || (month == 8) 
+		|| (month == 10) || (month == 12) )
+	{
+		if ((day < 32) && (day>0) )		
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if (month == 2)
+	{
+		if (isRYear(year))
+		{
+			if ((day < 30) && (day>0) )		
+			{
+				return true;
+			}
+		}
+		else
+		{
+			if ((day < 29) && (day>0) )		
+			{
+				return true;
+			}
+		}		
+		return false;
+	}
+	else
+	{
+		if ((day < 31) && (day>0) )		
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}	
+}
+
+function checkforAction()
+{
+var set_daylightSaving;
+	for(var i = 1; i < 7; i ++)
+	{
+		if(document.forms[0].elements[i].value == "")
+		{
+			alert(js_input_time="Please input a time!");
+			var element = document.forms[0].elements[i];
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+	}
+	if(!is_number(document.forms[0].year.value,1970,2037))
+	{
+		alert(js_bad_year="Wrong format of year, please input another one(1970-2037)!");
+		var element =document.forms[0].year;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	if(!is_number(document.forms[0].month.value,1,12))
+	{
+		alert(js_bad_month="Wrong format of month, please input another one(1-12)!");
+		var element =document.forms[0].month;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	if(!is_number(document.forms[0].day.value,1,31))
+	{
+		alert(js_bad_day="Wrong format of day, please input another one(1-31)!");
+		var element =document.forms[0].day;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	if(!is_number(document.forms[0].hour.value,0,24))
+	{
+		alert(js_bad_hour="Wrong format of hour, please input another one(0-23)!");
+		var element =document.forms[0].hour;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	if(!is_number(document.forms[0].minute.value,0,60))
+	{
+		alert(js_bad_minute="Wrong format of minute, please input another one(0-59)!");
+		var element =document.forms[0].minute;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	if(!is_number(document.forms[0].second.value,0,60))
+	{
+		alert(js_bad_secd="Wrong format of second, please input another one(0-59)!");
+		var element =document.forms[0].second;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+
+	if((document.forms[0].year.value!=timeInf[2])||
+		(document.forms[0].month.value!=timeInf[0])||
+		(document.forms[0].day.value!=timeInf[1])||
+		(document.forms[0].hour.value!=timeInf[3])||
+		(document.forms[0].minute.value!=timeInf[4])||
+		(document.forms[0].second.value!=timeInf[5]))
+	{
+		document.forms[0].isTimeChanged.value = "1";
+	}	
+	
+	if ((document.forms[0].start_month.value != timeInf[9])||
+		(document.forms[0].start_count.value != timeInf[10])||
+		(document.forms[0].start_week.value != timeInf[11])||
+		(document.forms[0].start_hour.value != timeInf[12])||
+		(document.forms[0].end_month.value != timeInf[13])||
+		(document.forms[0].end_count.value != timeInf[14])||
+		(document.forms[0].end_week.value != timeInf[15])||
+		(document.forms[0].end_hour.value != timeInf[16])||
+		(document.forms[0].DaylightSaving.value != timeInf[17]))
+	{
+		document.forms[0].isDaylightSavingChanged.value = "1";
+	}	
+	
+    if(document.forms[0].ntpA.value == "")
+    {
+		document.forms[0].ntpA.value = "0.0.0.0";
+    }
+
+    if(document.forms[0].ntpB.value == "")
+    {
+		document.forms[0].ntpB.value = "0.0.0.0";
+	}
+	if(is_domain(document.getElementById("ntpB").value)==false)
+	{
+		var element = document.getElementById("ntpB");
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	if(is_domain(document.getElementById("ntpA").value)==false)
+	{
+		var element = document.getElementById("ntpA");
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	
+	var cYear = document.forms[0].year.value;
+	var sMonth = parseInt(document.forms[0].start_month.value);
+	var eMonth = parseInt(document.forms[0].end_month.value);
+		
+	var sWeekCount = parseInt(document.forms[0].start_count.value);
+	var eWeekCount = parseInt(document.forms[0].end_count.value);
+		
+	var sWeek = parseInt(document.forms[0].start_week.value);
+	var eWeek = parseInt(document.forms[0].end_week.value);
+		
+	//start month 1st day is week @fWeek
+	var sdObj = new Date(cYear, sMonth, 1);
+	var sfWeek = parseInt(sdObj.getDay());
+		
+	//end month 1st day is week @eWeek
+	var edObj = new Date(cYear, eMonth, 1);
+	var efWeek = parseInt(edObj.getDay());
+	
+	var sDay = sWeekCount * 7 - sfWeek + sWeek + 1 + (sWeek < sfWeek ? 7 : 0);
+	var eDay = eWeekCount * 7 - efWeek + eWeek + 1 + (eWeek < efWeek ? 7 : 0);
+		
+	/* adjust the sDay and eDay, when we choose 'WeekCount = LAST'*/
+	{
+		var days = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+		var yFlag = 0;
+		
+		(cYear% 100) ? ((cYear % 4) ? (yFlag = 0) : (yFlag = 1)) : ((cYear % 400) ? (yFlag = 0) : (yFlag = 1));
+		if (1 == yFlag)
+		{
+			days[1] = 29;
+		}
+		
+		if (sDay > days[sMonth])
+		{
+			sDay -= 7;
+		}
+				
+		if (eDay > days[eMonth])
+		{		
+			eDay -= 7;
+		}
+		}		
+	
+	/* give the understanded value for web_server */
+	if ( document.forms[0].DaylightSaving.type == "checkbox")
+	{
+		document.forms[0].value = document.forms[0].DaylightSaving.checked ? "1" : "0";
+	}
+	
+	/* construct hash string of system time */
+	var sysTimeHash = parseFormat(document.forms[0].month.value, 2) + 
+					  parseFormat(document.forms[0].day.value, 2) + 
+					  parseFormat(document.forms[0].hour.value, 2);
+	/* construct hash string of start daylight time */
+	var startTimeHash = parseFormat((parseInt(document.forms[0].start_month.value) + 1).toString(), 2) + 
+						parseFormat(sDay.toString(), 2) + 
+						parseFormat(document.forms[0].start_hour.value, 2);
+	/* construct hash string of end daylight time */
+	var endTimeHash = parseFormat((parseInt(document.forms[0].end_month.value) + 1).toString(), 2) + 
+					  parseFormat(eDay.toString(), 2) + 
+					  parseFormat((parseInt(document.forms[0].end_hour.value) + 1).toString(), 2);
+	
+	if (startTimeHash < endTimeHash)
+	{
+		if (sysTimeHash < endTimeHash)
+		{
+			document.getElementById("start_year").innerHTML = document.forms[0].year.value;
+			document.getElementById("end_year").innerHTML = document.forms[0].year.value;
+		}
+		else
+		{
+			document.getElementById("start_year").innerHTML = (parseInt(document.forms[0].year.value) + 1).toString();
+			document.getElementById("end_year").innerHTML = (parseInt(document.forms[0].year.value) + 1).toString();
+		}
+	}
+	else
+	{
+		if (sysTimeHash < endTimeHash)
+		{
+			document.getElementById("start_year").innerHTML = (parseInt(document.forms[0].year.value) - 1).toString();
+			document.getElementById("end_year").innerHTML = document.forms[0].year.value;
+		}
+		else
+		{
+			document.getElementById("start_year").innerHTML = document.forms[0].year.value;
+			document.getElementById("end_year").innerHTML = (parseInt(document.forms[0].year.value) + 1).toString();
+		}
+	}
+	
+	return true;
+}
+
+function parseFormat(value, width)
+{
+	while (value.length < width) value = "0" + value;
+	return value;
+}
+
+function showGiveTime()
+{
+	document.forms[0].start_month.value = timeInf[9];
+	document.forms[0].start_count.value = timeInf[10];
+	document.forms[0].start_week.value = timeInf[11];
+	document.forms[0].start_hour.value = timeInf[12];
+	document.forms[0].end_month.value = timeInf[13];
+	document.forms[0].end_count.value = timeInf[14];
+	document.forms[0].end_week.value = timeInf[15];
+	document.forms[0].end_hour.value = timeInf[16];
+}
+
+function showWholeYear()
+{
+	var cYear = document.forms[0].year.value;
+	
+	var sdObj = new Date(cYear, 0, 1);
+	var sfWeek = parseInt(sdObj.getDay());
+	
+	/* the first day oneyear */
+	document.forms[0].start_month.value = 0;
+	document.forms[0].start_count.value = 0;
+	document.forms[0].start_week.value = sfWeek;
+	document.forms[0].start_hour.value = 0;
+	
+	var edObj = new Date(cYear, 11, 31);
+	var efWeek = parseInt(edObj.getDay());
+	
+	/* the last day oneyear */
+	document.forms[0].end_month.value = 11;
+	document.forms[0].end_count.value = 4;
+	document.forms[0].end_week.value = efWeek;	
+	document.forms[0].end_hour.value = 23;
+}
+
+function disableDaylightSaving(disable)
+{
+	document.forms[0].start_month.disabled = disable;
+	document.forms[0].start_count.disabled = disable;
+	document.forms[0].start_week.disabled = disable;
+	document.forms[0].start_hour.disabled = disable;
+	document.forms[0].end_month.disabled = disable;
+	document.forms[0].end_count.disabled = disable;
+	document.forms[0].end_week.disabled = disable;
+	document.forms[0].end_hour.disabled = disable;
+}
+
+function doDaylightSaving()
+{
+	var whichchecked;
+	var daylightEntry;
+	
+	if (0 == timeInf[18])
+		{
+			document.getElementById("daylightSaving_status").innerHTML = "<SPAN id=\"t_daylightSaving_flag\">daylight saving is down.<\/SPAN>";
+		}
+		else
+		{
+			document.getElementById("daylightSaving_status").innerHTML = "<SPAN id=\"t_not_plug\">daylight saving is up.<\/SPAN>";
+		}
+	
+	daylightEntry = document.forms[0].DaylightSaving;
+	if ("checkbox" == daylightEntry.type)
+	{
+		whichchecked = daylightEntry.checked ? "1" : "0";
+	}
+	else
+	{
+		var i = 0;
+		for (i = 0; i < daylightEntry.length; i++)
+		{
+			if (daylightEntry[i].checked)
+			{
+				whichchecked = daylightEntry[i].value;
+				break;
+			}
+		}
+	}
+
+	switch(whichchecked)
+	{
+		case "0":
+			showGiveTime();
+			disableDaylightSaving(true);
+		document.getElementById("daylightSaving_status").innerHTML = "";
+			break;
+		
+		case "1":
+			disableDaylightSaving(false);
+			showGiveTime();
+			break;
+			
+		case "2":
+			disableDaylightSaving(true);
+			showWholeYear();
+			break;
+		
+		default:
+			alert(js_check_error="there is an error occur! when we show daylight switch, please check it");
+			break;
+	}
+	
+	checkforAction();
+}
+
+var russiaDaylightSwitch = null;
+var normalDaylightSwitch = null;
+function showDaylightSwitch(whichctl, whichchecked)
+{
+	var daylightSwitch = document.getElementById("daylightSwitch");
+	
+	if (!russiaDaylightSwitch)
+	{
+		russiaDaylightSwitch = document.getElementById("russiaDaylightSwitch");
+		daylightSwitch.removeChild(russiaDaylightSwitch);
+	}
+	
+	if (!normalDaylightSwitch)
+	{
+		normalDaylightSwitch = document.getElementById("normalDaylightSwitch");
+		daylightSwitch.removeChild(normalDaylightSwitch);
+	}
+	
+	switch(whichctl)
+	{
+		case "russiaDaylightSwitch":
+			daylightSwitch.appendChild(russiaDaylightSwitch);
+			whichchecked = (whichchecked >= 2 ? 2 : whichchecked);
+			document.forms[0].DaylightSaving[whichchecked].checked = true;
+			russiaDaylightSwitch = null;
+			break;
+			
+		case "normalDaylightSwitch":
+			daylightSwitch.appendChild(normalDaylightSwitch);
+			whichchecked = (whichchecked >= 1 ? true : false);
+			document.forms[0].DaylightSaving.checked = whichchecked;
+			normalDaylightSwitch = null;
+			break;
+			
+		default:
+			alert(js_reset_error="there is an error occur! when we show daylight switch, now reset it");
+			showDaylightSwitch("normalDaylightSwitch", 0);
+	}
+	
+	doDaylightSaving();
+}
+
+function changeDaylightSwitch(obj)
+{
+	var value = obj.value;
+	
+	if (value == 900)
+	{
+		showDaylightSwitch("russiaDaylightSwitch", timeInf[17]);
+	}
+	else
+	{
+		showDaylightSwitch("normalDaylightSwitch", timeInf[17]);
+	}
+}
+
+//-->
+</SCRIPT>
+</HEAD>
+<BODY onLoad="LoadHelp('DateTimeCfgHelpRpm.htm');setTagStr(document,'ntw_system_datetime'); resize(this);" onResize="resize(this);">
+<FORM action="DateTimeCfgRpm.htm" enctype="multipart/form-data" method="get">
+  <TABLE id="autoWidth">
+    <TR>
+      <TD class=h1 colspan=4 id = "t_title">Time Settings</TD>
+    </TR>
+    <TR>
+      <TD class=blue colspan=4></TD>
+    </TR>
+    <TR>
+      <TD height="25" class=Item id = "t_tm_zone">Time zone:</TD>
+      <TD colspan=2 ><SELECT id="timezone" name="timezone" onChange="changeDaylightSwitch(this)">
+          <OPTION value="0"	id="t_timezone0">(GMT-12:00) Eniwetok,Kwajalein</OPTION>
+          <OPTION value="60" 	id="t_timezone60" >(GMT-11:00) Midway Island,Samoa</OPTION>
+          <OPTION value="120" 	id="t_timezone120">(GMT-10:00) Hawaii</OPTION>
+          <OPTION value="180" 	id="t_timezone180">(GMT-09:00) Alaska</OPTION>
+          <OPTION value="240" 	id="t_timezone240">(GMT-08:00) Pacific Time</OPTION>
+          <OPTION value="300" 	id="t_timezone300">(GMT-07:00) Mountain Time (US Canada)</OPTION>
+          <OPTION value="360"	id="t_timezone360">(GMT-06:00) Central Time (US Canada)</OPTION>
+          <OPTION value="420" 	id="t_timezone420">(GMT-05:00) Eastern Time (US Canada)</OPTION>
+		  
+		  <OPTION value="450"	id="t_timezone450">(GMT-04:30) Caracas</OPTION>
+		  
+          <OPTION value="480" 	id="t_timezone480">(GMT-04:00) Atlantic Time (Canada)</OPTION>
+		  
+		  <OPTION value="510"	id="t_timezone510">(GMT-03:30) Newfoundland</OPTION>
+		  
+          <OPTION value="540" 	id="t_timezone540">(GMT-03:00) Brasilia, Buenos Aires</OPTION>
+          <OPTION value="600" 	id="t_timezone600">(GMT-02:00) Mid-Atlantic</OPTION>
+          <OPTION value="660" 	id="t_timezone660">(GMT-01:00) Azores, Cape Verde Is</OPTION>
+          <OPTION value="720" 	id="t_timezone720">(GMT) Greenwich Mean Time, Dublin, London</OPTION>
+          <OPTION value="780" 	id="t_timezone780" >(GMT+01:00) Berlin, Stockholm, Rome, Bern, Brussels</OPTION>
+          <OPTION value="840" 	id="t_timezone840">(GMT+02:00) Athens, Helsinki, Eastern Europe, Israel</OPTION>
+          <OPTION value="900" 	id="t_timezone900">(GMT+03:00) Baghdad, Kuwait, Nairobi, Riyadh, Moscow</OPTION>
+		  
+		  <OPTION value="930" 	id="t_timezone930">(GMT+03:30) Teheran</OPTION>
+
+          <OPTION value="960" 	id="t_timezone960">(GMT+04:00) Abu Dhabi, Muscat, Kazan, Volgograd</OPTION>
+		  
+		  <OPTION value="990" 	id="t_timezone990">(GMT+04:30) Kabul</OPTION>
+		  
+          <OPTION value="1020" 	id="t_timezone1020">(GMT+05:00) Islamabad, Karachi, Ekaterinburg</OPTION>
+		  
+		  <OPTION value="1050" 	id="t_timezone1050">(GMT+05:30) Madras, Calcutta, Bombay, New Delhi</OPTION>
+		  <OPTION value="1065" 	id="t_timezone1065">(GMT+05:45) Katmandu</OPTION>
+		  
+          <OPTION value="1080" 	id="t_timezone1080">(GMT+06:00) Alma-Ata, Dhaka</OPTION>
+		  <OPTION value="1110" 	id="t_timezone1110">(GMT+06:30) Rangoon</OPTION>
+
+          <OPTION value="1140" 	id="t_timezone1140">(GMT+07:00) Bangkok, Jakarta, Hanoi</OPTION>
+          <OPTION value="1200" 	id="t_timezone1200">(GMT+08:00) Beijing, Hong Kong, Perth, Singapore</OPTION>
+          <OPTION value="1260" 	id="t_timezone1260">(GMT+09:00) Tokyo, Osaka, Sapporo, Seoul, Yakutsk</OPTION>
+		  
+		  <OPTION value="1290" 	id="t_timezone1290">(GMT+09:30) Adelaide</OPTION>
+		  
+          <OPTION value="1320" 	id="t_timezone1320">(GMT+10:00) Brisbane, Canberra, Melbourne, Sydney</OPTION>
+          <OPTION value="1380" 	id="t_timezone1380">(GMT+11:00) Magadan, Solomon Is., New Caledonia</OPTION>
+          <OPTION value="1440" 	id="t_timezone1440">(GMT+12:00) Fiji, Kamchatka, Auckland</OPTION>
+          <OPTION value="1500" 	id="t_timezone1500">(GMT+13:00) Nuku'alofa</OPTION>
+        </SELECT></TD>
+    </TR>
+    <TR>
+      <TD width="31%" class=Item id = "t_date">Date:</TD>
+      <TD ><INPUT name="month" type="text" class="text" id="month" value="" size="2" maxlength="2" onChange="checkforAction();">
+        &nbsp;&nbsp;&nbsp;
+        <INPUT name="day" type="text" class="text" id="day" value="" size="2" maxlength="2" onChange="checkforAction();">
+        &nbsp;&nbsp;&nbsp;
+        <INPUT name="year" type="text" class="text" id="year" value="" size="4" maxlength="4" onChange="checkforAction();">
+        &nbsp;<SPAN id="t_mmddyy">(MM/DD/YY)</SPAN></TD >
+    </TR>
+    <TR>
+      <TD class=Item id = "t_time">Time:</TD>
+      <TD ><INPUT name="hour" type="text" class="text" id="hour" value="" size="2" maxlength="2" onChange="checkforAction();">
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <INPUT name="minute" type="text" class="text" id="minute" value="" size="2" maxlength="2" onChange="checkforAction();">
+        &nbsp;&nbsp;&nbsp;
+        <INPUT name="second" type="text" class="text" id="second" value="" size="4" maxlength="2" onChange="checkforAction();">
+        &nbsp;<SPAN id="t_hhmmss">(HH/MM/SS)</SPAN></TD >
+    </TR>
+    <TR>
+      <TD class=Item id="t_ntp_srv_prior_i">NTP Server 1:</TD>
+      <TD colspan=3><INPUT name="ntpA" type="text" class="text" id="ntpA" value="" size="31" maxlength="31">&nbsp;<SPAN id="t_opt1">(Optional)</SPAN></TD>
+	</TR>
+    <TR>
+	  <TD class=Item id="t_ntp_srv_prior_ii">NTP Server 2:</TD>
+      <TD><INPUT name="ntpB" type="text" class="text" id="ntpB" value="" size="31" maxlength="31">&nbsp;<SPAN id="t_opt2">(Optional)</SPAN>
+      <input type="hidden" name="isTimeChanged" id="isTimeChanged" value="0"></TD>
+    </TR>
+	
+    <TR>
+      <TD></TD>
+      <TD height="30" colspan=2><INPUT name="GetGmtTime" type="submit" class="buttonLL" value="Get GMT" onClick="return checkforAction();" >
+	 </TR>
+	 
+	
+	<TR><TD colspan="2"></TD></TR>
+	 <TR>
+		<TD></TD>
+		<TD id="daylightSwitch">
+			<div id="russiaDaylightSwitch">
+				<INPUT type="radio" value="0" name="DaylightSaving" onClick="doDaylightSaving()"><A id="t_daylight_disable">Disable</A>
+				<INPUT type="radio" value="1" name="DaylightSaving" onClick="doDaylightSaving()"><A id="t_daylight_giventime">Enable at given time</A>
+				<INPUT type="radio" value="2" name="DaylightSaving" onClick="doDaylightSaving()"><A id="t_daylight_allyear">Enable all year</A>
+			</div>
+			<div id="normalDaylightSwitch">
+				<INPUT type="checkbox" name="DaylightSaving" onClick="doDaylightSaving()"><A id="t_daylight_control">Enable DaylightSaving</A>
+			</div>
+		</TD>
+    </TR>
+	
+	<TR>
+		<TD class=Item id="t_start" name="t_start">Start:</TD>
+		<TD colspan=2 >
+		<label id="start_year" name="start_year" ></label>&nbsp;
+		<SELECT id="start_month" name="start_month" onChange="checkforAction();">
+          <OPTION value="0"	id="t_start_month0">Jan</OPTION>
+          <OPTION value="1"	id="t_start_month1">Feb</OPTION>
+		  <OPTION value="2"	id="t_start_month2">Mar</OPTION>
+		  <OPTION value="3"	id="t_start_month3">Apr</OPTION>
+		  <OPTION value="4"	id="t_start_month4">May</OPTION>
+		  <OPTION value="5"	id="t_start_month5">Jun</OPTION>
+		  <OPTION value="6"	id="t_start_month6">Jul</OPTION>
+		  <OPTION value="7"	id="t_start_month7">Aug</OPTION>
+		  <OPTION value="8"	id="t_start_month8">Sep</OPTION>
+		  <OPTION value="9"	id="t_start_month9">Oct</OPTION>
+		  <OPTION value="10"	id="t_start_month10">Nov</OPTION>
+		  <OPTION value="11"	id="t_start_month11">Dec</OPTION>
+        </SELECT>
+		<SELECT id="start_count" name="start_count" onChange="checkforAction();">
+          <OPTION value="0"	id="t_start_count0">First</OPTION>
+          <OPTION value="1"	id="t_start_count1">2nd</OPTION>
+		  <OPTION value="2"	id="t_start_count2">3rd</OPTION>
+		  <OPTION value="3"	id="t_start_count3">4th</OPTION>
+		  <OPTION value="4"	id="t_start_count4">Last</OPTION>
+        </SELECT>
+		<SELECT id="start_week" name="start_week" onChange="checkforAction();">
+          <OPTION value="1"	id="t_start_week0">Mon</OPTION>
+          <OPTION value="2"	id="t_start_week1">Tue</OPTION>
+		  <OPTION value="3"	id="t_start_week2">Wed</OPTION>
+		  <OPTION value="4"	id="t_start_week3">Thu</OPTION>
+		  <OPTION value="5"	id="t_start_week4">Fri</OPTION>
+		  <OPTION value="6"	id="t_start_week5">Sat</OPTION>
+		  <OPTION value="0"	id="t_start_week6">Sun</OPTION>
+        </SELECT>
+		<SELECT id="start_hour" name="start_hour" onChange="checkforAction();">
+          <OPTION value="0"	id="t_start_hour0">0am</OPTION>
+          <OPTION value="1"	id="t_start_hour1">1am</OPTION>
+		  <OPTION value="2"	id="t_start_hour2">2am</OPTION>
+		  <OPTION value="3"	id="t_start_hour3">3am</OPTION>
+		  <OPTION value="4"	id="t_start_hour4">4am</OPTION>
+		  <OPTION value="5"	id="t_start_hour5">5am</OPTION>
+		  <OPTION value="6"	id="t_start_hour6">6am</OPTION>
+		  <OPTION value="7"	id="t_start_hour7">7am</OPTION>
+          <OPTION value="8"	id="t_start_hour8">8am</OPTION>
+		  <OPTION value="9"	id="t_start_hour9">9am</OPTION>
+		  <OPTION value="10"	id="t_start_hour10">10am</OPTION>
+		  <OPTION value="11"	id="t_start_hour11">11am</OPTION>
+		  <OPTION value="12"	id="t_start_hour12">12pm</OPTION>
+          <OPTION value="13"	id="t_start_hour13">1pm</OPTION>
+		  <OPTION value="14"	id="t_start_hour14">2pm</OPTION>
+		  <OPTION value="15"	id="t_start_hour15">3pm</OPTION>
+		  <OPTION value="16"	id="t_start_hour16">4pm</OPTION>
+		  <OPTION value="17"	id="t_start_hour17">5pm</OPTION>
+		  <OPTION value="18"	id="t_start_hour18">6pm</OPTION>
+		  <OPTION value="19"	id="t_start_hour19">7pm</OPTION>
+          <OPTION value="20"	id="t_start_hour20">8pm</OPTION>
+		  <OPTION value="21"	id="t_start_hour21">9pm</OPTION>
+		  <OPTION value="22"	id="t_start_hour22">10pm</OPTION>
+		  <OPTION value="23"	id="t_start_hour23">11pm</OPTION>
+        </SELECT>
+        </TD>
+    </TR>
+    
+	<TR>
+		<TD class=Item id="t_end" name="t_end">End:</TD>
+		<TD colspan=2 >
+		<label id="end_year" name="end_year" ></label>&nbsp;
+		<SELECT id="end_month" name="end_month" onChange="checkforAction();">
+          <OPTION value="0"	id="t_end_month0">Jan</OPTION>
+          <OPTION value="1"	id="t_end_month1">Feb</OPTION>
+		  <OPTION value="2"	id="t_end_month2">Mar</OPTION>
+		  <OPTION value="3"	id="t_end_month3">Apr</OPTION>
+		  <OPTION value="4"	id="t_end_month4">May</OPTION>
+		  <OPTION value="5"	id="t_end_month5">Jun</OPTION>
+		  <OPTION value="6"	id="t_end_month6">Jul</OPTION>
+		  <OPTION value="7"	id="t_end_month7">Aug</OPTION>
+		  <OPTION value="8"	id="t_end_month8">Sep</OPTION>
+		  <OPTION value="9"	id="t_end_month9">Oct</OPTION>
+		  <OPTION value="10"	id="t_end_month10">Nov</OPTION>
+		  <OPTION value="11"	id="t_end_month11">Dec</OPTION>
+        </SELECT>
+		<SELECT id="end_count" name="end_count" onChange="checkforAction();">
+          <OPTION value="0"	id="t_end_count0">First</OPTION>
+          <OPTION value="1"	id="t_end_count1">2nd</OPTION>
+		  <OPTION value="2"	id="t_end_count2">3rd</OPTION>
+		  <OPTION value="3"	id="t_end_count3">4th</OPTION>
+		  <OPTION value="4"	id="t_end_count4">Last</OPTION>
+        </SELECT>
+		<SELECT id="end_week" name="end_week" onChange="checkforAction();">
+          <OPTION value="1"	id="t_end_week0">Mon</OPTION>
+          <OPTION value="2"	id="t_end_week1">Tue</OPTION>
+		  <OPTION value="3"	id="t_end_week2">Wed</OPTION>
+		  <OPTION value="4"	id="t_end_week3">Thu</OPTION>
+		  <OPTION value="5"	id="t_end_week4">Fri</OPTION>
+		  <OPTION value="6"	id="t_end_week5">Sat</OPTION>
+		  <OPTION value="0"	id="t_end_week6">Sun</OPTION>
+        </SELECT>
+		<SELECT id="end_hour" name="end_hour" onChange="checkforAction();">
+          <OPTION value="0"	id="t_end_hour0">0am</OPTION>
+          <OPTION value="1"	id="t_end_hour1">1am</OPTION>
+		  <OPTION value="2"	id="t_end_hour2">2am</OPTION>
+		  <OPTION value="3"	id="t_end_hour3">3am</OPTION>
+		  <OPTION value="4"	id="t_end_hour4">4am</OPTION>
+		  <OPTION value="5"	id="t_end_hour5">5am</OPTION>
+		  <OPTION value="6"	id="t_end_hour6">6am</OPTION>
+		  <OPTION value="7"	id="t_end_hour7">7am</OPTION>
+          <OPTION value="8"	id="t_end_hour8">8am</OPTION>
+		  <OPTION value="9"	id="t_end_hour9">9am</OPTION>
+		  <OPTION value="10"	id="t_end_hour10">10am</OPTION>
+		  <OPTION value="11"	id="t_end_hour11">11am</OPTION>
+		  <OPTION value="12"	id="t_end_hour12">12pm</OPTION>
+          <OPTION value="13"	id="t_end_hour13">1pm</OPTION>
+		  <OPTION value="14"	id="t_end_hour14">2pm</OPTION>
+		  <OPTION value="15"	id="t_end_hour15">3pm</OPTION>
+		  <OPTION value="16"	id="t_end_hour16">4pm</OPTION>
+		  <OPTION value="17"	id="t_end_hour17">5pm</OPTION>
+		  <OPTION value="18"	id="t_end_hour18">6pm</OPTION>
+		  <OPTION value="19"	id="t_end_hour19">7pm</OPTION>
+          <OPTION value="20"	id="t_end_hour20">8pm</OPTION>
+		  <OPTION value="21"	id="t_end_hour21">9pm</OPTION>
+		  <OPTION value="22"	id="t_end_hour22">10pm</OPTION>
+		  <OPTION value="23"	id="t_end_hour23">11pm</OPTION>
+        </SELECT>
+    </TD>
+	</TR>
+	<TR>
+		<TD class=Item id="t_daylightSaving">Daylight Saving Status:</TD>
+		<TD id="daylightSaving_status"></TD>
+		 <input type="hidden" name="isDaylightSavingChanged" id="isDaylightSavingChanged" value="0"></TD>
+	</TR>
+	<TR><TD colspan="2"></TD></TR>
+	<TR>
+	<TD></TD>
+    <TD><span id="t_datetime_tips">Note: Click the "GET GMT" to update the time from the internet with the pre-defined servers</span><br></br><span id="t_datetime_more">
+    or entering the customized server (IP Address or Domain Name) in the above frames.</span>
+	</TD>
+	</TR> 
+	
+    <TR>
+      <TD class=blue colspan=2></TD>
+    </TR>
+    <TR>
+      <TD></TD>
+      <TD colspan=1><INPUT name="Save" type="submit" class="buttonBig" id="Submit" value="Save" onClick="return checkforAction();"></TD>
+    </TR>
+  </TABLE>
+</FORM>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+
+<SCRIPT type="text/javascript">
+document.forms[0].timezone.value = timeInf[6];
+document.forms[0].month.value = timeInf[0];
+document.forms[0].day.value = timeInf[1];
+document.forms[0].year.value = timeInf[2];
+document.forms[0].hour.value = timeInf[3];
+document.forms[0].minute.value = timeInf[4];
+document.forms[0].second.value = timeInf[5];
+if (timeInf[7] == "")
+timeInf[7] = "0.0.0.0";
+if (timeInf[8] == "")
+timeInf[8] = "0.0.0.0";
+document.forms[0].ntpA.value = timeInf[7];
+document.forms[0].ntpB.value = timeInf[8];
+
+/* init the daylightsaving by time zone*/
+changeDaylightSwitch(document.getElementById("timezone"));
+</SCRIPT>

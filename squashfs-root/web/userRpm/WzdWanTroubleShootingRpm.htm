@@ -1,0 +1,99 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+
+<SCRIPT type="text/javascript">
+<!-- 
+function Click()
+{
+	window.event.returnValue=false;
+}
+document.oncontextmenu=Click;
+
+function doSubmit()
+{
+	if (document.forms[0].opt[0].checked == false && document.forms[0].opt[1].checked == false)
+	{
+		alert("Please select one of the options!");
+		return false;
+	}
+	return true;
+}
+
+function doBack()
+{
+	location.href="WzdWanTypeRpm.htm";
+}
+//-->
+</SCRIPT>
+
+</HEAD>
+
+<BODY onLoad="setTagStr(document,'wzd_wan_trouble_shooting');LoadHelp('WzdWanTroubleShootingHelp.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action=WzdWanTroubleShootingRpm.htm method=get enctype=multipart/form-data>
+    <TABLE id=autoWidth>
+      <TBODY>
+        <TR>
+          <TD class=h1 colspan=2 id="t_title">Quick Setup - Failed To Detect The Internet Connection Type</TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+	    <TR>
+          <TD class=info colspan=2 STYLE1> 
+			<SPAN id = "tips_msg"></SPAN>
+		  </TD>
+        </TR>
+		<br/><br/>	
+        <TR>
+          <TD class=info colspan=2 id="t_item">The router is failed to detect your internet connection type, the following are the most likely reasons:</TD>
+        </TR>
+		<TR><TD class=info colspan=2>
+		<B>1.  The modem was not power cycled.</B><br/>
+		To solve this problem, please power cycle your modem(turn if off and on) and wait 2 minutes to finish <br/>
+		its initialization. If your modem has a backup battery, please remove and reinsert its battery.
+		</TD></TR>
+		<TR><TD class=info colspan=2>
+		<B>2.  The hardware connection is wrong.</B><br/>
+		To solve this problem, please double-check the internet port(blue port) is fully inserted with the Ethernet <br/>
+		cable from the modem or other network device.
+		</TD></TR>
+		<TR><TD class=info colspan=2>
+		<B>3.  Your ISP(Internet Service Provider) assigned a fixed(static) IP to you.</B><br/>
+        The router can not automatically detect such rare special network type, you need to enter the paremeters manually.
+		</TD></TR>
+		<TR><TD>&nbsp;</TD></TR>
+		<TR><TD class=info colspan=2>Select one of the options below and click <B>Next</B> to proceed:</TD></TR>
+		
+        <TR id="option1">
+          <TD class=clk><INPUT name="opt" type="radio" value="1">The cable connections are correct. I also power cycled my modem and waited for 2 minutes.</TD>
+        </TR>
+        <TR id="option2">
+          <TD class=clk><INPUT name="opt" type="radio" value="2">Yes, my ISP assigned me a fixed IP address.</TD>
+        </TR>
+		
+		<TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR>
+          <TD class=mbtn colspan=2><INPUT class=buttonBig id=Return type="submit" value="Back" name="Return" onClick="return doBack()">
+            &nbsp; 
+            &nbsp;
+            <INPUT class=buttonBig id=Submit type="submit" value="Next" name="Next" onClick="return doSubmit();">
+            &nbsp;
+            <INPUT type=hidden name=ClientId></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript"><!--//
+var clientIdIdx = 0;
+document.forms[0].ClientId.value = wzdTroubleShooting[clientIdIdx]; 
+document.forms[0].opt[0].checked = true;
+//--></SCRIPT>

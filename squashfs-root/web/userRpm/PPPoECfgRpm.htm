@@ -1,0 +1,669 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+<!--//
+
+var wanType = new Array(
+"id=\"t_dyma_ip\" name=\"t_dyma_ip\">Dynamic IP<",	//	WAN_TYPE_DHCP = 0,
+"id=\"t_stat_ip\" name=\"t_stat_ip\">Static IP<",	//	WAN_TYPE_STATIC_IP, 
+"id=\"t_pppoe\" name=\"t_pppoe\">PPPoE/Russia PPPoE<",	//	WAN_TYPE_PPPOE, 
+"id=\"t_dhcp\" name=\"t_dhcp\">802.1x DHCP<",	//	WAN_TYPE_802_1X_DHCP,
+"id=\"t_802_stat_ip\" name=\"t_802_stat_ip\">802.1x Static IP<",	//	WAN_TYPE_802_1X_STATIC_IP,
+"id=\"t_bpa\" name=\"t_bpa\">BigPond Cable<",	//	WAN_TYPE_BPA,
+"id=\"t_l2tp\" name=\"t_l2tp\">L2TP/Russia L2TP<",	//	WAN_TYPE_L2TP,
+"id=\"t_pptp\" name=\"t_pptp\">PPTP/Russia PPTP<",	//	WAN_TYPE_PPTP,
+""	//	WAN_TYPE_END
+);
+var PPPoELinkStat = new Array(
+"<span id=\"t_disconnect\">Disconnected!<\/span>",
+"<span id=\"t_connect\">Connected<\/span>",
+"<span id=\"t_connecting\">Connecting...<\/span>"
+);
+function doSubmit()
+{
+	var element = document.forms[0].acc;
+/* allow null user and/or null password */
+/*	if (element && element.value == "")
+	{
+		alert(js_usrname_req = "User Name is required.");
+		element.focus();
+		element.select();
+		return false;
+	} */
+	
+	element = document.forms[0].psw;
+/*	if (element && element.value == "")
+	{
+		alert(js_passwd_req = "Password is required.");
+		element.focus();
+		element.select();
+		return false;
+	} */
+	
+	var confirm_psw = document.forms[0].confirm;
+/*	if (confirm_psw && confirm_psw.value == "")
+	{
+		alert(js_confirm_psw_req = "confirm password is required.");
+		confirm_psw.focus();
+		confirm_psw.select();
+		return false;
+	} */	
+
+	if (confirm_psw.value != element.value)
+	{
+		alert(js_psw_not_the_same = "The Password is different from the Confirm Password!");
+		return false;
+	}
+	
+	if(document.forms[0].linktype[0].checked)
+	{
+		if(!is_number(document.forms[0].waittime.value,0,99))
+		{
+			alert(js_wrong_time_fm="Wrong time format, please input another number (0-99)!");
+			var element =document.forms[0].waittime;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+	}
+	if(document.forms[0].linktype[3].checked)
+	{
+		if(!is_number(document.forms[0].waittime2.value,0,99))
+		{
+			alert(js_wrong_time="Wrong time format, please input another number (0-99)!");
+			var element =document.forms[0].waittime2;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+	}
+	if(document.forms[0].linktype[2].checked)
+	{
+		if(document.forms[0].hour1.value != "")
+		{
+			if(!is_number(document.forms[0].hour1.value,0,24))
+			{
+				alert(js_wrong_time_fm_hour="Wrong time format, please input another number (0-24)!");
+				var element =document.forms[0].hour1;
+				if(element)
+				{
+					element.focus();
+					element.select();
+				}
+				return false;
+			}
+		}
+		else
+		{
+			if(document.forms[0].minute1.value != "" || document.forms[0].hour2.value != "" || document.forms[0].minute2.value != "")
+			{
+				alert(js_pl_time="Please input a time!");
+				var element =document.forms[0].hour1;
+				if(element)
+				{
+					element.focus();
+					element.select();
+				}
+				return false;
+			}
+		}
+		if(document.forms[0].minute1.value != "")
+		{
+			if(!is_number(document.forms[0].minute1.value,0,60))
+			{
+				alert(js_wrong_time_fm_min="Wrong time format, please input another number (0-60)!");
+				var element =document.forms[0].minute1;
+				if(element)
+				{
+					element.focus();
+					element.select();
+				}
+				return false;
+			}
+		}
+		else
+		{
+			if(document.forms[0].hour1.value != "" || document.forms[0].hour2.value != "" || document.forms[0].minute2.value != "")
+			{
+				alert(js_pl_time="Please input a time!");
+				var element =document.forms[0].minute1;
+				if(element)
+				{
+					element.focus();
+					element.select();
+				}
+				return false;
+			}
+		}
+		if(document.forms[0].hour2.value != "")
+		{
+			if(!is_number(document.forms[0].hour2.value,0,24))
+			{
+				alert(js_wrong_time_fm_hour="Wrong time format, please input another number (0-24)!");
+				var element =document.forms[0].hour2;
+				if(element)
+				{
+					element.focus();
+					element.select();
+				}
+				return false;
+			}
+		}
+		else
+		{
+			if(document.forms[0].minute2.value != "" || document.forms[0].hour1.value != "" || document.forms[0].minute1.value != "")
+			{
+				alert(js_pl_time="Please input a time!");
+				var element =document.forms[0].hour2;
+				if(element)
+				{
+					element.focus();
+					element.select();
+				}
+				return false;
+			}
+		}
+		if(document.forms[0].minute2.value != "")
+		{
+			if(!is_number(document.forms[0].minute2.value,0,60))
+			{
+				alert(js_wrong_time_fm_min="Wrong time format, please input another number (0-60)!");
+				var element =document.forms[0].minute2;
+				if(element)
+				{
+					element.focus();
+					element.select();
+				}
+				return false;
+			}
+		}
+		else
+		{
+			if(document.forms[0].hour2.value != "" || document.forms[0].hour1.value != "" || document.forms[0].minute1.value != "")
+			{
+				alert(js_pl_time="Please input a time!");
+				var element =document.forms[0].minute2;
+				if(element)
+				{
+					element.focus();
+					element.select();
+				}
+				return false;
+			}
+		}
+	}
+	if(!is_ipaddr(document.forms[0].sta_ip.value))
+	{
+		var element =document.forms[0].sta_ip;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	if(!is_maskaddr(document.forms[0].sta_mask.value))
+	{
+		var element =document.forms[0].sta_mask;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	return true;
+}
+function doSelect()
+{
+	if(document.forms[0].linktype[0].checked)
+	document.forms[0].waittime.disabled = false;
+	else
+	{
+		document.forms[0].waittime.disabled = true;
+	}
+	if(document.forms[0].linktype[3].checked)
+		document.forms[0].waittime2.disabled = false;
+	else
+	{
+		document.forms[0].waittime2.disabled = true;
+	}
+	if(document.forms[0].linktype[2].checked)
+	{
+		document.forms[0].hour1.disabled = false;
+		document.forms[0].minute1.disabled = false;
+		document.forms[0].hour2.disabled = false;
+		document.forms[0].minute2.disabled = false;
+	}
+	else
+	{
+		document.forms[0].hour1.disabled = true;
+		document.forms[0].minute1.disabled = true;
+		document.forms[0].hour2.disabled = true;
+		document.forms[0].minute2.disabled = true;
+	}
+	return true;
+}
+function doAdvance()
+{
+	location.href="/userRpm/PPPoECfgAdvRpm.htm?Advanced=Advanced&wan="+pppoeInf[5];
+}
+var bRefreshFlag = 1;
+function doFocus()
+{
+	bRefreshFlag = 0;
+}
+function doOnblur()
+{
+    bRefreshFlag = 1;
+}
+
+function doLoad()
+{
+	if(document.forms[0].linktype[0].checked)
+		document.forms[0].waittime.disabled = false;
+	else
+	{
+		document.forms[0].waittime.disabled = true;
+	}
+	if(document.forms[0].linktype[3].checked)
+		document.forms[0].waittime2.disabled = false;
+	else
+	{
+		document.forms[0].waittime2.disabled = true;
+	}
+	if(document.forms[0].linktype[2].checked)
+	{
+		document.forms[0].hour1.disabled = false;
+		document.forms[0].minute1.disabled = false;
+		document.forms[0].hour2.disabled = false;
+		document.forms[0].minute2.disabled = false;
+	}
+	else
+	{
+		document.forms[0].hour1.disabled = true;
+		document.forms[0].minute1.disabled = true;
+		document.forms[0].hour2.disabled = true;
+		document.forms[0].minute2.disabled = true;
+	}
+	return true;
+}
+function doChange()
+{
+	if(pppoeInf[0] > 1)
+	{
+		n = document.forms[0].wan.value;
+	}else if(pppoeInf[0] = 1)
+	{
+		n = 0;
+	}
+	s = "wan="+n;
+	var t = document.forms[0].wantype.selectedIndex;
+	location.href = "/userRpm/"+wantypeinfo[t*2+2]+"?"+s;
+}
+function doWanChange()
+{
+	var n = document.forms[0].wan.selectedIndex;
+	var s = "wan="+n;
+	location.href = "/userRpm/WanCfgRpm.htm"+"?"+s;
+}
+function doRefresh()
+{    
+	if (1==bRefreshFlag)
+	{
+    var SecTypeV;
+	  if(document.forms[0].SecType[0].checked==true) 
+    {
+        SecTypeV=0;
+    }
+    else if(document.forms[0].SecType[1].checked==true)
+    {
+        SecTypeV=1;
+    }
+    else
+    {
+    		SecTypeV=2;
+    }
+		location.href="PPPoECfgRpm.htm?&SecType="+SecTypeV;
+	}
+	window.setTimeout("doRefresh()",10000);
+}
+function doDetect()
+{
+	location.href="/userRpm/PPPoECfgRpm.htm?detect=1";
+}
+
+function refresh()
+{	
+	location.href="/userRpm/PPPoECfgRpm.htm";	
+}
+
+
+function changeIpType()
+{
+	if(document.forms[0].SecType[1].checked==true) 
+	{
+		document.getElementById("sta_ip_row").style.display = "none";
+		document.getElementById("sta_mask_row").style.display = "none";
+		document.getElementById("dyn_ip_row").style.display = "";
+		document.getElementById("dyn_mask_row").style.display = "";
+		document.getElementById("dyn_but_row").style.display = "";
+		if (pppoeInf[34] != 1)
+	{
+			document.getElementById("t_info").style.display = "none";
+	}
+	}
+	else if(document.forms[0].SecType[2].checked==true)
+    {
+		document.getElementById("sta_ip_row").style.display = "";
+		document.getElementById("sta_mask_row").style.display = "";
+		document.getElementById("dyn_ip_row").style.display = "none";
+		document.getElementById("dyn_mask_row").style.display = "none";
+		document.getElementById("dyn_but_row").style.display = "none";
+    }
+    else
+    {
+		document.getElementById("sta_ip_row").style.display = "none";
+		document.getElementById("sta_mask_row").style.display = "none";
+		document.getElementById("dyn_ip_row").style.display = "none";
+		document.getElementById("dyn_mask_row").style.display = "none";
+		document.getElementById("dyn_but_row").style.display = "none";
+    }
+}
+
+function doRenew()
+{
+    if(pppoeInf[0] > 1)
+    {
+        location.href = "PPPoECfgRpm.htm?RenewIp=1" + "&wan=" +document.forms[0].wan.value;
+    }
+    else
+    {
+        location.href = "PPPoECfgRpm.htm?RenewIp=1" + "&wan=0";
+    }	
+}
+
+function doRelease()
+{
+    if(pppoeInf[0] > 1)
+    {
+        location.href = "PPPoECfgRpm.htm?ReleaseIp=1" + "&wan=" +document.forms[0].wan.value;
+    }
+    else
+    {
+        location.href = "PPPoECfgRpm.htm?ReleaseIp=1" + "&wan=0";
+    }	
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY onLoad="changeIpType();LoadHelp('PPPoECfgHelpRpm.htm');setTagStr(document,'ntw_pppoe_cfg');resize(this);" onResize="resize(this);">
+<FORM action="PPPoECfgRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+  <TABLE id="autoWidth">
+    <TR>
+      <TD class=h1 colspan=2 id = "t_title">WAN</TD>
+    </TR>
+    <TR>
+      <TD class=blue colspan=2></TD>
+    </TR>
+    <SCRIPT type="text/javascript">
+		if(pppoeInf[0] > 1)
+		{	
+			document.write('<TR><TD class=Item id = \"t_wan_port\">WAN Port:<\/TD><TD><select name=\"wan\" id=\"wan\" onChange=\"doWanChange()\" onFocus=\"doFocus()\" onBlur=\"doOnblur()\">')
+			for(var i=0;i<pppoeInf[0];i++)
+			{
+				document.write('<option value=\"'+i+'\">WAN' +(i+1)+'<\/option>');
+			}
+		}
+		//added by ZQQ,08.12.10 , if one wan, it should be exist but not display
+		else
+		{	
+			document.write('<TR style ="display:none"><TD class=Item id = \"t_wan_port\">WAN Port:<\/TD><TD><select name=\"wan\" id=\"wan\" onChange=\"doWanChange()\" onFocus=\"doFocus()\" onBlur=\"doOnblur()\">')
+			document.write('<option value=0>WAN1<\/option>');
+			document.write('<\/select>');
+		}
+		</SCRIPT>
+    </select>
+    
+    </td>
+    
+    </tr>
+    
+    <TR>
+      <TD class=Item id = "t_wan_conn_tp">WAN Connection Type:</TD>
+      <TD><SELECT name="wantype" onChange="doChange()" onFocus="doFocus()" onBlur="doOnblur()">
+          <SCRIPT type="text/javascript">
+for ( var t=0; t < wantypeinfo[0]; t++)
+{
+	document.write('<option value="'+wantypeinfo[t*2+1]+'" '+wanType[wantypeinfo[t*2+1]]+'\/option>');
+}
+</SCRIPT>
+        </SELECT>
+        &nbsp;
+        <INPUT name="Discover" type="button" class="button" id="discover" value="Detect" onclick=doDetect()>
+        <SCRIPT type="text/javascript">
+	var HAVE_NOT_DETECTED = 0;
+	var DETECTIING = 1;
+	var HAVE_DETECTED = 2;
+	var DISCONNECTED = 3;
+	
+	var detected_wan_type = wanTypeDetectInfoArray[0];
+	var wan_type_detect_stat = wanTypeDetectInfoArray[1];
+	var wait_time = wanTypeDetectInfoArray[2];
+	
+	switch (wan_type_detect_stat)
+	{
+	case HAVE_NOT_DETECTED:
+		document.write('&nbsp;<font color="0000FF">' + '         ' + '<\/font>');	
+		break;
+	case DETECTIING:
+		document.write('&nbsp;<span style="color:#0000FF" id="t_det">Detecting...<\/span>');
+		window.setTimeout("refresh()", wait_time);
+		break;
+	case HAVE_DETECTED:
+		document.write('&nbsp;<span style="color:#0000FF"' + wanType[detected_wan_type] + '\/span>');
+		break;
+	case DISCONNECTED:
+		document.write('&nbsp;<span style="color:#FF0000" id="t_unplugged">Unplugged<\/span>');
+		break;
+	default:
+		break;
+	}
+</SCRIPT></TD>
+    </TR>
+    <TR>
+      <TD colspan=2></TD>
+    </TR>
+    <TR>
+      <TD class=Item id="t_pppoe_conn">PPPoE Connection:</TD>
+    </TR>
+    <TR>
+      <TD class=Item id = "t_usr_name">User Name:</TD>
+      <TD><INPUT name="acc" class="text" value="" size="25" maxlength="118" onFocus="doFocus()" onBlur="doOnblur()"></TD>
+    </TR>
+    <TR>
+      <TD class=Item id = "t_passwd">Password:</TD>
+      <TD><INPUT name="psw" type="password" class="text" value="" size="25" maxlength="118" onFocus="doFocus()" onBlur="doOnblur()"></TD>
+    </TR>
+    <TR>
+      <TD class=Item id = "t_confirm">Confirm Password:</TD>
+      <TD><INPUT name="confirm" type="password" class="text" value="" size="25" maxlength="118" onFocus="doFocus()" onBlur="doOnblur()"></TD>
+    </TR>	
+    <TR>
+      <TD colspan=2></TD>
+    </TR>
+    <TR>
+      <TD class=Item id="t_sec_conn">Secondary Connection:</TD>
+      <TD><INPUT name="SecType" type="radio" onClick="changeIpType()" value="0" checked>
+        <SPAN id = "t_sec_disable">Disabled</SPAN>&nbsp; &nbsp;
+        <INPUT name="SecType" type="radio" onClick="changeIpType()" value="1">
+        <SPAN id = "t_sec_dynamic">Dynamic IP</SPAN>&nbsp; &nbsp;
+        <INPUT name="SecType" type="radio" onClick="changeIpType()" value="2">
+        <SPAN id = "t_sec_static">Static IP</SPAN>&nbsp;&nbsp;&nbsp;
+        <SPAN id = "t_sec_descript">(For Dual Access/Russia PPPoE)</SPAN></TD>
+    </TR>
+    <TR id="sta_ip_row">
+    	<TD class=Item id = "t_sec_ip_addr" name="t_sec_ip_addr">IP Address:</TD>
+    	<TD><input name="sta_ip" id="sta_ip" type="text" class="text" value="" size="15" maxlength="15" onFocus="doFocus()" onBlur="doOnblur()"></TD>
+    </TR>
+     <TR id ="dyn_ip_row">
+    	<TD class=Item id = "t_sec_ip_addr" name="t_sec_ip_addr">IP Address:</TD>
+    	<TD><div id="dyn_ip">-</div></TD>
+    </TR>
+    <TR id="sta_mask_row">
+    	<TD class=Item id = "t_sub_mask" name="t_sub_mask">Subnet Mask:</TD>
+    	<TD><input name="sta_mask" id="sta_mask" type="text" class="text" value="" size="15" maxlength="15" onFocus="doFocus()" onBlur="doOnblur()"></TD>
+    </TR>
+    <TR id="dyn_mask_row">
+    	<TD class=Item id = "t_sub_mask"  name="t_sub_mask">Subnet Mask:</TD>
+    	<TD><div id="dyn_mask">-</div></TD>
+    </TR>
+    <TR id="dyn_but_row">
+  		<TD class=Item></TD>
+  		<TD class=emp>
+  			<INPUT name="RenewIp" id="renewip" type="button" class="button" value="Renew" onclick="doRenew();">&nbsp;&nbsp;
+  			<INPUT name="ReleaseIp" id="releaseip" type="button" class="button" value="Release" onclick="doRelease();">&nbsp;&nbsp;
+  			<SPAN id="t_info">Obtaining network parameters...</span>
+  		</TD>
+  	</TR>
+    <TR>
+      <TD colspan=2></TD>
+    </TR>
+    <TR>
+      <TD class=Item id = "t_wan_conn_mod">Wan Connection Mode:</TD>
+      <TD><INPUT name="linktype" type="radio" onClick="doSelect();" value="1">
+        <SPAN id = "t_conn_on_demand">Connect on Demand</SPAN></TD>
+    </TR>
+    <TR>
+      <TD></TD>
+      <TD><SPAN id = "t_max_idle_time">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Max Idle Time: &nbsp;</SPAN>
+        <INPUT name="waittime" class="text" value="" size="2" maxlength="2" onFocus="doFocus()" onBlur="doOnblur()">
+        <SPAN id="t_mins" name="t_mins"> minutes (0 means remain active at all times.)</SPAN></TD>
+    </TR>
+    <TR>
+      <TD class=Item></TD>
+      <TD><INPUT type="radio" name="linktype" value="2" onClick="doSelect();">
+        <SPAN id = "t_conn_auto">Connect Automatically</SPAN></TD>
+    </TR>
+    <TR>
+      <TD class=Item></TD>
+      <TD><INPUT type="radio" name="linktype" value="3" onClick="doSelect();">
+        <SPAN id = "t_time_base">Time-based Connecting</SPAN></TD>
+    </TR>
+    <TR>
+      <TD></TD>
+      <TD><SPAN id = "t_per_time">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Period of Time:from&nbsp;</SPAN>
+        <INPUT name="hour1" type="text" class="text" value="" size="2" maxlength="2" onFocus="doFocus()" onBlur="doOnblur()">
+        &nbsp;:&nbsp;
+        <INPUT name="minute1" type="text" class="text" value="" size="2" maxlength="2" onFocus="doFocus()" onBlur="doOnblur()">
+        &nbsp;(HH:MM) to&nbsp;
+        <INPUT name="hour2" type="text" class="text" value="" size="2" maxlength="2" onFocus="doFocus()" onBlur="doOnblur()">
+        &nbsp;:&nbsp;
+        <INPUT name="minute2" type="text" class="text" value="" size="2" maxlength="2" onFocus="doFocus()" onBlur="doOnblur()">
+        &nbsp;(HH:MM)&nbsp;</TD>
+    </TR>
+    <TR>
+      <TD class=Item></TD>
+      <TD><INPUT name="linktype" type="radio" onClick="doSelect();" value="4">
+        <SPAN id = "t_conn_manu">Connect Manually</SPAN></TD>
+    </TR>
+    <TR>
+      <TD></TD>
+      <TD><SPAN id  = "t_max_idle_time1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Max Idle Time: &nbsp;</SPAN>
+        <INPUT name="waittime2" class="text" value="" size="2" maxlength="2" onFocus="doFocus()" onBlur="doOnblur()">
+        <SPAN id="t_mins" name="t_mins"> minutes (0 means remain active at all times.)</SPAN></TD>
+    </TR>
+    <TR>
+      <TD></TD>
+      <TD class=emp><INPUT name="Connect" type="submit" class="button" value="Connect">
+        &nbsp;&nbsp;
+        <INPUT name="Disconnect" type="submit" class="button" value="Disconnect">
+        &nbsp;<SPAN id = "linkStat"></SPAN></TD>
+    </TR>
+    <TR>
+      <TD class=blue colspan=2></TD>
+    </TR>
+    <TR>
+      <TD></TD>
+      <TD><INPUT name="Save" type="submit" class="buttonBig" value="Save">
+        &nbsp;&nbsp;
+        <INPUT name="Advanced" type="button" class="buttonBig" value="Advanced" onClick="doAdvance();"></TD>
+    </TR>
+  </TABLE>
+</FORM>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+var tempB;
+document.forms[0].wantype.selectedIndex = 2;
+if(pppoeInf[0] != 1)
+{
+	document.forms[0].wan.selectedIndex = pppoeInf[6];
+}
+document.forms[0].acc.value = pppoeInf[7];
+document.forms[0].psw.value = pppoeInf[8];
+document.forms[0].confirm.value = pppoeInf[8];
+tempB=(pppoeInf[20]==1)?true:false;
+document.forms[0].linktype[0].checked = tempB;
+tempB=(pppoeInf[20]==1)?false:true;
+document.forms[0].waittime.value = pppoeInf[21];
+document.forms[0].waittime.disabled = tempB;
+tempB=(pppoeInf[20]==2)?true:false;
+document.forms[0].linktype[1].checked = tempB;
+tempB=(pppoeInf[20]==3)?true:false;
+document.forms[0].linktype[2].checked = tempB;
+tempB=(pppoeInf[20]==3)?false:true;
+document.forms[0].hour1.value = pppoeInf[22];
+document.forms[0].hour1.disabled = tempB;
+document.forms[0].minute1.value = pppoeInf[23];
+document.forms[0].minute1.disabled = tempB;
+document.forms[0].hour2.value = pppoeInf[24];
+document.forms[0].hour2.disabled = tempB;
+document.forms[0].minute2.value = pppoeInf[25];
+document.forms[0].minute2.disabled = tempB;
+tempB=(pppoeInf[20]==4)?true:false;
+document.forms[0].linktype[3].checked = tempB;
+tempB=(pppoeInf[20]==4)?false:true;
+document.forms[0].waittime2.value = pppoeInf[21];
+document.forms[0].waittime2.disabled = tempB;
+tempB=(pppoeInf[26])?true:false;
+document.forms[0].Connect.disabled = tempB;
+tempB=(pppoeInf[26])?false:true;
+document.forms[0].Disconnect.disabled = tempB;
+
+if (pppoeInf[29] == 1)
+{
+	document.forms[0].SecType[1].checked =true;
+
+}
+else if(pppoeInf[29] == 2)
+{
+	document.forms[0].SecType[2].checked =true;
+}
+else
+{
+	document.forms[0].SecType[0].checked =true;
+}
+document.getElementById("sta_ip").value = pppoeInf[30];
+document.getElementById("sta_mask").value = pppoeInf[31];
+document.getElementById("dyn_ip").innerHTML = pppoeInf[32];
+document.getElementById("dyn_mask").innerHTML = pppoeInf[33];
+if (pppoeInf[35] == 0)
+	document.getElementById("renewip").disabled = true;
+if (pppoeInf[36] == 0)
+	document.getElementById("releaseip").disabled = true;
+if (pppoeInf[26] == 2 || pppoeInf[34] != 0)
+{
+    window.setTimeout("doRefresh()",10000);
+}
+document.getElementById("linkStat").innerHTML = PPPoELinkStat[pppoeInf[26]];
+</SCRIPT>

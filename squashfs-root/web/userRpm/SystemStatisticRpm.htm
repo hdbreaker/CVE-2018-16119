@@ -1,0 +1,239 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+<!--//
+var bRefreshFlag = 1;
+
+function doChange()
+{
+    if(bRefreshFlag == 1)
+    {
+		document.sysStatic.submit();
+	}
+}
+
+function doFocus()
+{
+	bRefreshFlag = 0;
+}
+function doOnblur()
+{
+    bRefreshFlag = 1;
+    doChange();
+}
+
+function changNumPerPage(){
+var _NumPerPage = document.forms[0].Num_per_page.value;
+location.href="SystemStatisticRpm.htm?NumPerPage="+_NumPerPage;
+}
+function goPage(){
+var nPage = document.forms[0].Goto_page.selectedIndex + 1;
+location.href="SystemStatisticRpm.htm?Page="+nPage;
+}
+function doPage(nPage){location.href="SystemStatisticRpm.htm?Page="+nPage;}
+
+function Resetall()
+{
+    if(!confirm(js_reset_all="Are you sure to reset all statistics?")) 
+    return false;
+    location.href="SystemStatisticRpm.htm?ResetAll=All&interval="+StatRulePara[1]+"&autoRefresh="+StatRulePara[2]+"&sortType="+StatRulePara[3] +'&Num_per_page='+PageListPara[2] + "&Goto_page=" + PageListPara[1];
+}
+function Deleteall()
+{
+if(!confirm(js_del_all="Are you sure to delete all entries?"))
+	return false;
+location.href="SystemStatisticRpm.htm?DeleteAll=All&interval="+StatRulePara[1]+"&autoRefresh="+StatRulePara[2]+"&sortType="+StatRulePara[3] +'&Num_per_page='+PageListPara[2] + "&Goto_page=" + PageListPara[1];
+}
+-->
+</SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_system_statistic');LoadHelp('SystemStatisticHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM name="sysStatic"action="SystemStatisticRpm.htm" enctype="multipart/form-data" method="get">
+    <TABLE id="autoWidth">
+      <TBODY>
+        <TR>
+          <TD class=h1 colspan=3 id = "t_title">Statistics</TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=3></TD>
+        </TR>
+        <TR>
+          <TD class=Item id = "t_cur_status">Current Statistics Status:</TD>
+					<TD class=emp>
+						<DIV id="statisticStatus">-</DIV>
+					</TD>
+					<TD>
+						<INPUT name="Staton" id = "Enable" type="submit" class="buttonBig" value = "Enable" style = "display:none" >
+						<INPUT name="Statoff" id = "Disable" type="submit" class="buttonBig" value = "Disable" style = "display:none">
+					</TD>
+        </TR>
+        <TR>
+          <TD class=Item id = "t_pck_sta_int">Packets Statistics Interval(5~60):</TD>
+					<TD width="30%">
+						<SELECT name="interval" id = "interval" class="listS" onChange="doChange()" onblur = "doOnblur()" onfocus = "doFocus()">
+              <OPTION value="5"> 5 </OPTION>
+              <OPTION value="10"> 10 </OPTION>
+              <OPTION value="15"> 15 </OPTION>
+              <OPTION value="20"> 20 </OPTION>
+              <OPTION value="25"> 25 </OPTION>
+              <OPTION value="30"> 30 </OPTION>
+              <OPTION value="35"> 35 </OPTION>
+              <OPTION value="40"> 40 </OPTION>
+              <OPTION value="45"> 45 </OPTION>
+              <OPTION value="50"> 50 </OPTION>
+              <OPTION value="55"> 55 </OPTION>
+              <OPTION value="60"> 60 </OPTION>
+            </SELECT>
+						<SPAN id = "t_sec">&nbsp;Seconds</SPAN>
+					</TD>
+          <TD ></TD>
+        </TR>
+        <TR>
+          <TD></TD>
+					<TD>
+						<INPUT name="autoRefresh" type="checkbox" value="2" onClick="doChange();">
+						<SPAN id = "t_auto_ref">&nbsp;Auto-refresh</SPAN>
+					</TD>
+					<TD>
+						<INPUT name="Refresh" type="submit" class="buttonBig" value="Refresh">
+					</TD>
+        </TR>
+        <TR>
+          <TD></TD>
+        </TR>
+        <TR>
+          <TD class=Item id = "t_srt_rul">Sorted Rules:</TD>
+					<TD>
+						<SELECT name="sortType" onChange="doChange()" onblur = "doOnblur()" onfocus = "doFocus()">
+              <OPTION value="1" id="t_sort_by_ip">Sorted by IP Address</OPTION>
+              <OPTION value="2" id="t_sort_by_total_pkg">Sorted by Total Packets</OPTION>
+              <OPTION value="3" id="t_sort_by_total_bytes">Sorted by Total Bytes</OPTION>
+              <OPTION value="4" id="t_sort_by_curr_pkg">Sorted by Current Packets</OPTION>
+              <OPTION value="5" id="t_sort_by_curr_bytes">Sorted by Current Bytes</OPTION>
+						</SELECT>
+					</TD>
+					<TD>
+						<INPUT name="ResetAll" type="button" class="buttonBig" value="Reset All" onClick="Resetall();">
+            &nbsp;&nbsp;
+						<INPUT name="DeleteAll" type="button" class="buttonBig" value="Delete All" onClick="Deleteall();">
+					</TD>
+        </TR>
+        <TR>
+					<TD colspan=3>
+						<TABLE border="2">
+              <TR>
+                <TD class="ListM">&nbsp;</TD>
+                <TD colspan="2" class="ListM" id = "t_ttl">Total</TD>
+                <TD colspan="5" class="ListM" id = "t_crnt">Current</TD>
+                <TD rowspan="2" class="ListM" id = "t_mdf">Modify</TD>
+              </TR>
+              <TR>
+								<TD class="ListM">
+									<SPAN id="t_ip_addr">IP Address/</SPAN>
+									<BR>
+									<SPAN id = "t_mac_addr">MAC Address</SPAN>
+								</TD>
+                <TD class="ListM" id = "t_tol_pcks">Packets</TD>
+                <TD class="ListM" id = "t_tol_bts">Bytes</TD>
+                <TD class="ListM" id = "t_cur_pcks">Packets</TD>
+                <TD class="ListM" id = "t_cur_bts">Bytes</TD>
+                <TD class="ListM" id = "t_icmp">ICMP Tx</TD>
+                <TD class="ListM" id = "t_udp">UDP Tx</TD>
+                <TD class="ListM" id = "t_syn">SYN Tx</TD>
+              </TR>
+              <SCRIPT type="text/javascript">
+if (StatRulePara[4] > 0)
+{
+	var row = 0;
+	for(var i = 0; i < StatRulePara[4]; i++)
+	{
+		row = i * StatRulePara[5];
+		document.write('<TR align="center"><TD class=ListM>' + statList[row+1] + '<br>'+statList[row+2]+'</td>');
+		document.write('<TD class=Listm>' + statList[row+3] + '</td>');
+		document.write('<TD class=Listm>' + statList[row+4] + '</td>');
+		document.write('<TD class=Listm>' + statList[row+5] + '</td>');
+		document.write('<TD class=Listm>' + statList[row+6] + '</td>'); 
+		document.write('<TD class=Listm>' + statList[row+7] + '/' + statList[row+8] + '</td>');
+		document.write('<TD class=Listm>' + statList[row+9] + '/' + statList[row+10] + '</td>');
+		document.write('<TD class=Listm>' + statList[row+11] + '/' + statList[row+12] + '</TD>');
+		document.write('<TD class=Listm><a href=\"SystemStatisticRpm.htm?resetone=' + statList[row] + '&interval='+StatRulePara[1]+'&autoRefresh='+StatRulePara[2] +'&Num_per_page='+PageListPara[2] + "&Goto_page=" + PageListPara[1]+'&sortType='+StatRulePara[3]+ '&Num_per_page='+PageListPara[2] + "&Goto_page=" + PageListPara[1]+'\">'+"<span id=\"t_reset\" name=\"t_reset\">Reset</span>"+'</a>'
+		+'&nbsp;<a href=\"SystemStatisticRpm.htm?delone='+ statList[row] + '&interval='+StatRulePara[1]+'&autoRefresh='+StatRulePara[2]+'&Num_per_page='+PageListPara[2] + "&Goto_page=" + PageListPara[1] + '&sortType='+StatRulePara[3]+'&Num_per_page='+PageListPara[2] + "&Goto_page=" + PageListPara[1]+'\">'+"<span id=\"t_delete\" name=\"t_delete\">Delete</span>"+'</a></TD></TR>');
+	}
+}
+else
+{
+	document.write('<TR><TD class=ListM colspan="9" id = "t_empty">The current list is empty.</TD></TR>');
+}
+</SCRIPT>
+						</TABLE>
+					</TD>
+        </TR>
+        <TR>
+					<TD height="30" colspan = 9>
+						<DIV align="left">&nbsp;&nbsp;
+              <SELECT  name="Num_per_page" class="listM" onChange="doChange()" onblur = "doOnblur()" onfocus = "doFocus()">
+                <OPTION value="5">5</OPTION>
+                <OPTION value="10">10</OPTION>
+                <OPTION value="20">20</OPTION>
+                <OPTION value="50">50</OPTION>
+                <OPTION value="100">100</OPTION>
+              </SELECT>
+							<SPAN id = "t_page1">entries per page</SPAN>.&nbsp;&nbsp;
+							<SPAN id = "t_page2">Current No.</SPAN>
+              <SELECT name="Goto_page" class="listM" onChange="doChange()" onblur = "doOnblur()" onfocus = "doFocus()">
+                <SCRIPT type="text/javascript">
+for (i=1;i<=PageListPara[0];i++){document.write('<option value="'+i+'">'+i+'</option>');
+}
+</SCRIPT>
+              </SELECT>
+							<SPAN id = "t_page3">page</SPAN>&nbsp;
+						</DIV>
+					</TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=9></TD>
+        </TR>
+        <TR>
+          <TD class = "mbtn" colspan = 8>&nbsp;&nbsp;
+            <INPUT name="PrevPage" type="submit" class="buttonBig"  value="Previous" disabled>
+            &nbsp;
+						<INPUT name="NextPage" type="submit" class="buttonBig"  value="Next" disabled>
+					</TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+var obj;
+obj = document.getElementById("statisticStatus");
+obj.innerHTML=(StatRulePara[0]==1)?"<span id = \"t_enabled\" >Enabled</span>":"<span id = \"t_disabled\">Disabled</span>";
+
+if(StatRulePara[0] == 0)
+{
+document.forms[0].Staton.style.display = 'block';
+}
+else
+{
+document.forms[0].Statoff.style.display = 'block';
+}
+document.forms[0].interval.value = StatRulePara[1];
+document.forms[0].autoRefresh.checked = StatRulePara[2];
+document.forms[0].autoRefresh.disabled =(StatRulePara[0] == 1)?false:true;
+document.forms[0].sortType.value =StatRulePara[3];
+//added by  ZQQ,08.04.14
+document.forms[0].Num_per_page.value = PageListPara[2];
+document.forms[0].Goto_page.value = PageListPara[1];
+document.forms[0].PrevPage.disabled = PageListPara[1]<2?1:0;
+document.forms[0].NextPage.disabled = PageListPara[4];
+if (StatRulePara[2] && StatRulePara[0] && bRefreshFlag == 1)
+{
+    window.setTimeout("doChange()",10000);
+}
+</SCRIPT>

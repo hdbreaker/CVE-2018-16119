@@ -1,0 +1,118 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript"><!--//
+function doAll(val)
+{
+	if( val=="DelAll" && !confirm(js_to_delete="Are you sure to delete all entries?"))
+        {
+            return;
+        }
+    else
+    {
+        location.href="/userRpm/StaticRouteTableRpm.htm?doAll="+val+"&Page="+curPage;
+    }
+location.href="/userRpm/StaticRouteTableRpm.htm?doAll="+val+"&Page="+curPage;
+}
+function doAdd(nPage)
+{
+	location.href="/userRpm/StaticRouteTableRpm.htm?Add=Add&Page="+nPage;
+}
+function doPage(nPage)
+{
+	location.href="StaticRouteTableRpm.htm?Page="+nPage;
+}
+function ResetStatus(strInfo)
+{
+	window.status=strInfo;
+	return true;
+}
+//--></SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_static_route_table');LoadHelp('StaticRouteTableHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="StaticRouteTableRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth">
+      <TR>
+        <TD class=h1 id="t_title">Static Routing</TD>
+      </TR>
+      <TR>
+        <TD class=blue></TD>
+      </TR>
+      <TR>
+        <TD><TABLE border=0>
+            <TR>
+              <TD class=ListTC1 id="t_id">ID</TD>
+              <TD class=ListTC2 id="t_dest_ip_addr">Destination Network</TD>
+              <TD class=ListTC2 id="t_submask">Subnet Mask</TD>
+              <TD class=ListTC2 id="t_gateway">Default Gateway</TD>
+              <TD class=ListTC2 id="t_status">Status</TD>
+              <TD class=ListTC2 id="t_modify">Modify</TD>
+            </TR>
+            <SCRIPT type="text/javascript">
+if (SRTPara[2]>0)
+{
+	var row=0;
+	var StatusString;
+	var IdStart = (SRTPara[0]-1)*SRTPara[4];
+	var modifyId;
+	for (i=0;i< SRTPara[2];i++)
+	{
+		modifyId = IdStart;
+		IdStart++;
+		row = i*SRTPara[3];
+StatusString = (routeList[row+3]==0)?"<span name=\"t_disabled\" id =\"t_disabled\">Disabled</span>":"<span name=\"t_enabled\" id =\"t_enabled\">Enabled</span>";
+document.write('<tr><td class=ListC1>'+ IdStart + '</td>');
+document.write('<td class=ListC2>'+ routeList[row] +'</td>');
+document.write('<td class=ListC2>'+ routeList[row+1] +'</td>');
+document.write('<td class=ListC2>'+ routeList[row+2] +'</td>');
+document.write('<td class=ListC2>'+ StatusString +'</td>');
+document.write('<td class=ListC2><a href=\"/userRpm/StaticRouteTableRpm.htm?Modify=' +
+						modifyId+'&Page='+SRTPara[0]+
+'\" OnMouseOver=\"return ResetStatus(\'modify\');\"><span name=\"t_but_modi\" id=\"t_but_modi\">Modify</span></a>&nbsp;<a href=\"/userRpm/StaticRouteTableRpm.htm?Del='+
+					 	modifyId+'&Page='+SRTPara[0]+
+'\" OnMouseOver=\"return ResetStatus(\'delete\');\"><span name=\"t_delete\" id =\"t_delete\">Delete</span></a></td></tr>');
+	}
+}
+</SCRIPT>
+          </TABLE></TD>
+      </TR>
+      <TR>
+        <TD colspan = "2"></TD>
+      </TR>
+      <TR>
+        <TD colspan=2><INPUT type="button" value="Add New..." name="Addnew" class="buttonBig" onClick="doAdd(curPage);">
+          &nbsp;
+          <INPUT type="button" value="Enable All" name="Enall" class="buttonBig" onClick="doAll('EnAll');">
+          &nbsp;
+          <INPUT type="button" value="Disable All" name="Disall" class="buttonBig" onClick="doAll('DisAll');">
+          &nbsp;
+          <INPUT type="button" value="Delete All" name="Delall" class="buttonBig" onClick="doAll('DelAll');"></TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+      <TR>
+        <TD class="mbtn"><INPUT name="PrevPage" type="button" class="buttonBig" onClick="doPage(prePage);" value="Previous" >
+          &nbsp;
+          <INPUT name="NextPage" type="button" class="buttonBig" onClick="doPage(nextPage);" value="Next">
+          <INPUT name="Page" type="hidden" value="1"></TD>
+      </TR>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+var curPage = SRTPara[0];
+var prePage = (SRTPara[0] == 1)?1:SRTPara[0]-1;
+var nextPage = SRTPara[0]+1;
+document.forms[0].Page.value = curPage;
+document.forms[0].Enall.disabled = (SRTPara[2] < 1)?true: false;
+document.forms[0].Disall.disabled = (SRTPara[2] < 1)?true: false;
+document.forms[0].Delall.disabled = (SRTPara[2] < 1)?true: false;
+document.forms[0].PrevPage.disabled = (SRTPara[0] < 2)?true:false;
+document.forms[0].NextPage.disabled = (SRTPara[1] > 0)?false:true;
+</SCRIPT>

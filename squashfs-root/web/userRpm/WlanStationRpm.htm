@@ -1,0 +1,87 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript"><!--//
+
+function doPage(nPage){location.href="/userRpm/WlanStationRpm.htm?Page="+nPage;}
+var wlanStatusStringArray = new Array( 
+"<span id=\"t_auth\">STA-AUTH</span>",
+"<span id=\"t_assoc\">STA-ASSOC</span>",
+"WPA",
+"WPA-PSK",
+"WPA2",
+"WPA2-PSK",
+"802_1X",
+"STA-JOINED",
+"<span id=\"t_up\">AP-UP</span>",
+"<span id=\"t_down\">AP-DOWN</span>",
+"<span id=\"t_disconed\" name=\"t_disconed\">Disconnected</span>"
+);
+//--></SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_wlan_station');LoadHelp('WlanStationHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="WlanStationRpm.htm" enctype="multipart/form-data" method="get">
+    <TABLE id="autoWidth">
+      <TR>
+        <TD class=h1 colspan=2 id = "t_title">Wireless Statistics</TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+      <TR>
+        <TD class=Item id = "t_cur_number">Current Connected Wireless Stations numbers:</TD>
+        <TD class=emp><SCRIPT type="text/javascript">
+document.write(wlanHostPara[0]);
+</SCRIPT>
+          &nbsp;&nbsp;
+          <INPUT name="Refresh" type="button" class="button" value="Refresh" onclick ="doPage(curPage);"></TD>
+      </TR>
+      <TR>
+        <TD colspan=2></TD>
+      </TR>
+      <SCRIPT type="text/javascript">
+var listLen = (wlanHostPara[0]-(wlanHostPara[1]-1)*wlanHostPara[2]);
+var showNextPage = 0;
+if (listLen > wlanHostPara[2]){	
+	listLen = wlanHostPara[2];	showNextPage = 1;}
+if (listLen >0)	{
+var row = 0;
+var statusIndex;
+var idStart = (wlanHostPara[1]-1)*wlanHostPara[2];
+document.write('<TR><TD colspan=2><table border=0>');
+document.write('<TR><TD class=ListTC1 id = "t_id">ID</TD><TD class=ListTC2 id ="t_mac_addr">MAC Address</TD><td class=ListTC2 id = "t_cur_status">Current Status</td><TD class=ListTC2 id = "t_rev_pkt" >Received Packets</TD><TD class=ListTC2 id = "t_sent_pkt">Sent Packets</TD></TR>');
+for(var i = 0; i < listLen; i++)		{
+	row = i * wlanHostPara[4];
+	statusIndex = hostList[row+1];
+	idStart++;
+	document.write('<tr><td class=ListC1>' + idStart + '</td>');
+	document.write('<td class=ListC2>' + hostList[row] + '</td>');
+	document.write('<td class=ListC2>' + wlanStatusStringArray[statusIndex] + '</td>');
+	document.write('<td class=ListC2>' + hostList[row+2] + '</td>');
+	document.write('<td class=ListC2>' + hostList[row+3] + '</TD></TR>');
+}
+document.write('</table></TD></TR>');
+}
+</SCRIPT>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+      <TR>
+        <TD colspan=2 class=mbtn><INPUT name="PrevPage" type="button" class="buttonBig" onClick="doPage(prePage);" value="Previous">
+          &nbsp;
+          <INPUT name="NextPage" type="button" class="buttonBig" onClick="doPage(nextPage);" value="Next"></TD>
+      </TR>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+</HTML>
+<SCRIPT type="text/javascript"><!-- 
+var curPage = wlanHostPara[1];
+var prePage = (wlanHostPara[1] == 1)?1:wlanHostPara[1]-1;
+var nextPage = wlanHostPara[1]+1;
+document.forms[0].PrevPage.disabled = (wlanHostPara[1] < 2)?true:false;
+document.forms[0].NextPage.disabled = (showNextPage == 0)?true:false;
+if(window.parent != window)
+	window.setTimeout("doPage(curPage)",wlanHostPara[3]);
+//--></SCRIPT>

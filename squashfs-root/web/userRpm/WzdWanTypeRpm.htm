@@ -1,0 +1,88 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+
+function Click(){ window.event.returnValue=false;}
+document.oncontextmenu=Click;
+function doBack()
+{	
+	location.href="WzdWanTypeRpm.htm?Return=Back";
+}
+</SCRIPT>
+
+</HEAD>
+<BODY onLoad="setTagStr(document,'wzd_wantype');LoadHelp('WzdWanTypeHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action=WzdWanTypeRpm.htm method=get enctype=multipart/form-data>
+    <TABLE id=autoWidth>
+      <TBODY>
+        <TR>
+          <TD class=h1 colspan=2 id="t_title">Quick Setup - WAN Connection Type</TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR>
+          <TD class=info colspan=2 id="t_item">The Quick Setup is preparing to set up your connection type of WAN port.</TD>
+        </TR>
+        <TR>
+          <TD class=info colspan=2><SPAN id="t_prompt">The Router will try to detect the Internet connection type your ISP provides if you select the </SPAN><B id="t_autodetect">Auto-Detect</B> <SPAN id="t_option">option.</SPAN> <BR>
+            <SPAN id="t_man_specify">Otherwise, you need to specify the connection type manually.</SPAN></TD>
+        </TR>
+        <TR>
+          <TD class=clk><INPUT name="wan" type="radio" value="16"></TD>
+          <TD><B id="t_auto_detect_opt">Auto-Detect</B> - <SPAN id="t_auto_detect">Let the router automatically detect the internet connection type provided by your ISP.</SPAN></TD>
+        </TR>
+        <TR>
+          <TD class=clk><INPUT type=radio value=0 name=wan></TD>
+          <TD><B id="t_dhcp_opt">Dynamic IP (Most Common Cases)</B> - <SPAN id="t_dhcp">for Cable/DSL connection or connection behind a router <br>which makes your computer immediately online without any setting or signing-in.</TD>
+		</TR>
+		<TR>
+          <TD class=clk><INPUT type=radio value=1 name=wan></TD>
+          <TD><B id="t_static_ip_opt">Static IP</B> - <SPAN id="t_static_ip">Your ISP provide you specified IP parameters. </SPAN></TD>
+        </TR>
+		<TR>
+          <TD class=clk><INPUT type=radio value=2 name=wan></TD>
+          <TD><B id="t_pppoe_opt">PPPoE</B> - <SPAN id="t_pppoe">You have DSL connection and are connecting via PPPoE (Broadband Connection) on<br>your computer or existing router.</SPAN></TD>
+        </TR>
+		<TR>
+          <TD class=clk><INPUT type=radio value=6 name=wan></TD>
+          <TD><B id="t_l2tp_opt">L2TP/Russian L2TP</B> - <SPAN id="t_l2tp">In this type, you should fill in the username, password and IP address/Domain name<br>of VPN Server provided by your ISP. Auto-Detect can't detect this connection type.</SPAN></TD>
+		  </TR>
+		<TR>
+          <TD class=clk><INPUT type=radio value=7 name=wan></TD>
+          <TD><B id="t_pptp_opt">PPTP/Russian PPTP</B> - <SPAN id="t_pptp">In this type, you should fill in the username, password and IP address/Domain name<br>of VPN Server provided by your ISP. Auto-Detect can't detect this connection type.</SPAN></TD>
+        </TR>
+		<TR>
+		  <TD colspan=2><span style="color:#FF0000" id="t_chng">Note: For users in some areas (such as Russia, Ukraine etc.), please contact your ISP to choose connection type manually.</span> </TD>
+		</TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR>
+          <TD class=mbtn colspan=2>			
+			<INPUT class=buttonBig id=Return type="button" value="Back" name="Return"  onClick="doBack()">
+            &nbsp; 
+            &nbsp;
+            <INPUT class=buttonBig id=Submit type="submit" value="Next" name="Next">
+            &nbsp;
+            <INPUT type=hidden name=ClientId></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+<!--//
+document.forms[0].wan[0].checked = true; 
+//document.forms[0].wan[1].checked = (wzdWanTypeInf[0]==2); 
+//document.forms[0].wan[2].checked = (wzdWanTypeInf[0]==0); 
+//document.forms[0].wan[3].checked = (wzdWanTypeInf[0]==1); 
+//document.forms[0].ClientId.value = wzdWanTypeInf[1];
+//-->
+</SCRIPT>

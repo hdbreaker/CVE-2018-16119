@@ -1,0 +1,401 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript"><!--//
+var wanType = new Array(
+"id=\"t_dyma_ip\" name=\"t_dyma_ip\">Dynamic IP<",	//	WAN_TYPE_DHCP = 0,
+"id=\"t_stat_ip\" name=\"t_stat_ip\">Static IP<",	//	WAN_TYPE_STATIC_IP, 
+"id=\"t_pppoe\" name=\"t_pppoe\">PPPoE/Russia PPPoE<",	//	WAN_TYPE_PPPOE, 
+"id=\"t_dhcp\" name=\"t_dhcp\">802.1x DHCP<",	//	WAN_TYPE_802_1X_DHCP,
+"id=\"t_802_stat_ip\" name=\"t_802_stat_ip\">802.1x Static IP<",	//	WAN_TYPE_802_1X_STATIC_IP,
+"id=\"t_bpa\" name=\"t_bpa\">BigPond Cable<",	//	WAN_TYPE_BPA,
+"id=\"t_l2tp\" name=\"t_l2tp\">L2TP/Russia L2TP<",	//	WAN_TYPE_L2TP,
+"id=\"t_pptp\" name=\"t_pptp\">PPTP/Russia PPTP<",	//	WAN_TYPE_PPTP,
+""	//	WAN_TYPE_END
+);
+var bRefreshFlag=1;
+if(dhcpInf[2]&&dhcpInf[4])
+{
+	bRefreshFlag=1;
+}
+function doHelp(){location.href="/help/WanDynamicIpCfgHelpRpm.htm?ieeeType=0";}
+function LoadPage()
+{
+	var n = 0;
+	if(dhcpInf[0] > 1)
+	{
+		n = document.forms[0].wan.value;
+	}
+	var s = "wan="+n;
+	if(1==bRefreshFlag)
+	{
+		window.location.href="/userRpm/WanDynamicIpCfgRpm.htm?"+s;
+	}
+}
+function doFocus()
+{
+	bRefreshFlag=0;
+}
+function doOnblur()
+    {
+    bRefreshFlag=1;
+}
+
+function charCompareA(szname, en_limit, cn_limit)
+{
+	var c;
+	var ch = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.";
+
+	if (szname.length > en_limit)
+	{
+		return false;
+	}
+	for (var i = 0; i < szname.length; i++)
+	{
+		c = szname.charAt(i);
+		if (ch.indexOf(c) == -1)
+		{
+			if(szname.length > cn_limit)
+			{				
+				return false;
+			}
+		}
+	}
+	return true;
+}
+function doSubmit()
+{
+	var val; val=document.forms[0].mtu.value;
+	if(val<576||val>1500||val=="")
+	{
+		alert(js_bad_mtu="Bad MTU, please input another number!(576 ~ 1500, the default is 1500)");
+		return false;
+	}
+	if(document.forms[0].manual.checked)
+	{
+		if(!is_dnsaddr(document.forms[0].dnsserver.value))
+		{
+			var element =document.forms[0].dnsserver;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+		return false;
+	}
+	if(document.forms[0].dnsserver2.value != "")
+	{
+		if(!is_dnsaddr(document.forms[0].dnsserver2.value))
+		{
+			var element =document.forms[0].dnsserver2;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+			}
+		}
+	}
+	
+	if(!charCompareA(document.forms[0].hostName.value, 63, 0))
+	{
+		alert(js_bad_hostname="Invalid host name.");
+
+		var element =document.forms[0].hostName;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}	
+	
+	return true;
+}
+function doSet()
+{
+	if(document.forms[0].manual.checked)
+	{
+		document.forms[0].dnsserver.disabled = false;
+		document.forms[0].dnsserver2.disabled = false;
+	}
+	else
+	{
+		document.forms[0].dnsserver.disabled = true;
+		document.forms[0].dnsserver2.disabled = true;
+	}
+	return true;
+}
+function doChange()
+{
+	var n = 0;
+	if(dhcpInf[0] > 1)
+	{
+		n = document.forms[0].wan.value;
+	}
+	s = "wan="+n;
+	var t = document.forms[0].wantype.selectedIndex;
+	location.href = "/userRpm/"+wantypeinfo[t*2+2]+"?"+s;
+}
+function doWanChange()
+{
+	var n = document.forms[0].wan.selectedIndex;
+	var s = "wan="+n;
+	location.href = "/userRpm/WanCfgRpm.htm"+"?"+s;
+}
+function doLoad()
+{
+	if(document.forms[0].manual.checked)
+	{
+		document.forms[0].dnsserver.disabled = false;
+		document.forms[0].dnsserver2.disabled = false;
+	}
+	else
+	{
+		document.forms[0].dnsserver.disabled = true;
+		document.forms[0].dnsserver2.disabled = true;
+	}
+}
+function netClick()
+{
+	if(document.forms[0].Intranet.checked==false) 
+	{
+        
+		document.forms[0].netRange.disabled=true;
+	} 
+	else
+	{
+		document.forms[0].netRange.disabled=false;
+	}
+}
+function checkIP()
+{
+	var obj = document.getElementById("netRange").value;
+	var n = obj.indexOf("-");
+	if(n == -1)
+	{
+            alert(js_inter_network="The Interior network is invalid, please input again!");
+            return false;
+        }
+	var beginIP = obj.substring(0,n)
+	var endIP = obj.substring(n+1);
+	if(ipverify(beginIP) && ipverify(endIP))
+	{
+		return true;
+	}
+	else
+	{
+		alert(js_inter_network="The Interior network is invalid, please input again!");
+		return false;
+	}
+}
+function doDetect()
+{
+	location.href="/userRpm/WanDynamicIpCfgRpm.htm?detect=1";
+}
+
+function refresh()
+{	
+	location.href="/userRpm/WanDynamicIpCfgRpm.htm";	
+}
+
+//--></SCRIPT>
+</HEAD>
+<BODY onLoad="doLoad(); setTagStr(document,'ntw_dynipcfg');LoadHelp('WanDynamicIpCfgHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<FORM action="WanDynamicIpCfgRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+  <TABLE id="autoWidth" border =0>
+    <TR>
+      <TD class=h1 colspan=2>WAN</TD>
+    </TR>
+    <TR>
+      <TD class=blue colspan=2></TD>
+    </TR>
+    <SCRIPT type="text/javascript">
+if(dhcpInf[0] > 1)
+{
+	document.write('<TR><TD class=Item id = \"t_wan_port\">WAN Port:<\/TD><TD><select name=\"wan\"  id=\"wan\" onChange=\"doWanChange()\" onblur = \"doOnblur()\" onFocus = \"doFocus()\">');
+	for(var i=0;i<dhcpInf[0];i++)
+	{
+		document.write('<option value=\"'+i+'\">WAN'+(i+1)+'<\/option>');
+	}
+}
+//added by ZQQ,08.12.10 , if one wan, it should be exist but not display
+else
+{	
+	document.write('<TR style ="display:none"><TD class=Item id = \"t_wan_port\">WAN Port:<\/TD><TD><select name=\"wan\" id=\"wan\" onChange=\"doWanChange()\">')
+	document.write('<option value=0>WAN1<\/option>');
+    document.write('<\/select>');
+}
+</SCRIPT>
+    </select>
+    
+    </td>
+    
+    </tr>
+    
+    <TR>
+      <TD class=Item id = "t_wan_con_tp">WAN Connection Type:</TD>
+      <TD><SELECT name="wantype" onblur = "doOnblur()" onfocus = "doFocus()" onChange="doChange()">
+          <SCRIPT type="text/javascript">
+for ( var t=0; t < wantypeinfo[0]; t++)
+{
+	document.write('<option value="'+wantypeinfo[t*2+1]+'" '+wanType[wantypeinfo[t*2+1]]+'\/option>');
+}
+</SCRIPT>
+        </SELECT>
+        &nbsp;
+        <INPUT name="Discover" type="button" class="button" id="discover" value="Detect" onclick=doDetect()>
+        <SCRIPT type="text/javascript">
+	var HAVE_NOT_DETECTED = 0;
+	var DETECTIING = 1;
+	var HAVE_DETECTED = 2;
+	var DISCONNECTED = 3;
+	
+	var detected_wan_type = wanTypeDetectInfoArray[0];
+	var wan_type_detect_stat = wanTypeDetectInfoArray[1];
+	var wait_time = wanTypeDetectInfoArray[2];
+	
+	switch (wan_type_detect_stat)
+	{		
+	case HAVE_NOT_DETECTED:
+		document.write('&nbsp;<font color="0000FF">' + '         ' + '<\/font>');	
+		break;
+	case DETECTIING:
+		document.write('&nbsp;<span style="color:#0000FF" id="t_det">Detecting...<\/span>');
+		window.setTimeout("refresh()", wait_time);
+		break;
+	case HAVE_DETECTED:
+		document.write('&nbsp;<span style="color:#0000FF"' + wanType[detected_wan_type] + '\/span>');
+		break;
+	case DISCONNECTED:
+		document.write('&nbsp;<span style="color:#FF0000" id="t_unplugged">Unplugged<\/span>');
+		break;
+	default:
+		break;
+	}
+</SCRIPT></TD>
+    </TR>
+    <TR id="showIntranet" style="display:none;">
+      <TD class=Item ><INPUT type="checkbox" name="Intranet" value="2" onClick="netClick();" onFocus="doFocus();">
+        <SPAN id = "t_in_net_ran">Interior network:</SPAN></TD>
+      <TD><INPUT id = "netRange" name="netRange" value="" type="text" class="text" size="32" maxlength="31"  onfocus="doFocus();"></TD>
+    </TR>
+    <TR>
+      <TD colspan=2></TD>
+    </TR>
+    <TR>
+      <TD class=Item id = "t_ip_addr">IP Address:</TD>
+      <TD><DIV id="ip"></DIV></TD>
+    </TR>
+    <TR>
+      <TD class=Item id = "t_sub_mask">Subnet Mask:</TD>
+      <TD><DIV id="mask"></DIV></TD>
+    </TR>
+    <TR>
+      <TD class=Item id = "t_def_gateway">Default Gateway:</TD>
+      <TD><DIV id="gateway"></DIV></TD>
+    </TR>
+    <TR>
+      <TD></TD>
+      <TD class=emp><INPUT name="RenewIp" type="submit" class="button" value="Renew">
+        &nbsp;&nbsp;
+        <INPUT name="ReleaseIp" type="submit" class="button" value="Release">
+        &nbsp;&nbsp;
+        <SCRIPT type="text/javascript">
+if(2 == dhcpInf[4])
+{
+	 document.write("<span id = \"t_unpluged_info\" style=\"color:#FF0000\">WAN port is unplugged!<\/span>");
+}		
+else if(1 == dhcpInf[4])
+{
+	 document.write("<span id = \"t_info\">Obtaining network parameters...<\/span>");
+}
+else
+{
+	document.write('&nbsp; ');
+}
+</SCRIPT></TD>
+    </TR>
+    <TR>
+      <TD colspan=2></TD>
+    </TR>
+    <TR>
+      <TD class=Item id = "t_mtu_size">MTU Size (in bytes):</TD>
+      <TD><INPUT name="mtu" type="text" class="text" value="" size="5" maxlength="5">
+        <SPAN id = "t_desc">&nbsp;(The default is 1500, do not change unless necessary.)</SPAN></TD>
+    </TR>
+    <TR>
+      <TD colspan=2></TD>
+    </TR>
+    <TR>
+      <TD class=Item><INPUT name="manual" type="checkbox" value="2" onClick="doSet();"></TD>
+      <TD><SPAN id = "t_use_dns_ser">Use These DNS Servers</SPAN></TD>
+    </TR>
+    <TR>
+      <TD class=Item id = "t_pri_dns">Primary DNS:</TD>
+      <TD><INPUT name="dnsserver" type="text" class="text" value="" size="15" maxlength="15"></TD>
+    </TR>
+    <TR>
+      <TD class=Item id = "t_sec_dns">Secondary DNS:</TD>
+      <TD><INPUT name="dnsserver2" type="text" class="text" value="" size="15" maxlength="15">
+        <SPAN id = "t_opt">&nbsp;(Optional)</SPAN></TD>
+    </TR>
+    <TR>
+      <TD colspan=2></TD>
+    </TR>
+    <TR>
+      <TD class=Item id = "t_host_name">Host Name:</TD>
+      <TD><INPUT name="hostName" type="text" class="text" value="" size="15" maxlength="63"></TD>
+    </TR>
+    <TR>
+      <TD colspan=2></TD>
+    </TR>
+    <TR>
+      <TD></TD>
+      <TD><INPUT name="flagMode" type="checkbox" value="2">
+        <SPAN id = "t_get_ip_dncp">&nbsp;Get IP with Unicast DHCP (It is usually not required.)</SPAN></TD>
+    </TR>
+    <TR>
+      <TD class=blue colspan=2></TD>
+    </TR>
+    <TR>
+      <TD></TD>
+      <TD><INPUT name="Save" type="submit" class="buttonBig" value="Save"></TD>
+    </TR>
+  </TABLE>
+</FORM>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+if(dhcpInf[0] != 1)
+{
+	document.forms[0].wan.selectedIndex = dhcpInf[6];
+}
+document.forms[0].wantype.selectedIndex = dhcpInf[7];
+document.getElementById("ip").innerHTML = dhcpInf[13];
+document.getElementById("mask").innerHTML = dhcpInf[14];
+document.getElementById("gateway").innerHTML = dhcpInf[15];
+document.forms[0].RenewIp.disabled = dhcpInf[16];
+document.forms[0].ReleaseIp.disabled = dhcpInf[17];
+document.forms[0].mtu.value = dhcpInf[18];
+document.forms[0].manual.checked = dhcpInf[19];
+document.forms[0].dnsserver.value = dhcpInf[20];
+document.forms[0].dnsserver.disabled = dhcpInf[21];
+document.forms[0].dnsserver2.value = dhcpInf[22];
+document.forms[0].dnsserver2.disabled = dhcpInf[21];
+document.forms[0].flagMode.checked = dhcpInf[23];
+document.forms[0].hostName.value = dhcpInf[26];
+if(dhcpInf[0] > 1)
+        {
+//	document.getElementById('showBandWidth').style.display = "block";
+//	document.getElementById('showIntranet').style.display = "block";
+        }
+netClick();
+if(dhcpInf[16] == 1)//RenewIP.disable == ture
+{
+    window.setTimeout("LoadPage()",20000);
+}
+</SCRIPT>

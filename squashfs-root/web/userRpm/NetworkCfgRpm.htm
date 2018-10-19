@@ -1,0 +1,121 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript"><!--//
+function doSubmit()
+{
+       if(document.forms[0].igmpStatus.value != lanPara[4])
+	{
+		return true;
+	}
+
+	if(document.forms[0].lanip.value=="") 
+	{
+		alert(js_pl_ip_addr="Please input IP address!");
+		return false;
+	}
+	if(!is_ipaddr(document.forms[0].lanip.value))
+	{
+		var element =document.forms[0].lanip;
+		if(element)
+			{
+				element.focus();element.select();
+			}
+		return false;
+	}
+	if(document.forms[0].lanip.value==lanPara[1] &&
+		document.forms[0].lanmask.value==lanPara[2] &&
+		document.forms[0].inputMask.value==lanPara[3])
+	{
+		return false;
+	}
+    if(!confirm(js_modi_ip_addr="Modification of IP address or Subnet Mask will result in the rebooting of the Router, OK?"))
+    {
+        return false;
+    }
+	return true;
+}
+function doOnchange(value)
+{
+    if(3==value)
+    {
+        document.getElementById("otherMask").style.display="";
+    }   
+    else
+    {
+        document.getElementById("otherMask").style.display="none";
+    }
+}
+
+//--></SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_lan');LoadHelp('NetworkCfgHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="NetworkCfgRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth" border=0>
+      <TBODY>
+        <TR>
+          <TD class=h1 colspan=5 id="t_title">LAN</TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=5></TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_mac">MAC Address:</TD>
+          <TD colspan="4"><DIV id="MAC"></DIV></TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_ip">IP Address:</TD>
+          <TD colspan="4"><INPUT name="lanip" type="text" class="text" id="lanip" value="192.168.1.1" size="15" maxlength="15"></TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_mask">Subnet Mask:</TD>
+          <TD><SELECT name="lanmask" id="lanmask" onChange="doOnchange(this.value)">
+              <OPTION value="0">255.0.0.0</OPTION>
+              <OPTION value="1">255.255.0.0</OPTION>
+              <OPTION value="2">255.255.255.0</OPTION>
+              <OPTION value="3" id="t_other_mask">Other Mask</OPTION>
+            </SELECT></TD>
+          <TD id="otherMask" style="display:none"><INPUT name="inputMask" type="text" class="text" value="255.255.255.0" size="15" maxlength="15"></TD>
+          <TD width="30%">&nbsp;</TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_tol_status">IGMP Proxy:</TD>
+          <TD>
+			<SELECT name="igmpStatus" id="igmpStatus" onChange="doOnchange(this.value)">
+              <OPTION value="1" id="t_igmp_enable">Enable</OPTION>
+              <OPTION value="0" id="t_igmp_disable">Disable</OPTION>
+            </SELECT>
+		  </TD>
+        </TR>
+		<SCRIPT type="text/javascript">
+		 document.write('<TR><TD colspan=2><span style="color:#FF0000" id="t_chng"><br>Note: IGMP(Internet Group Management Protocol) works for IPTV multicast stream.<\/br>The device supports both IGMP proxy with enable or disable option and IGMP snooping.<\/span> <\/TD><\/TR>');  
+		</SCRIPT>
+		<TR>
+          <TD class=blue colspan=5></TD>
+        </TR>
+        <TR>
+          <TD></TD>
+          <TD colspan="4"><INPUT name="Save" type="submit" class="buttonBig" value="Save"></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+document.getElementById("MAC").innerHTML = lanPara[0];
+document.forms[0].lanip.value =lanPara[1];
+document.forms[0].lanmask.value =lanPara[2];
+if(3==lanPara[2])
+{
+    var obj;
+    obj=document.getElementById("otherMask");
+    obj.style.display="block";
+    document.forms[0].inputMask.value=lanPara[3];
+}
+document.forms[0].igmpStatus.value = lanPara[4];
+</SCRIPT>

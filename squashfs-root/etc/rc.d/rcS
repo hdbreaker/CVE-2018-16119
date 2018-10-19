@@ -1,0 +1,47 @@
+#!/bin/sh
+
+# This script runs when init it run during the boot process.
+# Mounts everything in the fstab
+
+mount -a
+#mount -o remount +w /
+
+#
+# Mount the RAM filesystem to /tmp
+#
+
+mount -t ramfs -n none /tmp
+mount -t ramfs -n none /var
+
+export PATH=$PATH:/etc/ath
+
+#insmod /lib/modules/2.6.15/net/ag7100_mod.ko
+#insmod /lib/modules/2.6.15/net/ag7240_mod.ko
+
+#
+# Set lo eth1 up
+#
+ifconfig lo 127.0.0.1 up
+#ifconfig eth1 up
+
+#
+# insert netfilter/iptables modules
+#
+
+/etc/rc.d/rc.modules
+
+#
+# Start Our Router Program
+#
+
+/usr/bin/httpd &
+
+# when processes uses page-cache more than 30% of system memory,
+# lets force them to write
+echo 20 > /proc/sys/vm/dirty_ratio
+
+# when the dirty pages cross more than 5% of sys memory,
+# kick in the pdflush
+echo 5 > /proc/sys/vm/dirty_background_ratio
+ 
+echo 524288 > /proc/sys/net/ipv4/ipfrag_high_thresh

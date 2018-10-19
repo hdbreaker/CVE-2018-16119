@@ -1,0 +1,262 @@
+
+<SCRIPT type="text/javascript">
+<!--
+var	pingAddr;
+var	doType;
+var	sendNum;
+var	pSize;
+var	overTime;
+var	trHops;
+var	disLineNum = 0;
+var	pnSendTimes=0;
+var	pnRecvTimes=0
+var	pnMinTime=1000;
+var	pnMaxTime=0;
+var	pnTotalTime=0;
+function doSetButton(signal)
+{
+if(signal==-1){
+	document.getElementById("Sub").disabled = true;
+}
+else
+{
+	document.getElementById("Sub").disabled = false;
+}
+}
+function doOnEnter()
+{
+	if(document.getElementById("Sub").disabled==true)
+	{
+		return false;
+	}
+	else
+	{
+		doSub();
+	}
+}
+function chooseSwitch()
+{
+	if (document.getElementById("doType1").checked)
+	{
+		document.getElementById("sendNum").disabled = false;
+		document.getElementById("pSize").disabled = false;
+		document.getElementById("overTime").disabled = false;
+		document.getElementById("trHops").disabled = true;
+	}
+	if (document.getElementById("doType2").checked)
+	{
+		document.getElementById("sendNum").disabled = true;
+		document.getElementById("pSize").disabled = true;
+		document.getElementById("overTime").disabled = true;
+		document.getElementById("trHops").disabled = false;
+	}
+}
+
+
+function doSub()
+{
+	var buttonValue = document.getElementById("Sub").value;
+	if(buttonValue==document.getElementById("t_start_only").innerHTML)
+	{
+
+		if(document.getElementById("pingAddr").value=="")
+		{
+			alert(js_ip_n_domain_req = "IP Address/Domain Name is required.");
+			var element = document.getElementById("pingAddr");
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+		if(is_domain(document.getElementById("pingAddr").value)==false)
+		{
+			var element = document.getElementById("pingAddr");
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+		if (document.getElementById("doType1").checked){
+		if ((false == is_number(document.getElementById("sendNum").value, 1, 50)) || (document.getElementById("sendNum").value==""))
+		{
+			var element = document.getElementById("sendNum");
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			alert(js_send_num = "Please enter a number between 1 and 50.");
+			return false;
+		}
+		if ((false == is_number(document.getElementById("pSize").value, 4, 1472)) || (document.getElementById("pSize").value==""))
+		{
+			var element = document.getElementById("pSize");
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			alert(js_p_size = "Please enter a number between 4 and 1472.");
+			return false;
+		}
+		if ((false == is_number(document.getElementById("overTime").value, 100, 2000)) || (document.getElementById("overTime").value==""))
+		{
+			var element = document.getElementById("overTime");
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			alert(js_over_time = "Please enter a number between 100 and 2000.");
+			return false;
+		}
+		}
+		if (document.getElementById("doType2").checked)
+		{
+		if ((false == is_number(document.getElementById("trHops").value, 1, 30)) || (document.getElementById("trHops").value==""))
+		{
+			var element = document.getElementById("trHops");
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			alert(js_trhops = "Please enter a number between 1 and 30!");
+			return false;
+		}
+		}
+		if(document.getElementById("doType1").checked)
+		{
+			doType=document.getElementById("doType1").value;
+		}
+		else
+		{
+			doType=document.getElementById("doType2").value;
+		}
+		pingAddr = document.getElementById("pingAddr").value;
+		sendNum = document.getElementById("sendNum").value;
+		pSize = document.getElementById("pSize").value;
+		overTime = document.getElementById("overTime").value;
+		trHops = document.getElementById("trHops").value;
+		pnSendTimes = 0;
+		pnRecvTimes = 0
+		pnMinTime = 1000;
+		pnMaxTime = 0;
+		pnTotalTime = 0;
+		doSetButton(-1);
+		document.getElementById("Sub").value = document.getElementById("t_stop_only").innerHTML;
+		document.getElementById("result").value = "";
+		disLineNum = 0;
+		frames["frame1"].location.href = "/userRpm/PingIframeRpm.htm?ping_addr="+pingAddr+"&doType="+doType+"&isNew=new"+"&sendNum="+sendNum+"&pSize="+pSize+"&overTime="+overTime+"&trHops="+trHops;
+	}
+	else if(buttonValue == document.getElementById("t_stop_only").innerHTML)
+	{
+		frames["frame1"].printPingTail();
+		doSetButton(-1);
+		document.getElementById("Sub").value = document.getElementById("t_start_only").innerHTML;
+		if(frames["frame1"].diagnostic_para[1] != 1)
+		{
+			frames["frame1"].location.href = "/userRpm/PingIframeRpm.htm?ping_addr="+pingAddr+"&doType="+doType+"&isNew=stop";
+		}
+		else
+		{
+			frames["frame1"].location.href = "/userRpm/PingIframeRpm.htm";
+		}
+		
+	}
+}
+function doReady()
+{
+	document.getElementById("result").innerHTML = document.getElementById("t_ready").innerHTML;
+	document.getElementById("Sub").value = document.getElementById("t_start_only").innerHTML;
+}
+//-->
+</SCRIPT>
+</HEAD>
+<SCRIPT type="text/javascript">
+</SCRIPT>
+<BODY onLoad="setTagStr(document,'ntw_diag_tool');LoadHelp('PingHelpRpm.htm');doReady();chooseSwitch(); resize(this);" onResize="resize(this);">
+<CENTER>
+  <TABLE id="autoWidth">
+    <TR>
+      <TD class=h1 colspan=4 id="t_title">Diagnostic Tools</TD>
+    </TR>
+    <TR>
+      <TD class=blue colspan=4></TD>
+    </TR>
+    <TR>
+      <TD class=h2 colspan=4 id="t_diag_conf">Diagnostic Parameters</TD>
+    </TR>
+    <TR>
+      <TD class=Item id="t_cho_mode">Diagnostic Tool:</TD>
+      <TD><INPUT name="doType" id="doType1" type="radio" value="ping" onClick="chooseSwitch();">
+        <SPAN id="t_ping">Ping&nbsp;&nbsp;</SPAN>
+        <INPUT name="doType" id="doType2" type="radio" value="tracert" onClick="chooseSwitch();">
+        <SPAN id="t_tracert">Traceroute</SPAN></TD>
+    </TR>
+    <TR>
+      <TD class=Item id="t_ip_domain">IP Address/ Domain Name:</TD>
+      <TD><INPUT name="pingAddr" id="pingAddr" type="text" class="text" value="" size="20" maxlength="50" onKeyDown="if(event.keyCode==13) return doOnEnter();">
+        <INPUT name="isNew" type="hidden" value="new"></TD>
+    </TR>
+    <TR id="number">
+      <TD class=Item id="t_num_pings">Ping Count:</TD>
+      <TD><INPUT name="sendNum" id="sendNum" type="text" value="4" size="5" maxlength="2">
+        (1-50)</TD>
+    </TR>
+    <TR id="size">
+      <TD class=Item id="t_ping_size">Ping Packet Size:</TD>
+      <TD><INPUT name="pSize" id="pSize" type="text" value="64" size="5" maxlength="4">
+        <SPAN id = "t_bytes">(4-1472 Bytes)</SPAN>
+      </TD>
+    </TR>
+    <TR id="timeout">
+      <TD class=Item id="t_ping_timeout">Ping Timeout:</TD>
+      <TD><INPUT name="overTime" id="overTime" type="text" value="800" size="5" maxlength="4">
+        <SPAN id="t_mill_sec"> (100-2000 Milliseconds)</SPAN></TD>
+    </TR>
+    <TR id="hops">
+      <TD class=Item id="t_tracert_hops">Traceroute Max TTL:</TD>
+      <TD><INPUT name="trHops" id="trHops" type="text" value="20" size="5" maxlength="2">
+        (1-30)</TD>
+    </TR>
+    <TR>
+      <TD class=h2 colspan=4 id="t_diag_hops">Diagnostic Results</TD>
+    </TR>
+    <TR>
+      <TD colspan=4><TEXTAREA class="same" style="width: 500px;" 
+			name="result" id="result" rows="11" readonly="true" onChange="this.scrollTop=this.scrollHeight">The Router is ready.</TEXTAREA></TD>
+    </TR>
+    <TR>
+      <TD class=blue colspan=4></TD>
+    </TR>
+    <TR>
+      <TD></TD>
+      <TD><INPUT name="Sub" type="button" class="buttonBig" id="Sub" value="Start" onClick="return doSub()"></TD>
+    </TR>
+  </TABLE>
+  <TABLE>
+    <TR style="display:none">
+      <TD><IFRAME name="frame1" id = "frame1" src = "/userRpm/PingIframeRpm.htm"  frameborder="1" width="20" height="20"></IFRAME></TD>
+    </TR>
+  </TABLE>
+  <SPAN style="display:none;" id = "t_start_only">Start</SPAN>
+  <SPAN style="display:none;" id = "t_stop_only">Stop</SPAN>
+  <SPAN style="display:none;" id = "t_ready">The Router is ready.</SPAN>
+</CENTER>
+</BODY>
+</HTML>
+<SCRIPT type="text/javascript">
+if(document.getElementById("doType2").checked)
+{
+	document.getElementById("doType2").checked = "true";
+}
+else
+{
+	document.getElementById("doType1").checked = "true";
+}
+</SCRIPT>

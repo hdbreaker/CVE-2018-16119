@@ -1,0 +1,48 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+<!--//
+function doSubmit()
+{
+	if(document.forms[0].filename.value == "")
+	{
+		alert(js_chs_file="Please choose a file for loading!");
+		return false;
+	}
+	if(!confirm(js_to_load="Are you sure to load?"))
+	{
+		return false;
+	}
+	return true;
+}//-->
+</SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_system_backNrestrore');LoadHelp('BackNRestoreHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="/incoming/RouterBakCfgUpload.cfg" enctype="multipart/form-data" method="post" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth" border = 0>
+      <TR>
+        <TD class=h1 colspan=4 id = "t_title">Backup & Restore</TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=4></TD>
+      </TR>
+      <TR>
+        <TD class=Item id = "t_backup">Backup:</TD>
+        <TD colspan=3 ><INPUT type="button" class="buttonBig" name="Backup" value="Backup" onClick="location.href='config.bin';"></TD>
+      </TR>
+      <TR>
+        <TD class=Item id = "t_file">File:</TD>
+        <TD><INPUT class="text" name="filename" type="file" size="20" onKeyDown="return false">
+          &nbsp;&nbsp;</TD>
+        <TD><INPUT name="Restore" type="submit" class="buttonBig" id="Submit" value="Restore"></TD>
+        <TD width = "100%">&nbsp;</TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=4></TD>
+      </TR>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+</HTML>

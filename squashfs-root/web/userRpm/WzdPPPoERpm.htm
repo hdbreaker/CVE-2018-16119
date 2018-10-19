@@ -1,0 +1,71 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+function Click(){ window.event.returnValue=false;}
+document.oncontextmenu=Click;
+function doBack()
+{	
+	location.href="WzdPPPoERpm.htm.htm?Return=Back";
+}
+function doSubmit()
+{
+	var element =document.forms[0].acc;
+	var confirm = document.forms[0].confirm;
+	element = document.forms[0].psw;
+
+	if (confirm.value != element.value)
+	{
+		alert(js_confirm_different = "The Password is different from the Confirm Password!");
+		return false;
+	}
+	return true;
+}
+</SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_wzd_pppoe');LoadHelp('WzdPPPoEHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action=WzdPPPoERpm.htm method=get enctype=multipart/form-data>
+    <TABLE id=autoWidth border = 0>
+      <TBODY>
+        <TR>
+          <TD class=h1 colspan=2 id="t_title">Quick Setup - PPPoE</TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_name">User Name:</TD>
+          <TD><INPUT type="text" class=text id=acc maxlength=118 size=25 name=acc></TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_pwd">Password: </TD>
+          <TD><INPUT class=text id=psw type=password maxlength=118 size=25 name=psw></TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_psw_confirm">Confirm Password: </TD>
+          <TD><INPUT class=text id=confirm type=password maxlength=118 size=25 name=confirm></TD>
+        </TR>		
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR >
+          <TD class=mbtn colspan=2><INPUT name="Return" class=buttonBig id=PrevStep type="button" value="Back" onClick="doBack();">
+            &nbsp;&nbsp;
+            <INPUT name="Next" class=buttonBig id=Submit onClick="return doSubmit();" type=submit value="Next">
+            <INPUT type=hidden name=ClientId></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+document.forms[0].acc.value=wzdPPPoEInf[2];
+document.forms[0].psw.value=wzdPPPoEInf[3];
+document.forms[0].confirm.value=wzdPPPoEInf[3];
+document.forms[0].ClientId.value=wzdPPPoEInf[0];
+</SCRIPT>

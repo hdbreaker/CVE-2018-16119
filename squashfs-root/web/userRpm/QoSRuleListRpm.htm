@@ -1,0 +1,149 @@
+
+<SCRIPT type="text/javascript"><!--//
+function doAdd(nPage)
+{
+	location.href="QoSRuleCfgRpm.htm?Add=Add&Page="+nPage;
+}
+function doPage(nPage)
+{
+	location.href="QoSRuleListRpm.htm?Page="+nPage;
+}
+function doAll(val)
+{
+	if(val=="DelAll")
+	{
+		if(!confirm(js_del_all_bw_items = "Delete all Bandwidth Control items?"))
+		return;
+	} location.href="QoSRuleListRpm.htm?DelAll=1";
+}
+function doHelp()
+{
+	location.href="/help/QoSRuleListHelpRpm.htm";
+}
+function ResetStatus(strInfo)
+{
+	window.status=strInfo;
+	return true;
+}
+function enableId(id)
+{
+	var enable;
+	if(document.forms[0].elements['enable'+id].checked == true)
+		enable = 1;
+	else
+		enable = 0;
+	location.href = "QoSRuleListRpm.htm?enable=" + enable + "&enableId=" + id +"&Page=" + QoSRuleListParam[0];
+}
+//--></SCRIPT>
+</HEAD>
+<BODY onload = "setTagStr(document,'ntw_qos_rule_list');LoadHelp('QoSRuleListHelpRpm.htm');resize(this);" onResize="resize(this);">
+<FORM action="QoSRuleListRpm.htm" enctype="multipart/form-data" method="get">
+  <CENTER>
+    <TABLE border="0" cellspacing="0" cellpadding="0" id=autoWidth>
+			<TR>
+  <TD align="left" valign="middle" class="h1" id="t_title">Bandwidth Control Rules List</TD>
+      </TR>
+      <TR>
+        <TD class = "blue"></TD>
+      </TR>
+			<TR>
+				<TD>
+        <TABLE width="660" border="1" align="center" cellpadding="0" cellspacing="0" class="space">
+          <TR align="center">
+            <TD rowspan="2" class="ListM" width="20" id = "t_id">ID</TD>
+            <TD width="180" rowspan="2" class="ListM" id = "t_desc">Description</TD>
+							<TD colspan="2" class="ListM" nowrap id = "t_up_band"> Egress Bandwidth(Kbps) </TD>
+							<TD colspan="2" class="ListM" nowrap id = "t_down_band"> Ingress Bandwidth(Kbps) </TD>
+          <TD rowspan="2" class="ListM" nowrap id = "t_enable">Enable</TD>
+            <TD width=60 rowspan="2" nowrap id="t_modify" name="t_modify" class="ListM" >Modify</TD>
+          </TR>
+          <TR align="center">
+            <TD class="ListM" id = "t_min" name="t_min">Min</TD>
+            <TD class="ListM" id = "t_max" name="t_max">Max</TD>
+            <TD class="ListM" id = "t_min" name="t_min">Min</TD>
+            <TD class="ListM" id = "t_max" name="t_max">Max</TD>
+          </TR>
+          <SCRIPT type="text/javascript">
+if (QoSRuleListParam[2] > 0)
+{
+	var row = 0;
+	var index = (QoSRuleListParam[0]-1)*QoSRuleListParam[4]+1;
+	var modifyId;
+	for(var i = 0; i < QoSRuleListParam[2]; i++, index++)
+	{
+		row = i * QoSRuleListParam[3];
+		modifyId = QoSRuleListArray[row];
+		//var mode = QoSRuleListArray[row+2]?"<span id = \"t_share\">Share</span>":"<span id = \"t_independent\">Independent</span>";
+		var enableStatus = QoSRuleListArray[row+7]?"checked":"";
+		document.write('<tr><td class = "ListM1">' + index+ '</td>');//id
+		document.write('<td class = "ListM1">' + QoSRuleListArray[row+1] + '</td>');//ip addr
+		//document.write('<td class = "ListM1">' + mode + '</td>');//mode
+		document.write('<td class = "ListM1">' + QoSRuleListArray[row+4] + '</td>');//tx min
+		document.write('<td class = "ListM1">' + QoSRuleListArray[row+3] + '</td>');//tx max
+		document.write('<td class = "ListM1">' + QoSRuleListArray[row+6] + '</td>');//rx min
+		document.write('<td class = "ListM1">' + QoSRuleListArray[row+5] + '</td>');//rx max
+		document.write('<td class = "ListM1"><input type="checkbox" ' + enableStatus +' name="enable' + modifyId + '" value="1" onClick="enableId(' + modifyId + ');"></td>');
+		document.write('<td class="ListM"><a href=\"QoSRuleCfgRpm.htm?Modify=' + modifyId
+						+'&Page='+QoSRuleListParam[0] +
+						'\" OnMouseOver=\"return ResetStatus(\'modify\');\" id="t_modify" name="t_modify">Modify</a>&nbsp;' +
+						'<a href=\"QoSRuleListRpm.htm?Del=' + modifyId+'&Page=' + QoSRuleListParam[0] +
+						'\" OnMouseOver=\"return ResetStatus(\'delete\');\" id="t_delete" name="t_delete">Delete</a></td></tr>');
+	}
+}
+else
+{
+	document.write('<tr ><td class="ListM" colspan="9" id="t_current_list_empty">The current list is empty.</td></tr>');
+}
+</SCRIPT>
+        </TABLE>
+				</TD>
+      </TR>
+      <TR>
+        <TD colspan = 2></TD>
+      </TR>
+      <TR>
+				<TD colspan="2">
+					<INPUT type="button" value="Add New..." name="Add" class="buttonBig" onClick="doAdd(curPage);">
+          &nbsp;
+					<INPUT type="button" value="Delete All" name="DelAll" class="buttonBig" onClick="doAll('DelAll');">
+				</TD>
+      </TR>
+      <TR>
+        <TD class = "blue"></TD>
+      </TR>
+      <TR>
+				<TD align = "center">
+					<INPUT name="PrevPage" type="button" class="buttonBig" onClick="doPage(prePage);" value="Previous">
+          &nbsp;
+          <INPUT name="NextPage" type="button" class="buttonBig" onClick="doPage(nextPage);" value="Next">
+					&nbsp;
+					<SPAN id = "t_now_is_page">Now is the </SPAN>
+          <SELECT name="Page" onchange=doPage(this.value)>
+            <SCRIPT type="text/javascript"><!--
+for(var i=1;i<=QoSRuleListParam[1];i++)
+{
+	document.write('<option value=\"'+i+'\">'+i+'</option>');
+}
+--></SCRIPT>
+          </SELECT>
+					<SPAN id = "t_page"> page</SPAN>
+				</TD>
+      </TR>
+    </TABLE>
+  </CENTER>
+</FORM>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+var curPage = QoSRuleListParam[0];
+var prePage = (QoSRuleListParam[0] == 1)?1:QoSRuleListParam[0]-1;
+var nextPage = (QoSRuleListParam[0]<QoSRuleListParam[1])?QoSRuleListParam[0]+1:QoSRuleListParam[1];
+document.forms[0].PrevPage.disabled = (QoSRuleListParam[0] < 2)?true:false;
+document.forms[0].NextPage.disabled = (QoSRuleListParam[0]<QoSRuleListParam[1])?false:true;
+document.forms[0].Page.value = curPage;
+if(QoSRuleListParam[5]==0) document.forms[0].Add.disabled = true;
+if(QoSRuleListParam[2]==0) document.forms[0].DelAll.disabled = true;
+</SCRIPT>

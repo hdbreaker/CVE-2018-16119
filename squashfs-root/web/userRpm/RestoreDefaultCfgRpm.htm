@@ -1,0 +1,48 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+<!--//
+
+function doSubmit()
+{
+	if (confirm(js_mksure_restore = "Any settings you have saved will be lost if you restore Factory Defaults. Are you sure to continue?"))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY onLoad=" setTagStr(document,'ntw_restore_default_cfg');LoadHelp('RestoreDefaultCfgHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="RestoreDefaultCfgRpm.htm" enctype="multipart/form-data" method="get">
+    <TABLE id="autoWidth">
+      <TBODY>
+        <TR>
+          <TD class=h1 id = "t_title">Factory Defaults</TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <TR>
+          <TD class=info id = "t_notice">Click the following button to reset all configuration settings to their default values.</TD>
+        </TR>
+        <TR>
+          <TD class="mbtn"><INPUT name="Restorefactory" type="submit" class="buttonLL" value="Restore" onClick="return doSubmit();"></TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

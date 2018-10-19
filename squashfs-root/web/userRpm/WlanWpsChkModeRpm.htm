@@ -1,0 +1,132 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT language="JavaScript" src="../dynaform/custom.js" type="text/JavaScript"></SCRIPT>
+<SCRIPT type="text/javascript"><!-- 
+function doPage()
+{
+	location.href="/userRpm/WpsCfgRpm.htm?NewDevCfg=Connect";
+}
+function doSubmit()
+{
+	var df = document.forms[0];
+	if (df.WpsAddDevMode[0].checked)
+	{
+		if (df.DevPin.value.length != 8)
+		{
+			alert(js_pin_dig="The PIN must be a 8-digit number.");
+			df.DevPin.focus();
+			df.DevPin.select();
+			return false;
+		}
+		if (is_number(df.DevPin.value) == false)
+		{
+			alert(js_illegal_input="The input value contains illegal characters, please input another one!");
+			df.DevPin.focus();
+			df.DevPin.select();
+			return false;
+		}
+	}
+	
+	if (isConfigured == 0)
+			alert(str_wps_name_short + " is unconfigured, if the " + str_wps_name_short + " session succeed, the router will reboot");
+	
+	return true;
+}
+function onBackPage()
+{
+	location.href = "/userRpm/WpsCfgRpm.htm";
+}
+//--></SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_wlan_chk_mode');LoadHelp('WlanWpsChkModeHelpRpm.htm'); resize(this);">
+<FORM action="WpsCfgRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+  <CENTER>
+    <TABLE id="autoWidth">
+      <TR>
+        <TD colspan="2" class=h1 id="t_title">Add A New Device</TD>
+      </TR>
+      <TR>
+        <TD colspan="2" class=blue>&nbsp;</TD>
+      </TR>
+      <TR>
+        <TD colspan="2" style="padding-left:30px;font-size:14px"><INPUT name="WpsAddDevMode" type="radio" value="1" checked>
+          <SPAN id="t_dev_pin">Enter the new device's PIN.</SPAN></TD>
+      </TR>
+      <TR>
+        <TD colspan="2" style="padding-left:30px;font-size:14px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN id="t_pin">PIN:</SPAN>
+          <INPUT name="DevPin" value="" maxlength="8"></TD>
+      </TR>
+      <TR>
+        <TD colspan="2" style="padding-left:30px;font-size:14px"><INPUT name="WpsAddDevMode" type="radio" value="2" >
+          <SPAN id="t_new_dev_pin">Press the button of the new device in two minutes.</SPAN></TD>
+      </TR>
+      <TR id="statNewLine" style="display:none">
+        <TD colspan="2">&nbsp;</TD>
+      </TR>
+      <TR id="WpsStatusVis" style="display:none">
+        <TD colspan="2" id="WpsStatus" class="emp" style="padding-left:30px;">-</TD>
+      </TR>
+      <TR id="showErrMsg" style="display:none">
+        <TD colspan="2" id="errMsg" style="padding-left:30px;font-weight:bold;font-size:14px">-</TD>
+      </TR>
+      <TR>
+        <TD colspan="2" class=blue>&nbsp;</TD>
+      </TR>
+      <TR>
+        <TD class="mbtn" colspan="2"><INPUT name="Back" type="button" class="buttonBig" value="Back" onclick = "onBackPage();">
+          <INPUT name="NewDevCfg" type="submit" class="buttonBig" value="Connect"></TD>
+      </TR>
+    </TABLE>
+  </CENTER>
+</FORM>
+</BODY>
+</HTML>
+<SCRIPT type="text/javascript">
+if (addDevCfg[0] == 1)
+{
+	document.getElementById("statNewLine").style.display = "block";
+	document.getElementById("showErrMsg").style.display = "block";
+	document.getElementById("errMsg").innerHTML = "<span style=\"color:#FF0000\" id=\"t_wrong_pin\">Invalid WPS PIN, please check if it is correct!</span>";
+	document.forms[0].DevPin.value = addDevCfg[1];
+	document.forms[0].DevPin.focus();
+	document.forms[0].DevPin.select();
+}
+else if (addDevCfg[1] != "00000000")
+{
+	document.forms[0].DevPin.value = addDevCfg[1];
+}
+document.forms[0].WpsAddDevMode[addDevCfg[3]-1].checked = true;
+if (addDevCfg[2] == 1)
+{
+	window.setTimeout("doPage()", 5000);
+	document.getElementById("statNewLine").style.display = "block";
+	document.getElementById("WpsStatusVis").style.display = "block";
+	document.getElementById("WpsStatus").innerHTML = "<span id=\"t_conneting\">Connecting ...</span>";
+	
+	document.forms[0].WpsAddDevMode[0].disabled = true;
+	document.forms[0].WpsAddDevMode[1].disabled = true;
+	document.forms[0].DevPin.disabled = true;
+	document.forms[0].Back.disabled = true;
+	document.forms[0].NewDevCfg.disabled = true;
+
+} 
+else if (addDevCfg[2] == 2)
+{
+	document.getElementById("statNewLine").style.display = "block";
+	document.getElementById("WpsStatusVis").style.display = "block";
+	document.getElementById("WpsStatus").innerHTML = "<span id=\"t_con_suc\">Connect successfully!</span>";
+} else if (addDevCfg[2] == 3)
+{
+	document.getElementById("statNewLine").style.display = "block";
+	document.getElementById("WpsStatusVis").style.display = "block";
+	document.getElementById("WpsStatus").innerHTML = "<span id=\"t_con_err\">Connect fail!</span>";
+} else if (addDevCfg[2] == 4)
+{
+	document.getElementById("statNewLine").style.display = "block";
+	document.getElementById("WpsStatusVis").style.display = "block";
+	document.forms[0].WpsAddDevMode[1].disabled = true;
+	document.forms[0].WpsAddDevMode[0].checked = true;
+	document.getElementById("WpsStatus").innerHTML = "<span id=\"t_overlap_err\">Overlap error! \"Press the button of the new device in two minutes\" is not available. </span>";
+}
+
+</SCRIPT>

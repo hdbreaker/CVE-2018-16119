@@ -1,0 +1,227 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript"><!--//
+
+function doBack(nPage)
+{
+	location.href="/userRpm/VirtualServerRpm.htm?Page="+nPage;
+}
+function doChange()
+{
+	var n = document.forms[0].Commonport.selectedIndex;
+	if(n > 0)
+	{
+		document.forms[0].ExPort.value = commonportlist[(n*4)+1];
+		document.forms[0].InPort.value = commonportlist[(n*4)+1];
+		document.forms[0].Protocol.value = commonportlist[(n*4)+3];
+	}
+}
+function is_portcharacter(port_string)
+{
+	var c;
+	var ch = "-0123456789";
+	for (var i = 0; i < port_string.length; i++)
+	{
+		c = port_string.charAt(i);
+		if (ch.indexOf(c) == -1)
+			return false;
+	}
+	return true;
+}
+function is_num(port_string)
+{
+	var c;
+	var ch = "0123456789";
+	for (var i = 0; i < port_string.length; i++)
+	{
+		c = port_string.charAt(i);
+		if (ch.indexOf(c) == -1)
+			return false;
+	}
+	return true;
+}
+function check_port(port_string)
+{
+	if (!is_portcharacter(port_string))
+	{
+		alert(js_input_illegal="The input value contain illegal character, please input another one!");
+		return false;
+	}
+	var sub_port_array;
+	sub_port_array = port_string.split("-");
+	if (sub_port_array.length > 2)
+	{
+		alert(js_port_illegal="Illegal port number, please input another one! For e.g.: 21-26 or 23");
+		return false;
+	}
+if(sub_port_array.length == 2)
+{
+for (i=0;i<2;i++)
+	{
+		if (sub_port_array[i] == "" )
+		{
+			alert(js_port_illegal="Illegal port input,please input another one! For e.g.: 21-26 or 23");
+			return false;
+		}
+		if (!is_port(sub_port_array[i]))
+		{
+			return false;
+		}
+	}
+}
+	return true;
+}
+function doSubmit()
+{
+	if(document.forms[0].Ip.value=="")
+	{
+		alert(js_input_ip="Please input IP address!");
+		 return false;
+	}
+	if(!is_ipaddr(document.forms[0].Ip.value))
+	{
+		var element =document.forms[0].Ip;
+		if(element)
+		{
+			element.focus();element.select();
+		}
+		return false;
+	}
+	if(document.forms[0].ExPort.value=="")
+	{
+		alert(js_input_port="Please input port address! For e.g.: 21-26 or 23");
+			return false;
+		}
+	if(!check_port(document.forms[0].ExPort.value))
+	{
+		var element =document.forms[0].ExPort;
+		if(element)
+		{
+			element.focus();element.select();
+		}
+		return false;
+	}
+	/* need to check internal port */
+	
+	return true;
+}
+var protocolList = new Array(
+"",
+"<span id = \"t_all\" name=\"t_all\">ALL</span>",
+"TCP",
+"UDP"
+);
+var commonportlist = new Array(
+0, "",  "id = \"t_select_one\">--Select One--<", 0,
+1, 53, ">DNS<", 1,
+2, 21, ">FTP<", 2,
+3, 70, ">GOPHER<", 2,
+4, 80, ">HTTP<", 2,
+5, 119, ">NNTP<", 2,
+6, 110, ">POP3<", 2,
+7, 1723, ">PPTP<", 1,
+8, 25, ">SMTP<", 2,
+9, 1080, ">SOCK<", 1,
+10, 23, ">TELNET<", 2
+);
+--></SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_virtual_server_adv');LoadHelp('VirtualServerHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="VirtualServerRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth">
+      <TR>
+        <TD class=h1 colspan=2 id="t_title">Add or Modify a Virtual Server Entry</TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_srv_port">Service Port:</TD>
+        <TD><INPUT name="ExPort" type="text" class="text" value="" size="11" maxlength="11">
+          &nbsp;<SPAN id = "t_format">(XX-XX or XX)</SPAN></TD>
+      </TR>
+	  <TR>
+        <TD class=Item id="t_internal_port">Internal Port:</TD>
+        <TD><INPUT name="InPort" type="text" class="text" value="" size="5" maxlength="5">
+		&nbsp;<SPAN id = "t_internal_note">(XX, Only valid for single Service Port or leave it blank)</SPAN></TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_ip_addr">IP Address:</TD>
+        <TD><INPUT name="Ip" type="text" class="text" value="" size="15" maxlength="15"></TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_proto">Protocol:</TD>
+        <TD><SELECT name="Protocol" class="list">
+            <SCRIPT type="text/javascript"><!--
+for (i=1;i<4;i++)
+{
+	if(1==i)
+		document.write('<option value=1 id=\"t_all\" name=\"t_all\">ALL</option>');
+	else
+document.write('<option value='+i+'>'+ protocolList[i] +'</option>');
+}
+--></SCRIPT>
+          </SELECT></TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_status">Status:</TD>
+        <TD><SELECT size="1" name="State" class="list">
+            <SCRIPT type="text/javascript"><!--
+document.write('<option value="0" id = "t_disabled">Disabled</option>');
+document.write('<option value="1" selected id = "t_enabled">Enabled</option>');
+//--></SCRIPT>
+          </SELECT></TD>
+      </TR>
+      <TR>
+        <TD height="20" colspan="2"></TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_common">Common Service Port:</TD>
+        <TD><SELECT name="Commonport" class="listLL" onChange="doChange()">
+            <SCRIPT type="text/javascript"><!--//
+
+for (i=0;i<11;i++)
+{
+if(i == 0)
+{
+          document.write('<option value= 0 id=\"t_select_one\">--Select One--</option>');
+}
+else
+{
+	document.write('<option value='+i+' '+ commonportlist[(i*4)+2] +'/option>');
+}
+}
+//--></SCRIPT>
+          </SELECT></TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+      <TR>
+        <TD></TD>
+        <TD><INPUT name="Changed" type="hidden" value="">
+          <INPUT name="SelIndex" type="hidden" value="">
+          <INPUT name="Page" type="hidden" value="">
+          <INPUT name="Save" type="submit" class="buttonBig" value="Save">
+          &nbsp;
+          <INPUT type="button" value="Back" name="Back" class="buttonBig" onClick="doBack(vsEditInf[6]);"></TD>
+      </TR>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+document.forms[0].ExPort.value =vsEditInf[0];
+document.forms[0].InPort.value =vsEditInf[1];
+document.forms[0].Ip.value =vsEditInf[2];
+document.forms[0].Protocol.value =vsEditInf[3]?vsEditInf[3]:1;;
+document.forms[0].State.value = vsEditInf[4];
+document.forms[0].Changed.value = vsEditInf[5];
+document.forms[0].SelIndex.value = vsEditInf[6];
+document.forms[0].Page.value = vsEditInf[7];
+</SCRIPT>

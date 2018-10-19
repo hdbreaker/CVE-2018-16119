@@ -1,0 +1,149 @@
+
+<SCRIPT type="text/javascript">
+function doBack(nPage)
+{
+location.href="LanArpBindingRpm.htm?Page="+nPage;
+}
+function is_spmac(mac_string)
+{
+if(mac_string == "00-00-00-00-00-00")
+{
+alert(js_bad_mac="Invalid MAC address, please input again!");
+return false;
+}
+var ch = "Ff-";
+for (var i = 0; i < mac_string.length; i++)
+{
+c = mac_string.charAt(i);
+if(ch.indexOf(c) == -1)
+return true;
+}
+alert(js_bad_mac="Invalid MAC address, please input again!");
+return false;
+}
+function doSubmit()
+{
+if(document.forms[0].Mac.value=="")
+{
+alert(js_input_mac="Please input a correct MAC address!");
+var element = document.forms[0].Mac;
+if(element)
+{
+element.focus();
+element.select();
+}
+return false;
+}
+if(document.forms[0].Mac.value != "")
+{
+if(!is_macaddr(document.forms[0].Mac.value))
+{
+var errcha=/[^0-9A-Fa-f-]/g;
+if(null!= errcha.exec(document.forms[0].Mac.value))
+{
+return false;
+}
+var element = document.forms[0].Mac;
+if(element)
+{
+element.focus();
+element.select();
+}
+return false;
+}
+if(!is_spmac(document.forms[0].Mac.value))
+{
+var element = document.forms[0].Mac;
+if(element)
+{
+element.focus();
+element.select();
+}
+return false;
+}
+}
+if(document.forms[0].Ip.value==""||document.forms[0].Ip.value == "255.255.255.255"||document.forms[0].Ip.value == "0.0.0.0")
+{
+alert(js_input_ip="Please input a correct IP address!");
+var element = document.forms[0].Ip;
+if(element)
+{
+element.focus();
+element.select();
+}
+return false;
+}
+if(document.forms[0].Ip.value != "")
+{
+if(!is_ipaddr(document.forms[0].Ip.value))
+{
+var element =document.forms[0].Ip;
+if(element)
+{
+element.focus();element.select();
+}
+return false;
+}
+}
+return true;
+}
+function doHelp()
+{
+location.href="/userRpm/LanArpBindingHelpRpm.htm";
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_lan_arp_binding_adv');LoadHelp('LanArpBindingHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="LanArpBindingRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth">
+      <TBODY>
+        <TR>
+          <TD class=h1 colspan=2 id = "t_title">IP & MAC Binding Settings</TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR>
+          <TD class=Item id = "t_bind">Bind:</TD>
+          <TD><INPUT type="checkbox" name="State" value="1"></TD>
+        </TR>
+        <TR>
+          <TD class=Item id = "t_mac_add">MAC Address:</TD>
+          <TD><INPUT name="Mac" type="text" class="text" value="" size="18" maxlength="17" ></TD>
+        </TR>
+        <TR>
+          <TD class=Item id = "t_ip_addr">IP Address:</TD>
+          <TD><INPUT name="Ip" type="text" class="text" value="" size="16" maxlength="15"></TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR>
+          <TD ></TD>
+          <TD><INPUT name="Changed" type="hidden" value="">
+            <INPUT name="SelIndex" type="hidden" value="">
+            <INPUT name="Page" type="hidden" value="">
+            &nbsp;
+            <INPUT name="Save" type="submit" class="buttonBig" value="Save">
+            &nbsp;
+            <INPUT type="button" value="Back" name="Return" class="buttonBig" onClick="doBack(arpBindingAdvDynArray[5]);"></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+    <SCRIPT type="text/javascript">
+document.forms[0].Mac.value =arpBindingAdvDynArray[0];
+document.forms[0].Ip.value =arpBindingAdvDynArray[1];
+document.forms[0].State.checked = arpBindingAdvDynArray[2];
+document.forms[0].Changed.value = arpBindingAdvDynArray[3];
+document.forms[0].SelIndex.value = arpBindingAdvDynArray[4];
+document.forms[0].Page.value = arpBindingAdvDynArray[5];
+</SCRIPT>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

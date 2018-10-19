@@ -1,0 +1,56 @@
+<LINK href="../dynaform/css_help.css" rel=stylesheet> 
+<!-- <TP_C_TAG "htmlMiscHelp">//-->
+<SCRIPT language="javascript" src="../dynaform/custom.js" type="text/javascript"></SCRIPT>
+<H1>Status Help</H1>
+<P> The <B>Status</B> page displays the Router's current status and configuration. All information is read-only.
+<P><B>LAN</B> - The following parameters apply to the LAN port of the Router. You can configure them on the <B>Network -> LAN</B> page.
+<UL>
+<LI><B>MAC Address</B> - The physical address of the Router, as seen from the LAN.
+<LI><B>IP Address</B> - The LAN IP address of the Router.
+	<LI><B>Subnet Mask</B> - The subnet mask associated with LAN IP address.</LI>
+</UL>
+
+<P><B>Wireless</B> - These are the current settings or information for Wireless.You can configure them in the <B>Wireless -&gt; Wireless Settings</B> page. 
+<UL>
+  	<LI><B>Wireless Radio</B> - Indicates whether the wireless radio feature of the Router is enabled or disabled.
+    <LI><B>Name(SSID)</B> - The SSID of the Router.
+    <LI><B>Mode</B> - The current wireless mode which the Router works on. </LI>
+	<LI><B>Channel</B> - The current wireless channel in use. </LI>
+    <LI><B>Channel Width</B> - The bandwidth of the wireless channel.</LI>
+	<LI><B>MAC Address</B> - The physical address of the Router, as seen from the WLAN.</LI>
+<SCRIPT type="text/javascript">
+if(wlan_wds)
+	document.write("<LI><B>WDS Status</B> - The status of the WDS connection is displayed.</LI>");
+	document.write("<br> - Init(Initiate): WDS connection is down");
+	document.write("<br> - Scan: the router is searching the Root AP to be connected with");
+	document.write("<br> - Auth(Autheticate): the Router is trying to get authorization from Root AP");
+	document.write("<br> - Assoc: the router is trying to associate with Root AP");
+	document.write("<br> - Run: Indicates successful association");
+</SCRIPT>
+	</UL>
+<P><B>WAN</B> - The following parameters apply to the WAN ports of the Router. You can configure them in the <strong><B>Network -> WAN</B></strong> page.
+<UL>
+<LI><B>MAC Address</B> - The physical address of the WAN port, as seen from
+the Internet.
+<LI><B>IP Address</B> - The current WAN (Internet) IP Address. This field will be blank or
+	0.0.0.0 if the IP Address is assigned dynamically and there is no connection to 
+	Internet. 
+<LI><B>Subnet Mask</B> - The subnet mask associated with the WAN IP Address. 
+<LI><B>Default Gateway</B> - The Gateway currently used by the Router is shown here. When you use <b>Dynamic IP</b> as the connection Internet type, the <B>Renew</B> button will be displayed here. Click the <B>Renew</B> button to obtain new IP parameters dynamically
+from the ISP. And if you have got an IP address <b>Release</b> button will be displayed here. Click the <b>Release</b> button to release the IP address the Router has obtained from the ISP.
+<LI><B>DNS Server</B> - The DNS (Domain Name System) Server IP addresses currently used by the Router. Multiple DNS IP settings are common. Usually, the first available DNS Server is used.</li>
+<LI><B>Online Time</B> - The time that you are online. When you use <strong>PPPoE</strong> 
+      as WAN connection type, the online time is displayed here. Click the <strong>Connect</strong> 
+      or <strong>Disconnect</strong> button to connect to or disconnect from Internet.</LI>
+</UL>
+<P><B>Secondary Connection</B> - The Secondary Connection will be shown in this area.</P>
+<P><B>Traffic Statistics</B> - The Router's traffic statistics.
+<UL>
+	<LI><B>Sent (Bytes)</B> - Traffic that counted in bytes has been sent out from the WAN port.</li>
+	<LI><B>Sent (Packets)</B> - Traffic that counted in packets has been sent out from WAN port.</LI>
+	<li><b>Received (Bytes)</b> - Traffic that counted in bytes has been received from the WAN port.</li>
+	 <li><b>Received (Packets)</b> - Traffic that counted in packets has been received from the WAN port.</li>
+</UL>
+<P><B>System Up Time</B> -  The length of time since the Router was last powered on or reset.
+<P>Click the <B>Refresh</B> button to get the latest status and settings of the Router.
+

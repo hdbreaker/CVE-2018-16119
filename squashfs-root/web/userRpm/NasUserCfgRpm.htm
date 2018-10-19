@@ -1,0 +1,129 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+
+<script language="Javascript" type="text/javascript">
+
+var events = NasInfoArray[3];
+
+
+function doSubmit()
+{
+	//if (document.forms[0].add.value)
+	
+	return true;
+}
+
+</script></head>
+<BODY onload="LoadHelp('NasUserCfgHelpRpm.htm');setTagStr(document,'ntw_nas_user_cfg'); resize(this);" onResize="resize(this);">
+<center><form enctype="multipart/form-data">
+<TABLE id="addAccount">
+<TR><TD class=h1 colspan=2 id ="t_nas_user">User Account Management</TD></TR>
+<script language="Javascript" type="text/javascript">
+function doClick()
+{
+	//document.write('turn away');
+
+	location.href="NasUserAdvRpm.htm"; 
+	//return true;
+}
+</script>
+<TR><TD class=blue colspan=2></TD></TR>
+
+
+<TR><TD><BR></TD></TR>
+
+<TR>
+	<TD><INPUT class="buttonBigL" type="button" value="Add New User" name="AddUsr" id="t_add_user" onclick="doClick()"></TD>
+</TR>	
+</TABLE>
+
+
+<center><form action="NasUserCfgRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+
+
+<TABLE id="autoWidth">
+
+<TR><TD><table border=0 >
+<SCRIPT language=JavaScript type="text/javascript">
+document.write(
+	'&nbsp &nbsp'
+	+ '<TR><TD class=ListB><span id = \"t_usrname\">User Name<\/span><\/TD>'
+	+ '<TD class=ListB><span id=\"t_passwd\">Password<\/span><\/TD>'
+	+ '<TD class=ListB><span id = \"t_authority\">Storage Authority<\/span><\/TD>'
+	+ '<TD class=ListB><span id = \"t_ftpaccess\">FTP Access<\/span><\/TD>'
+	+ '<TD class=ListB><span id = \"t_modify\">Modify<\/span><\/TD>'
+	+ '<\/TR>'
+);
+if (NasInfoArray[1] > 0)
+{
+	var row = 0;
+	var i = 0;
+	var k = 0;
+	var j;
+	/*var temp = 4;
+	if (temp < NasInfoArray[1])
+	{
+		NasInfoArray[1] = temp;
+	}*/
+	document.write('<INPUT type="hidden" name="total_num" value='+NasInfoArray[1]+'>');
+	for(i = 0; i < NasInfoArray[1]; i++)
+	{	
+		var permissions;	
+		j = i + 1;
+		row = i * NasInfoArray[2];
+		//document.write('<TR align="center">');
+		//document.write('<TD class=ListB>' + usrInfoList[row] + '<\/TD>');
+		
+		
+		//document.write('<TD usrInfoList[row]>' + usrInfoList[row] + '<\/TD>');
+		document.write('<TD class=ListB>' + usrInfoList[row] + '<\/TD>');
+		document.write('<TD class=ListB>' + usrInfoList[row+1] + '<\/TD>');
+		permissions = (usrInfoList[row + 2] == "1")? "<span name=\"t_readwrite\" id =\"t_readwrite\">Read and Write<\/span>" : "<span name=\"t_readonly\" id =\"t_readonly\">Read Only<\/span>";
+		
+		document.write('<TD class=ListB>' + permissions + '<\/TD>');
+		if(usrInfoList[row + 3] == "0")
+		{
+			permissions = "<span name=\"t_no\" id =\"t_no\">&nbsp &nbsp no<\/span>" ;
+		}
+		else if (usrInfoList[row + 3] == "1")
+		{
+			permissions = "<span name=\"t_yes\" id =\"t_yes\">Read and Write<\/span>";
+		}
+		else if(usrInfoList[row + 3] == "2")
+		{
+			permissions = "<span name=\"t_yes\" id =\"t_yes\">Read Only<\/span>";
+		}
+		
+		
+		document.write('<TD class=ListB>' + permissions + '<\/TD>');
+		document.write('<TD align="center"><a href=\"NasUserAdvRpm.htm?Modify=' 
+					+ i
+					+'\" id="t_edit" name="t_edit">Edit<\/a>&nbsp;');
+		if (i > 1)
+		{
+			document.write('<a href=\"NasUserCfgRpm.htm?flagDelete='
+							+ usrInfoList[row]
+							+ '\" id="t_del" name="t_del">Delete<\/a>');
+		}
+		
+		document.write('<\/td><\/tr>');
+
+	}
+	
+}	
+else
+{
+	document.write('<TR align="center"><TD class=info1 colspan="10" id = "t_empty">No user account has been set.<\/TD><\/TR>');
+}
+</script>
+
+</TABLE></TD></TR>
+<TR><TD class=blue colspan=2></TD></TR>
+</form></center></BODY></HTML>
+
+<script language="JavaScript" type="text/javascript">
+if (NasInfoArray[1] == 4)	
+{	
+	document.forms[0].AddUsr.disabled = true;
+}
+</script>

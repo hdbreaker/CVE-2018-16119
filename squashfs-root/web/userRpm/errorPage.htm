@@ -1,0 +1,66 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT language="JavaScript" src="/localiztion/str_err.js" type="text/JavaScript">
+</SCRIPT>
+</HEAD>
+<BODY onResize="resize(this);" onLoad="setTagStr(document,'ntw_err_page'); resize(this);" >
+<CENTER>
+  <FORM>
+    <TABLE id="autoWidth">
+      <TBODY>
+        <TR>
+          <TD class=h1 id="t_title">Error</TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <TR>
+          <TD class=h2></TD>
+        </TR>
+        <SCRIPT type="text/javascript">
+<!-- 
+if(errNum>0)
+{
+	document.write("<TR><TD class=h2>");
+	document.write("Error Index:&nbsp;"+errNum);
+	document.write("</TD></TR>");
+	}
+document.write("<TR><TD class=h2><span id=\"t_err_code\">Error code:</span> "+errCode+"</TD></TR>");
+//-->
+</SCRIPT>
+        <TR>
+          <TD class=h2><SCRIPT type="text/javascript">
+<!-- 
+var e;
+var err;
+try
+{
+	err = str_err[errCode];
+	if(undefined == err)
+        {
+		err = str_err[0];	
+	}
+}
+catch(e)
+{
+document.write("<span id=\"t_err_exception\">Error occurred, please try again.</span>");
+}
+document.write(err);
+//-->
+</SCRIPT></TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <TR>
+          <TD class=mbtn><INPUT name="Back" type="button" class="buttonBig" value="Back" onClick="doPrev();return false;"></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

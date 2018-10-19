@@ -1,0 +1,48 @@
+TABLE{	Width:100%;	margin: 0px;	padding: 0px;} 
+TABLE.guage{	background-color:rgb(102,186,51);} 
+BODY {	FONT-SIZE: 12px;	MARGIN: 42 30 30 30;	FONT-FAMILY: "Arial", "Helvetica", "Geneva", "Swiss", "SunSans-Regular", "sans-serif";	color: black;	background-color:rgb(250,250,250);}
+TEXTAREA.same{	overflow:auto; border:1; border-style:dashed; font-family :Arial,Helvetica; FONT-SIZE: 12px; background-color: rgb(250,250,250); }
+TD   { FONT-SIZE: 12px; height: 24px; text-align: left; white-space:nowrap; vertical-align: middle;}   
+TD.h1 {	FONT-SIZE: 16px; COLOR: WHITE; background-color:rgb(102,186,51); FONT-WEIGHT: bold; padding-left: 15; } 
+TD.h2 {	FONT-SIZE: 16px; height: 30px; FONT-WEIGHT: bold; padding-left: 15; white-space:normal;}
+TD.h3 {	FONT-SIZE: 14px; height: 30px; white-space:normal;}  
+TD.info { padding-left: 25; }   
+TD.info1 { padding-left: 35; }  
+TD.clk { padding-left: 25; Width:5%}  
+TD.mbtn {padding-left: 30%}  
+TD.blue {	background-image:url(../images/blue.jpg); background-position:0% 10%; height: 30px;} 
+TD.Item {	FONT-WEIGHT: bold;	text-align: right;	padding-right: 30;	width: 30%;}  
+TD.emp {FONT-WEIGHT: bold; color: #003399; font-size: 13px;}
+TD.ListTC1 {text-align: right;	padding-right: 20; FONT-WEIGHT: bold; font-size: 13px;} 
+TD.ListTC2 {text-align: left;	FONT-WEIGHT: bold; padding-left: 20; font-size: 13px;} 
+TD.ListC1 {text-align: right;	padding-right: 20; } 
+TD.ListC2 {text-align: left; FONT-WEIGHT:bold; padding-left: 20; } 
+TD.ListB {text-align: left; FONT-WEIGHT:bold;white-space:nowrap;} 
+TD.Listm {text-align: center;} 
+TD.Listr {text-align: right; padding-right: 5;} 
+input  {vertical-align: middle;} 
+input.text {	height: 22px;	color: black;	padding-right: 3px;	padding-left: 3px;}
+input.radio{vertical-align: middle;} 
+input.button {	line-height: normal;	color: black;	height: 22px;	width: 75px;}
+input.buttonL {	line-height: normal;	color: black;	height: 22px; width: 160px;}
+input.buttonLL {	line-height: normal;	color: black;	height: 22px;}
+input.buttonBig {	FONT-SIZE: 14px;	line-height: normal;	color: black;	height: 22px;	width: 100px;}
+input.buttonBigL{	FONT-SIZE: 14px;	line-height: normal;	color: black;	height: 22px;}
+select  {vertical-align: middle; height: 22px;	color: black;} 
+select.list { width: 120px;}
+select.listL { width: 150px;}
+select.listS { width: 80px;}
+select.listLL{width:230px;}
+select.listLLL{width:300px;}
+
+TD[type="h1"]:disabled,
+TD[type="emp"]:disabled,
+input[type="submit"]:disabled,
+input[type="text"]:disabled, 
+input[type="button"]:disabled, 
+input[type="buttonL"]:disabled, 
+input[type="buttonLL"]:disabled, 
+input[type="buttonBig"]:disabled, 
+input[type="buttonBigL"]:disabled {
+	color:gray;
+}

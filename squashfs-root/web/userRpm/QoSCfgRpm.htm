@@ -1,0 +1,125 @@
+
+<SCRIPT type="text/javascript">
+<!--//
+function doSubmit()
+{
+	if(document.forms[0].up_bandWidth.value == "")
+	{
+		document.forms[0].up_bandWidth.value = 0;
+	}
+	if(!is_number(document.forms[0].up_bandWidth.value))
+	{
+		alert(js_egrs_bnd="Egress bandwidth error,please input again!");
+		document.forms[0].up_bandWidth.select();
+		return false;
+	}
+	if(document.forms[0].up_bandWidth.value < QoSCfgPara[3])
+	{
+		alert(js_ingr_bnd_err="Egress bandwidth is invalid,please input again!");
+		document.forms[0].up_bandWidth.select();
+		return false;
+	}
+	if(document.forms[0].down_bandWidth.value == "")
+	{
+		document.forms[0].down_bandWidth.value = 0;
+	}
+	if(!is_number(document.forms[0].down_bandWidth.value)){
+		alert(js_egrs_ls="Ingress bandwidth error,please input again!");
+		document.forms[0].down_bandWidth.select();
+		return false;
+	}
+	if(document.forms[0].down_bandWidth.value < QoSCfgPara[4])
+	{
+		alert(js_inv_bd="Ingress bandwidth is invalid,please input again!");
+		document.forms[0].down_bandWidth.select();
+		return false;
+	}
+	return true;
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY onload = "setTagStr(document,'ntw_qos_cfg');LoadHelp('QoSCfgHelpRpm.htm')">
+<FORM action="QoSCfgRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+  <CENTER>
+    <TABLE border="0" cellspacing="0" cellpadding="0">
+      <TR>
+        <TD align="left" valign="middle" class="h1" id = "t_title">Bandwidth Control Settings</TD>
+      </TR>
+      <TR>
+        <TD class = "blue"></TD>
+      </TR>
+      <TR>
+        <TD><TABLE border="0" cellspacing="0" cellpadding="0">
+            <TR>
+              <TD id = "t_enb_qos" class = "Item">Enable Bandwidth Control:</TD>
+              <TD><INPUT name="QoSCtrl" type="checkbox" value="1"></TD>
+            </TR>
+            <TR>
+              <TD class="Item" id="t_bandwith_type">Line Type:</TD>
+              <TD><INPUT name="userWanType" type="radio" value="0" checked >
+                &nbsp;
+                <SPAN id = "t_mod_adsl">ADSL</SPAN>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <INPUT name="userWanType" type="radio" value="1">
+                &nbsp;
+                <SPAN id = "t_mod_other">Other</SPAN>
+               </TD>
+            </TR>
+            <TR valign=bottom>
+              <TD width="60" class = "Item" id = "t_up_band">Egress Bandwidth:</TD>
+              <TD>
+              	<INPUT name="up_bandWidth" type="text" value="" size="21" maxlength="7" class="text">
+              	&nbsp;
+              	<SPAN id = "t_kbps" name="t_kbps">Kbps</SPAN>
+              </TD>
+            </TR>
+            <TR valign=bottom>
+              <TD width="60" class = "Item" id = "t_down_band">Ingress Bandwidth:</TD>
+              <TD><INPUT name="down_bandWidth" type="text" value="" size="21" maxlength="7" class="text">
+              	&nbsp;
+              	<SPAN id = "t_kbps" name="t_kbps">Kbps</SPAN>
+              </TD>
+            </TR>
+          </TABLE></TD>
+      </TR>
+      <TR>
+        <TD class="blue"></TD>
+      </TR>
+      <TR>
+        <TD align = "center" class = "mbtn">&nbsp;
+          <INPUT name="Save" type="submit" class="button" value="Save">
+          &nbsp; </TD>
+      </TR>
+    </TABLE>
+  </CENTER>
+</FORM>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+<!--
+document.forms[0].QoSCtrl.checked = QoSCfgPara[0]?true:false;
+if(QoSCfgPara[1] != 0 && QoSCfgPara[2] != 0 )
+{
+document.forms[0].up_bandWidth.value = QoSCfgPara[1];
+document.forms[0].down_bandWidth.value = QoSCfgPara[2];
+}
+else
+{
+document.forms[0].up_bandWidth.value = 100000;
+document.forms[0].down_bandWidth.value = 100000;
+}
+if (QoSCfgPara[5] == 0)
+{
+	document.forms[0].userWanType[0].checked =true;
+}
+else
+{
+	document.forms[0].userWanType[1].checked =true;
+}
+
+-->
+</SCRIPT>

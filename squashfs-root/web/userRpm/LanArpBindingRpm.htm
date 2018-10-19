@@ -1,0 +1,180 @@
+
+<SCRIPT type="text/javascript">
+var LP = location.pathname;
+function doAll(val)
+{
+if(val=="DelAll")
+{
+if(!confirm(js_to_delete="Are you sure delete all entries?"))
+return;
+}
+location.href="LanArpBindingRpm.htm?doAll="+val+"&Page="+curPage;
+}
+function doAdd(nPage)
+{
+location.href="LanArpBindingRpm.htm?Add=Add&Page="+nPage;
+}
+function doPage(nPage)
+{
+location.href="LanArpBindingRpm.htm?Page="+nPage;
+}
+function ResetStatus(strInfo)
+{
+window.status='';
+return true;
+}
+function enableId(id)
+{
+var enable;
+if(document.forms[0].elements['enable'+id].checked == true)
+enable = 1;
+else
+enable = 0;
+location.href = LP + "?enable=" + enable + "&enableId=" + id +"&Page=" + arpFixmapPara[1];
+}
+function doSave()
+{
+var DF = document.forms[0];
+var n = DF.elements['arpServer'][1].checked?1:0;
+location.href = LP + "?arpServer=" + n +"&Page=" + arpFixmapPara[1];
+return true;
+}
+</SCRIPT>
+</HEAD>
+<BODY onLoad="LoadHelp('LanArpBindingHelpRpm.htm');setTagStr(document,'ntw_lan_arp_binding'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="LanArpBindingRpm.htm" enctype="multipart/form-data" method="get" >
+    <TABLE id="autoWidth" >
+      <TBODY>
+        <TR>
+          <TD class=h1 id = "t_title">Binding Settings</TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <TR>
+          <TD ><TABLE border=0>
+              <TR>
+                <TD class=Item align=left><B><SPAN id = "t_arp_bind">ARP Binding:</SPAN></B></TD>
+                <TD width = "100%"><INPUT type ="radio" name=arpServer value=0 >
+                  <SPAN id = "t_disable">Disable </SPAN>
+                  <INPUT type="radio" name=arpServer value=1 checked>
+                  <SPAN id = "t_enb">Enable</SPAN>
+                  <INPUT type="button" value=" Save " name="Save" class="buttonBig" onClick="doSave();">
+                  &nbsp; </TD>
+              </TR>
+            </TABLE></TD>
+        </TR>
+        <TR>
+          <TD><TABLE border = 0>
+              <TR>
+                <TD class="ListTC1" id = "t_id">ID</TD>
+                <TD class="ListTC2" id = "t_mac_addr">MAC Address</TD>
+                <TD class="ListTC2" id = "t_ip_addr">IP Address</TD>
+                <TD class="ListTC2" id = "t_bind">Bind</TD>
+                <TD class="ListTC2" id = "t_modify">Modify</TD>
+                <TD class="ListTC2" width = "20%">&nbsp;</TD>
+              </TR>
+              <SCRIPT type="text/javascript">
+if (arpFixmapPara[3] > 0)
+{
+var row = 0;
+var statusString;
+var idStart = (arpFixmapPara[1]-1)*8;
+var modifyId;
+for(var i = 0; i < arpFixmapPara[3]; i++)
+{
+modifyId = idStart;
+idStart++;
+row = i * arpFixmapPara[4];
+statusString = (arpFixmapList[row+2] == 1)?"Lock":"Unlock";
+document.write('<tr id="tr'+idStart+'"><td class="ListC1">' + idStart + '</td>');
+document.write('<td class="ListC2">' + arpFixmapList[row] + '</td>');
+document.write('<td class="ListC2">' + arpFixmapList[row+1] + '&nbsp;</td>');
+var enableStatus = arpFixmapList[row+2]?"checked":"";
+var modifyId = row + 2;
+document.write('<td class="ListC2"><input type="checkbox" '
++ enableStatus +' name="enable' + i
++ '" value="1" onClick="enableId('
++ i
++ ');"></td>');
+document.write('<td class="ListC2"><a name="t_but_modi" id ="t_but_modi" href=\"LanArpBindingRpm.htm?Modify=' +
+i+'&Page='+arpFixmapPara[1]+
+'\" OnMouseOver=\"return ResetStatus(\'modify\');\">Modify</a>&nbsp;<a href=\"LanArpBindingRpm.htm?Del='+
+i+'&Page='+arpFixmapPara[1]+
+'\" OnMouseOver=\"return ResetStatus(\'delete\');\" name="t_delete" id = "t_delete">Delete</a></td>');
+document.write('<td width = 20%>&nbsp;</td></tr>');
+}
+}
+else
+{
+document.write('<tr><td align="center" colspan=5 id="t_no_entry">The list is empty</td></tr>');
+}
+</SCRIPT>
+            </TABLE></TD>
+        </TR>
+        <TR>
+          <TD><INPUT type="button" value="Add New.." name="Addnew" class="buttonBig" onClick="doAdd(curPage);">
+            &nbsp;
+            <INPUT type="button" value="Enable All" name="Enall" class="buttonBig" onClick="doAll('EnAll');">
+            &nbsp;
+            <INPUT type="button" value="Disable All" name="Disall" class="buttonBig" onClick="doAll('DisAll');">
+            &nbsp;
+            <INPUT type="button" value="Delete All" name="Delall" class="buttonBig" onClick="doAll('DelAll');">
+            &nbsp;
+            <input type="button" value="Find" class="buttonBig" name="Find" class="buttonLL" onClick="location.href=LP + '?Find=Find';">
+            &nbsp; </TD>
+        </TR>
+        <TR>
+          <TD class=blue ></TD>
+        </TR>
+        <TR>
+          <TD class = "mbtn"><INPUT name="PrevPage" type="button" class="buttonBig" onClick="doPage(prePage);" value="Previous" disabled>
+            &nbsp;
+            <INPUT name="NextPage" type="button" class="buttonBig" onClick="doPage(nextPage);" value=" Next " disabled>
+            &nbsp;
+			<SPAN id="t_page1">Current No.</SPAN>
+            <SELECT onChange="doPage(document.forms[0].selPage.value);" size="1" name="selPage" >
+              <SCRIPT type="text/javascript">
+var pageNum = arpFixmapPara[6]/8 + 1;
+var pIndex = 1;
+do
+{
+document.write("<option value='" + pIndex + "' selected>"+ pIndex +"</option>");
+}
+while(++pIndex < pageNum)
+</SCRIPT>
+            </SELECT>
+            &nbsp;
+			<SPAN id="t_page2">Page</SPAN>
+            <INPUT name="Page" type="hidden" value="1"></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+<SCRIPT type="text/javascript">
+var curPage = arpFixmapPara[1];
+var prePage = (arpFixmapPara[1] == 1)?1:arpFixmapPara[1]-1;
+var nextPage = arpFixmapPara[1]+1;
+document.forms[0].arpServer[0].checked = arpFixmapPara[0]?0:1;
+document.forms[0].Page.value = curPage;
+document.forms[0].PrevPage.disabled = (arpFixmapPara[1] < 2)?true:false;
+document.forms[0].NextPage.disabled = (arpFixmapPara[2] >0)?false:true;
+document.forms[0].Enall.disabled = (arpFixmapPara[3] >0)?false:true;
+document.forms[0].Disall.disabled = (arpFixmapPara[3] >0)?false:true;
+document.forms[0].Delall.disabled = (arpFixmapPara[3] >0)?false:true;
+document.forms[0].Find.disabled = (arpFixmapPara[3] >0)?false:true;
+var elementid = "";
+if(arpFixmapPara[5]>0)
+{
+elementid = "tr" + arpFixmapPara[5];
+document.all(elementid).bgColor = "yellow";
+}
+document.forms[0].selPage.value = curPage;
+</SCRIPT>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

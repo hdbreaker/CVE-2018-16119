@@ -1,0 +1,138 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+<!--//
+
+function doSubmit()
+{
+	if(document.forms[0].port.value != "")
+	{
+    	if(!is_port(document.forms[0].port.value))
+    	{
+        	var element =document.forms[0].port;
+        	if(element)
+        	{
+        		element.focus();
+        		element.select();
+        	}
+            return false;
+    	}
+		if(parseInt(document.forms[0].port.value,10) == 139)
+		{
+			alert(js_used_port = "Port 139 is used by SMB. Please input another one!");
+			return false;
+		}
+
+		if(parseInt(document.forms[0].port.value,10) == 445)
+		{
+			alert(js_used_port = "Port 445 is used by CIFS. Please input another one!");
+			return false;
+		}
+    }
+	if(document.forms[0].ip.value != "")
+	{
+		if(!is_ipaddr(document.forms[0].ip.value))
+		{	
+			var element =document.forms[0].ip;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+	}
+	if (managementPara[3] == 1)
+	{
+		if(document.forms[0].telnet_port.value != "")
+		{
+			if(!is_port(document.forms[0].telnet_port.value))
+			{	
+				var element =document.forms[0].telnet_port;
+				if(element)
+				{
+					element.focus();
+					element.select();
+				}
+				return false;
+			}
+		}
+	}
+	if (managementPara[3] == 1)
+	{
+		if((document.forms[0].port.value != "" && webcontrolport != document.forms[0].port.value) || 
+		(document.forms[0].telnet_port.value != "" && telnetcontrolport != document.forms[0].telnet_port.value))
+		{
+			alert(js_reboot_prompt_1="Note: The change of web management port won't take effect until the Router reboot!");
+		}
+	}
+	else
+	{
+		if(document.forms[0].port.value != "" && webcontrolport != document.forms[0].port.value)
+		{
+			alert(js_reboot_prompt_2="Note: The change of web management port won't take effect until the Router reboot!");
+		}
+	}		
+	return true;
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY onLoad="LoadHelp('ManageControlHelpRpm.htm');setTagStr(document,'ntw_manage_control');resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="ManageControlRpm.htm" enctype="multipart/form-data" method="get">
+    <TABLE id="autoWidth">
+      <TBODY>
+        <TR>
+          <TD class=h1 colspan=2 id = "t_title">Remote Management</TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR>
+          <TD class=Item id = "t_manage_port">Web Management Port:</TD>
+          <TD><INPUT name="port" type="text" class="text" value="80" size="6" maxlength="5"></TD>
+        </TR>
+        <SCRIPT type="text/javascript">
+if (managementPara[3] == 1) {
+document.write('<tr><td class=Item id="t_mgmt_port"> Management Port:</td><td><input name="telnet_port" type="text" class="text" value="" size="6" maxlength="5"></td></tr>');
+}
+</SCRIPT>
+        <TR>
+          <TD class=Item id = "t_manage_ip_addr">Remote Management IP Address:</TD>
+          <TD>
+             <INPUT name="ip" type="text" class="text" value="222.88.88.234" size="16" maxlength="15">
+            <SPAN id = "t_for_all">(Enter 255.255.255.255 for all)</SPAN>
+          </TD>
+        </TR>
+		<SCRIPT type="text/javascript">
+			if (managementPara[2] == 1)
+			{	
+				document.write('<TR><TD colspan=2><span style="color:#FF0000" id="t_chng">The change of port will not take effect until the Router reboots, please <\/span><A href="../userRpm/SysRebootRpm.htm"><SPAN id="t_click">click here</SPAN><\/A><span id="t_to_reboot" style="color:#FF0000"> to reboot.<\/span> <\/TD><\/TR>');
+			}
+		</SCRIPT>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR>
+          <TD></TD>
+          <TD colspan=2><INPUT name="Save" type="submit" class="buttonBig" value="Save" onClick="return doSubmit();"></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+document.forms[0].port.value =managementPara[0];
+document.forms[0].ip.value =managementPara[1];
+var webcontrolport = document.forms[0].port.value;
+if (managementPara[3] == 1) {
+	document.forms[0].telnet_port.value =managementPara[4];
+	var telnetcontrolport = document.forms[0].telnet_port.value;
+}
+</SCRIPT>

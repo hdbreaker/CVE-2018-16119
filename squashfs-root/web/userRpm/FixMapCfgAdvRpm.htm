@@ -1,0 +1,140 @@
+
+
+<SCRIPT type="text/javascript">
+<!--//
+function doBack(nPage)
+{
+	location.href="/userRpm/FixMapCfgRpm.htm?Page="+nPage;
+}
+function is_spmac(mac_string)
+{
+	if(mac_string == "00-00-00-00-00-00")
+	{
+		alert(js_bad_mac="Invalid MAC address, please input another one!");
+		return false;
+	}
+	var ch = "Ff-";
+	for (var i = 0; i < mac_string.length; i++)
+	{
+		c = mac_string.charAt(i);
+		if(ch.indexOf(c) == -1)
+		return true;
+	}
+	alert(js_bad_mac="Invalid MAC address, please input another one!");
+	return false;
+}
+function doSubmit()
+{
+	if(document.forms[0].Mac.value=="")
+	{
+		alert(js_input_mac="Please input a correct MAC address!");
+		var element = document.forms[0].Mac;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	if(document.forms[0].Mac.value != "")
+	{
+		if(!is_macaddr(document.forms[0].Mac.value))
+		{
+			var element = document.forms[0].Mac;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+		if(!is_spmac(document.forms[0].Mac.value))
+	{
+			var element = document.forms[0].Mac;
+		if(element)
+		{
+			element.focus();
+            element.select();
+		}
+		return false;
+	}
+	}
+	if(document.forms[0].Ip.value=="")
+    {
+		alert(js_input_ip="Please input a correct IP address!");
+		return false;
+	}
+	if(!is_ipaddr(document.forms[0].Ip.value))
+	{
+		var element =document.forms[0].Ip;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+    }
+	if (confirm(js_note_fixmap="Note: The function won't take effect until the Router reboot!"))
+	{		
+		return true;		
+	}
+	else
+	{	
+		return false;
+	}
+	return true;
+}
+-->
+</SCRIPT>
+<BODY onLoad="LoadHelp('FixMapCfgHelpRpm.htm');setTagStr(document,'ntw_fix_map_adv_cfg'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="FixMapCfgRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth">
+      <TR>
+        <TD class=h1 colspan=2 id="t_title">Add or Modify an Address Reservation Entry</TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_mac_addr">MAC Address:</TD>
+        <TD><INPUT name="Mac" type="text" class="text" value="" size="17" maxlength="17"></TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_ip_addr">Reserved IP Address:</TD>
+        <TD><INPUT name="Ip" type="text" class="text" value="" size="15" maxlength="15"></TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_status">Status:</TD>
+        <TD><SELECT size="1" name="State" >
+            <OPTION value="0" selected id="t_disabled">Disabled&nbsp;</OPTION>
+            <OPTION value="1" id="t_enabled">Enabled&nbsp;</OPTION>
+          </SELECT></TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+      <TR>
+        <TD></TD>
+        <TD><INPUT name="Changed" type="hidden" value="">
+          <INPUT name="SelIndex" type="hidden" value="">
+          <INPUT name="Page" type="hidden" value="">
+          <INPUT name="Save" type="submit" class="buttonBig" value="Save">
+          &nbsp;
+          <INPUT type="button" value="Back" name="Back" class="buttonBig" onClick="doBack(arEditInf[5]);"></TD>
+      </TR>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML><SCRIPT type="text/javascript">
+document.forms[0].Mac.value =arEditInf[0];
+document.forms[0].Ip.value =arEditInf[1];
+document.forms[0].State.value = arEditInf[2];
+document.forms[0].Changed.value = arEditInf[3];
+document.forms[0].SelIndex.value = arEditInf[4];
+document.forms[0].Page.value = arEditInf[5];
+</SCRIPT>

@@ -1,0 +1,11 @@
+
+prefix=/mnt/slave/workspace/SOHO3_build_Linux_AP136/build/../rootfs.build.2.6.31_ap135_hnat
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name:		libiptc
+Description:	iptables ruleset ADT and kernel interface
+Version:	1.4.5
+Libs:		-L${libdir} -liptc
+Cflags:		-I${includedir}

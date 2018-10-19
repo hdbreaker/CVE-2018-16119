@@ -1,0 +1,234 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<!--JS-->
+<SCRIPT type="text/javascript">
+<!--
+		var i=0; 
+		
+		function toUpper(str)
+		{
+			str = str.toUpperCase();
+		}
+		
+		function doAddMac()
+		{
+			var i = 0;	
+			for (i = 0; i < controlParam[0]; i++)
+			{
+				if (document.forms[0].elements['mac'+i].value.toUpperCase() == document.forms[0].pcmac.value.toUpperCase())
+				{
+					alert(js_mac_add_exist="The List already contains this MAC Address.");
+					return;
+				}
+			}
+			
+			for (i = 0; i < controlParam[0]; i++)
+			{
+				if (document.forms[0].elements['mac'+i].value == "")
+				{
+					document.forms[0].elements['mac'+i].value = document.forms[0].pcmac.value;
+					return;
+				}
+			}
+		}
+
+		function isOnList()
+		{	
+			var i = 0;							
+			for (i = 0; i < controlParam[0]; i++)
+			{
+				if (document.forms[0].elements['mac'+i].value.toUpperCase() == document.forms[0].pcmac.value.toUpperCase())
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		function isListEmpty()
+		{
+			var i = 0;	
+			var is_empty = true;			
+			for (i = 0; i < controlParam[0]; i++)
+			{
+				if (document.forms[0].elements['mac'+i].value.length > 0)
+				{
+					is_empty = false;
+					break;
+				}
+			}
+			return is_empty;
+		}
+		
+		function changeStatus(status)
+		{
+			var i = 0;
+			if (status == 0)
+			{
+				document.forms[0].enableWhitelist[0].checked = true;
+				document.forms[0].enableWhitelist[1].checked = false;
+				document.forms[0].addmac.disabled = true;
+
+				for (i = 0; i < controlParam[0]; i++)
+				{					
+					document.forms[0].elements['mac'+i].disabled = true;
+				}	
+			}
+			else
+			{
+				document.forms[0].enableWhitelist[0].checked = false;
+				document.forms[0].enableWhitelist[1].checked = true;
+				document.forms[0].addmac.disabled = false;
+
+				for (i = 0; i < controlParam[0]; i++)
+				{
+					document.forms[0].elements['mac'+i].disabled = false;
+				}
+			}
+		}			
+		
+		function doSubmit()
+		{
+			var i = 0;	
+			if (document.forms[0].enableWhitelist[1].checked == true)
+			{
+				if (isListEmpty())
+				{
+					alert(js_pl_spec_mac_addr="Please specify the MAC Address first.");
+					return false;
+				}
+				for (i = 0; i < controlParam[0]; i++)
+				{
+					if (document.forms[0].elements['mac'+i].value.length != 0)
+					{
+						toUpper(document.forms[0].elements['mac'+i].value);
+						if (!is_macaddr(document.forms[0].elements['mac'+i].value))
+						{	
+							var element = document.forms[0].elements['mac'+i];
+							if(element)
+							{
+								element.focus();
+								element.select();
+							}
+							return false;
+						}
+						if (!is_spmac(document.forms[0].elements['mac'+i].value))
+						{
+							var element = document.forms[0].elements['mac'+i];
+							if(element)
+							{
+								element.focus();
+								element.select();
+							}
+							return false;
+						}
+					}
+				}
+				if (isOnList() == false)
+				{
+					var opt = confirm(js_warnning="Warnning: \n\nYour PC's MAC Address is not on the list, and you will not be able to access the Setup page of the Router's Web-Based Utility any longer.\n\nDo you want to let the operation continue?");
+					if (opt == false)
+					{
+						return false;
+					}
+				}
+			}
+			
+			return true;
+		}
+		
+		function is_spmac(mac_string)
+		{
+			if(mac_string == "00-00-00-00-00-00")
+			{
+				alert(js_inv_mac_addr="Invalid MAC Address.");
+				return false;
+			}
+			var ch = "Ff-";
+			for (var i = 0; i < mac_string.length; i++)
+			{
+				c = mac_string.charAt(i);
+				if(ch.indexOf(c) == -1)
+				return true;
+			}
+			alert(js_inv_mac_addr="Invalid MAC Address.");
+			return false;
+		}
+		
+		function doHelp()
+		{
+			location.href="/help/LocalManageControlHelpRpm.htm";
+		}
+//-->
+</SCRIPT>
+</HEAD>
+<!-- change XXXX to your dest page.-->
+<BODY onLoad="setTagStr(document,'ntw_local_manage_ctl'); LoadHelp('LocalManageControlHelpRpm.htm');resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="LocalManageControlRpm.htm" enctype="multipart/form-data" method="get">
+    <TABLE id="autoWidth" >
+      <TBODY>
+        <!--chang your title below.-->
+        <TR>
+          <TD class=h1 id = "t_title">Local Management</TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <!--Content-->
+        <TR>
+          <TD><TABLE align="center" border="0" width="590" cellspacing="2" cellpadding="2" class="space">
+              <TR>
+                <TD class="ListB" colspan=2 id="t_flt_rules">Management Rules</TD>
+              </TR>
+              <TR>
+                <TD colspan=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <INPUT name=enableWhitelist type=radio value=0 onClick="changeStatus(0)">
+                  <SPAN style="color:#FF0000" id="t_all">All</SPAN> <A id="t_all_note">the PCs on the LAN are allowed to access the Router's Web-Based Utility</A></TD>
+              </TR>
+              <TR>
+                <TD colspan=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <INPUT name=enableWhitelist type=radio value=1 onClick="changeStatus(1)">
+                  <SPAN style="color:#FF0000" id="t_only">Only</SPAN> <A id="t_only_note">the PCs listed can browse the built-in web pages to perform Administrator tasks</A></TD>
+              </TR>
+              <SCRIPT type="text/javascript">	
+		for (i = 0; i < controlParam[0]; i++)
+		{
+			if (macWhitelist[i] == "00-00-00-00-00-00")
+			{
+				macWhitelist[i] = "";
+			}			
+			document.write('<tr id="set_mac' + i + '"><td CLASS="item">MAC ' + (i+1) + ':</td><td><input name="mac' + i + '" type="text" class="text" value="'+macWhitelist[i]+'" size="17" maxlength="17"></td></tr>');	
+			
+		}
+	</SCRIPT>
+              <TR id="your_pc_mac">
+                <TD class="item" id="t_mac_addr">Your PC's MAC Address:</TD>
+                <TD><SCRIPT type="text/javascript">	
+			document.write('<input name="pcmac" type="text" class="text" value="' + controlParam[1].toUpperCase() +'" size="17" maxlength="17" disabled>');				
+			</SCRIPT>
+                  <INPUT size="80" name="addmac" type="button" class="button" id="addMac" onClick="doAddMac();" value="Add"></TD>
+              </TR>
+            </TABLE></TD>
+        </TR>
+        <TR>
+          <TD class=blue>&nbsp;</TD>
+        </TR>
+        <TR>
+          <TD><CENTER>
+              <INPUT name="Save" type="submit" class="buttonBig" value="Save" onClick="return doSubmit();">
+            </CENTER></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<!--JS page up & page down-->
+<SCRIPT type="text/javascript">
+	changeStatus(controlParam[2]);
+</SCRIPT>

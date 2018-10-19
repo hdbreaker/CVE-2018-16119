@@ -1,0 +1,99 @@
+
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_lan_arp_bnd_lst');LoadHelp('LanArpBindingListHelpRpm.htm');resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM enctype="multipart/form-data" method="get">
+    <TABLE id="autoWidth" border =0>
+      <TBODY>
+        <TR>
+          <TD class=h1 id ="t_arp_list" >ARP List</TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <SCRIPT type="text/javascript">
+var LP = location.pathname;
+function OnCapture()
+{
+location.href = LP + "?ArpLock=ArpLocked";
+return true;
+}
+function fresh()
+{
+return true;
+}
+function DoR(a,b,c)
+{
+location.href = LP + "?reserve=1&ip="+ b +"&mac="+ a + "&lock=" + c;
+return true;
+}
+function DoDelete(a,b,c)
+{
+location.href = LP + "?delete=1&ip="+ b +"&mac="+ a + "&lock=" + c;
+return true;
+}
+document.write('<TR><TD><table border=0 >');
+document.write('<TR ><TD class=ListTC1 id = \"t_id\">ID</TD>'
++ '<td class=ListTC2 id = \"t_mac_addr\">MAC Address</td>'
++ '<TD class=ListTC2 id = \"t_ip_addr\">IP Address</TD>'
++ '<TD class=ListTC2 id = \"t_status\">Status</TD> '
++ '<TD class=ListTC2 nowrap id = \"t_cfg\">Configure</TD>'
++ '<TD width = 30%>&nbsp;</td>'
++ '</TR>');
+if (arpClientDyn[0] > 0)
+{
+var row = 0;
+var i = 0;
+var j;
+for(i = 0; i < arpClientDyn[0]; i++)
+{
+j = i+1;
+row = i * arpClientDyn[1];
+document.write('<tr align="center"><td class="ListC1">' + j + '</td>');
+document.write('<td class="ListC2">' + arpClientListDyn[row+1] + '</td>');
+document.write('<td class="ListC2">' + arpClientListDyn[row+2] + '</td>');
+if(arpClientListDyn[row] == 1)
+document.write('<td class="ListC2" id="t_bound" name="t_bound">Bound</td>');
+else
+document.write('<td name="t_unbound" id="t_unbound" class="ListC2">Unbound</td>');
+/*
+document.write('<td nowrap>' + '<INPUT name = \"Load\" type=button value=\" Load \"'
++'onclick=DoR("'+ arpClientListDyn[row+1]+'","'+ arpClientListDyn[row+2]+ '","'+ arpClientListDyn[row] +'");'
++' name=reserve>'
++ '&nbsp;'
++ '<INPUT name = \"Delete\" type=button value=Delete '
++ 'onclick=DoDelete("'+ arpClientListDyn[row+1]+'","'+ arpClientListDyn[row+2]+ '","'+ arpClientListDyn[row] 					+'");'+ ' name=delete>'+ '</TD>'+'<TD width = 30%>&nbsp;</td></tr>');
+*/
+document.write('<td class="ListC2"><a href=\"'+LP + '?reserve=1&ip='+ arpClientListDyn[row+2] +'&mac='+ arpClientListDyn[row+1] + '&lock=' +arpClientListDyn[row]+ 'id ="t_load" name="t_load">Load</a>&nbsp;<a href=\"'+LP + "?delete=1&ip="+ arpClientListDyn[row+2] +'&mac='+ arpClientListDyn[row+1] + '&lock=' + arpClientListDyn[row] + 'id = "t_delete" name="t_delete">Delete</a></td></tr>');
+}
+}
+else
+{
+document.write('<TR align="center"><TD class=info1 colspan="5" id = "t_no_enpty">The current list is empty.</TD></TR>');
+}
+document.write('</table></TD></TR>');
+</SCRIPT>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <TR>
+          <TD class =" mbtn">&nbsp;
+            <INPUT class="buttonBig" type=submit value='Bind All' name="Capture">
+            &nbsp;
+            <INPUT class="buttonBig" type=submit value='Load All' name="Resall">
+            &nbsp;
+            <INPUT class="buttonBig" type=submit value='Refresh' name="Refresh"></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+document.forms[0].Capture.disabled = ((arpClientDyn[0] == 0)||(arpClientDyn[2]))?true:false;
+document.forms[0].Resall.disabled = (arpClientDyn[0] == 0)?true:false;
+</SCRIPT>

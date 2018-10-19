@@ -1,0 +1,164 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+<!--//
+		function isStatOn(item)
+		{
+			return 	(secParam[0] & item);
+		}
+			
+		var FW_SPI					=	0x00000001;
+		var VPN_PPTP_PASSTHROUGH	=	0x00000100;
+		var VPN_L2TP_PASSTHROUGH	=	0x00000200;
+		var VPN_IPSEC_PASSTHROUGH	=	0x00000400;
+		var NAT_FTP_ALG				=	0x00010000;
+		var NAT_TFTP_ALG			=	0x00020000;
+		var NAT_H323_ALG			=	0x00040000;
+		var NAT_RTSP_ALG			=	0x00080000;
+		var spifw = isStatOn(FW_SPI); 
+		var pptp = isStatOn(VPN_PPTP_PASSTHROUGH);
+		var l2tp = isStatOn(VPN_L2TP_PASSTHROUGH);
+		var ipsec = isStatOn(VPN_IPSEC_PASSTHROUGH);
+		var ftp = isStatOn(NAT_FTP_ALG);
+		var tftp = isStatOn(NAT_TFTP_ALG);
+		var h323 = isStatOn(NAT_H323_ALG);
+		var rtsp = isStatOn(NAT_RTSP_ALG);
+		
+		function doSave()
+		{			
+			var lp = location.pathname;
+			
+			var s = document.getElementById("enable_spi").checked;
+			var p = document.getElementById("enable_pptp_passthrough").checked;
+			var l = document.getElementById("enable_l2tp_passthrough").checked;
+			var i = document.getElementById("enable_ipsec_passthrough").checked;
+			var f = document.getElementById("enable_ftp_alg").checked;
+			var t = document.getElementById("enable_tftp_alg").checked;
+			var h = document.getElementById("enable_h323_alg").checked;
+			var r = document.getElementById("enable_rtsp_alg").checked;
+			
+			var new_stat = s | (p << 8) | (l << 9) | (i << 10) | (f << 16) | (t << 17) | (h << 18) | (r << 19);
+		
+			location.href = lp + "?stat=" + new_stat + "&Save=Save";				
+			return true;
+		}
+		
+		function doHelp()
+		{
+			location.href="/help/BasicSecurityHelpRpm.htm";
+		}
+	//-->
+</SCRIPT>
+</HEAD>
+<BODY onload = "setTagStr(document,'ntw_bsc_sec');LoadHelp('BasicSecurityHelpRpm.htm')">
+<FORM action="BasicSecurityRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+  <TABLE border="0" cellspacing="0" cellpadding="0">
+    <TR>
+      <TD align="left" valign="middle" class="h1" colspan=2 id="t_title">Basic Security</TD>
+    </TR>
+    <TR>
+      <TD class = "blue" colspan=2></TD>
+    </TR>
+    <TR>
+      <TD class=h2 colspan=3 id="t_fw">Firewall</TD>
+    </TR>
+    <TR>
+      <TD class=Item align=left><B><SPAN id="t_spi_fw">SPI Firewall:</SPAN></B></TD>
+      <TD width = "100%"><INPUT type="radio" name="spi" value="1" id="enable_spi">
+        <SPAN id="t_enable_spi">Enable</SPAN>
+        <INPUT type ="radio" name="spi" value="0" id="disable_spi">
+        <SPAN id="t_disable_spi">Disable</SPAN></TD>
+    </TR>
+    <TR>
+      <TD class="blue"  colspan=2></TD>
+    </TR>
+    <TR>
+      <TD class=h2 colspan=3 id="t_vpn">VPN</TD>
+    </TR>
+    <TR>
+      <TD class=Item align=left><B><SPAN id="t_pptp_passthrough">PPTP Passthrough:</SPAN></B></TD>
+      <TD width = "100%"><INPUT type="radio" name="pptp_passthrough" value="1" id="enable_pptp_passthrough">
+        <SPAN id="t_enable_pptp_passthrough">Enable</SPAN>
+        <INPUT type ="radio" name="pptp_passthrough" value="0" id="disable_pptp_passthrough">
+        <SPAN id="t_disable_pptp_passthrough">Disable</SPAN></TD>
+    </TR>
+    <TR>
+      <TD class=Item align=left><B><SPAN id="t_l2tp_passthrough">L2TP Passthrough:</SPAN></B></TD>
+      <TD width = "100%"><INPUT type="radio" name="l2tp_passthrough" value="1" id="enable_l2tp_passthrough">
+        <SPAN id="t_enable_l2tp_passthrough">Enable</SPAN>
+        <INPUT type ="radio" name="l2tp_passthrough" value="0" id="disable_l2tp_passthrough">
+        <SPAN id="t_disable_l2tp_passthrough">Disable</SPAN></TD>
+    </TR>
+    <TR>
+      <TD class=Item align=left><B><SPAN id="t_ipsec_passthrough">IPSec Passthrough:</SPAN></B></TD>
+      <TD width = "100%"><INPUT type="radio" name="ipsec_passthrough" value="1" id="enable_ipsec_passthrough">
+        <SPAN id="t_enable_ipsec_passthrough">Enable</SPAN>
+        <INPUT type ="radio" name="ipsec_passthrough" value="0" id="disable_ipsec_passthrough">
+        <SPAN id="t_disable_ipsec_passthrough">Disable</SPAN></TD>
+    </TR>
+    <TR>
+      <TD class="blue"  colspan=2></TD>
+    </TR>
+    <TR>
+      <TD class=h2 colspan=3 id="t_nat">ALG</TD>
+    </TR>
+    <TR>
+      <TD class=Item align=left><B><SPAN id="t_ftp_alg">FTP ALG:</SPAN></B></TD>
+      <TD width = "100%"><INPUT type="radio" name="ftp_alg" value="1" id="enable_ftp_alg">
+        <SPAN id="t_enable_ftp_alg">Enable</SPAN>
+        <INPUT type ="radio" name="ftp_alg" value="0" id="disable_ftp_alg">
+        <SPAN id="t_disable_ftp_alg">Disable</SPAN></TD>
+    </TR>
+    <TR>
+      <TD class=Item align=left><B><SPAN id="t_tftp_alg">TFTP ALG:</SPAN></B></TD>
+      <TD width = "100%"><INPUT type="radio" name="tftp_alg" value="1" id="enable_tftp_alg">
+        <SPAN id="t_enable_tftp_alg">Enable</SPAN>
+        <INPUT type ="radio" name="tftp_alg" value="0" id="disable_tftp_alg">
+        <SPAN id="t_disable_tftp_alg">Disable</SPAN></TD>
+    </TR>
+    <TR>
+      <TD class=Item align=left><B><SPAN id="t_h323_alg">H323 ALG:</SPAN></B></TD>
+      <TD width = "100%"><INPUT type="radio" name="h323_alg" value="1" id="enable_h323_alg">
+        <SPAN id="t_enable_h323_alg">Enable</SPAN>
+        <INPUT type ="radio" name="h323_alg" value="0" id="disable_h323_alg">
+        <SPAN id="t_disable_h323_alg">Disable</SPAN></TD>
+    </TR>
+    <TR>
+      <TD class=Item align=left><B><SPAN id="t_rtsp_alg">RTSP ALG:</SPAN></B></TD>
+      <TD width = "100%"><INPUT type="radio" name="rtsp_alg" value="1" id="enable_rtsp_alg">
+        <SPAN id="t_enable_rtsp_alg">Enable</SPAN>
+        <INPUT type ="radio" name="rtsp_alg" value="0" id="disable_rtsp_alg">
+        <SPAN id="t_disable_rtsp_alg">Disable</SPAN></TD>
+    </TR>
+    <TR>
+      <TD class="blue"  colspan=2></TD>
+    </TR>
+    <TR>
+      <TD></TD>
+      <TD colspan=2><INPUT name="Save" type="button" class="buttonBig" value="Save" onClick="return doSave();"></TD>
+    </TR>
+  </TABLE>
+</FORM>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+	document.getElementById("enable_spi").checked = spifw;
+	document.getElementById("disable_spi").checked = !spifw;
+	document.getElementById("enable_pptp_passthrough").checked = pptp;
+	document.getElementById("disable_pptp_passthrough").checked = !pptp;
+	document.getElementById("enable_l2tp_passthrough").checked = l2tp;
+	document.getElementById("disable_l2tp_passthrough").checked = !l2tp;
+	document.getElementById("enable_ipsec_passthrough").checked = ipsec;	
+	document.getElementById("disable_ipsec_passthrough").checked = !ipsec;
+	document.getElementById("enable_ftp_alg").checked = ftp;
+	document.getElementById("disable_ftp_alg").checked = !ftp;
+	document.getElementById("enable_tftp_alg").checked = tftp;
+	document.getElementById("disable_tftp_alg").checked = !tftp;
+	document.getElementById("enable_h323_alg").checked = h323;
+	document.getElementById("disable_h323_alg").checked = !h323;
+	document.getElementById("enable_rtsp_alg").checked = rtsp;
+	document.getElementById("disable_rtsp_alg").checked = !rtsp;
+</SCRIPT>

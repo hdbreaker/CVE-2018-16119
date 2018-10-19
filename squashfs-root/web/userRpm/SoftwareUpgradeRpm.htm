@@ -1,0 +1,70 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript"><!--//
+
+function doSubmit()
+{
+	if(document.forms[0].Filename.value == "")
+	{
+		alert(js_input_file="Please choose a file to upgrade!");
+		return false;
+	}
+	var tmp = document.forms[0].Filename.value
+	if(tmp.substr(tmp.length - 4) != ".bin")
+	{
+		alert(js_chk_file="The selected file is in wrong format, please select another.");
+		return false;
+	}
+	var arr = tmp.substr(tmp.lastIndexOf('\\') + 1);
+	if(arr.length >= 64)
+	{
+		alert(js_bad_file="Please choose a file to upgrade!");
+		return false;
+	}
+	if(!confirm(js_to_upgrade="Are you sure to upgrade the firmware?"))
+	{
+		return false;
+	}
+	return true;
+}
+//--></SCRIPT>
+</HEAD>
+<BODY onLoad="LoadHelp('SoftwareUpgradeHelpRpm.htm'); setTagStr(document,'ntw_software_upgrade');resize(this);" onResize="resize(this);">
+<FORM action="/incoming/Firmware.htm" enctype="multipart/form-data" method="post" onSubmit="return doSubmit();">
+  <TABLE id="autoWidth">
+    <TR>
+      <TD class=h1 colspan=2 id="t_title">Firmware Upgrade</TD>
+    </TR>
+    <TR>
+      <TD class=blue colspan=2></TD>
+    </TR>
+    <TR>
+      <TD class=Item id="t_file">File:</TD>
+      <TD ><INPUT class="text" name="Filename" type="file" size="35"></TD>
+    </TR>
+    <TR>
+      <TD class=Item id="t_softversion">Firmware Version:</TD>
+      <TD><DIV id="fversion"></DIV></TD>
+    </TR>
+    <TR>
+      <TD class=Item id="t_hardversion">Hardware Version:</TD>
+      <TD><DIV id="hversion"></DIV></TD>
+    </TR>
+    <TR>
+      <TD class=blue colspan=3></TD>
+    </TR>
+    <TR>
+      <TD></TD>
+      <TD colspan=3><INPUT name="Upgrade" type="submit" class="buttonBig" id="Submit" value="Upgrade"></TD>
+    </TR>
+  </TABLE>
+</FORM>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+document.getElementById("fversion").innerHTML = softUpInf[0];
+document.getElementById("hversion").innerHTML = softUpInf[1];
+</SCRIPT>

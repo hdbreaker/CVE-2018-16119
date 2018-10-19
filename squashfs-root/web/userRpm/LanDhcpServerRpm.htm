@@ -1,0 +1,190 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+<!--//
+function doSubmit()
+{
+	var MINIP = 1;
+	var MAXIP = 254;
+	if(document.forms[0].ip1.value!="")
+	{
+		if(!is_ipaddr(document.forms[0].ip1.value))
+		{
+			var element = document.forms[0].ip1;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+	}
+
+	if(document.forms[0].ip2.value!="")
+	{
+		if(!is_ipaddr(document.forms[0].ip2.value))
+		{
+			var element = document.forms[0].ip2;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+		return false;
+		}
+	}
+	if(document.forms[0].gateway.value!=""&&document.forms[0].gateway.value!= "0.0.0.0")
+	{
+		if(!is_gatewayaddr(document.forms[0].gateway.value))
+		{
+			var element = document.forms[0].gateway;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+		return false;
+		}
+	}
+	if(!is_domain(document.forms[0].domain.value))
+	{
+		var element = document.forms[0].domain;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	if(document.forms[0].dnsserver.value != ""&&document.forms[0].dnsserver.value !="0.0.0.0")
+	{
+		if(!is_dnsaddr(document.forms[0].dnsserver.value))
+		{
+			var element = document.forms[0].dnsserver;
+			if(element)
+			{
+				element.focus();element.select();
+			}
+		return false;
+		}
+	}
+	if(document.forms[0].dnsserver2.value != "" && document.forms[0].dnsserver2.value != "0.0.0.0")
+	{
+		if(!is_dnsaddr(document.forms[0].dnsserver2.value))
+		{	
+			var element = document.forms[0].dnsserver2;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+		return false;
+		}
+	}
+	
+	if (confirm(js_reboot_note="Note: The change of DHCP config will not take effect until the Router reboots!"))
+	{		
+		return true;		
+	}
+	else
+	{	
+		return false;
+	}
+	
+}
+//-->
+</SCRIPT>
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_lan_dhcp_server');LoadHelp('LanDhcpServerHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="LanDhcpServerRpm.htm" enctype="multipart/form-data" method="get">
+    <TABLE id="autoWidth">
+      <TBODY>
+        <TR>
+          <TD class=h1 colspan=2 id = "t_title">DHCP Settings</TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR>
+          <TD class=Item id = "t_dhcp_srv">DHCP Server:</TD>
+          <TD><INPUT name="dhcpserver" type="radio" value="0">
+            <SPAN id = "t_disable">Disable </SPAN>
+            <INPUT name="dhcpserver" type="radio" value="1">
+            <SPAN id = "t_enable">Enable</SPAN></TD>
+        </TR>
+        <TR>
+          <TD class=Item id = "t_start_ip_addr">Start IP Address:</TD>
+          <TD><INPUT name="ip1" type="text" class="text" value="" size="15" maxlength="15"></TD>
+        </TR>
+        <TR>
+          <TD class=Item id = "t_end_ip_addr">End IP Address:</TD>
+          <TD><INPUT name="ip2" type="text" class="text" value="" size="15" maxlength="15"></TD>
+        </TR>
+        <TR>
+          <TD class=Item id = "t_lease_time">Address Lease Time:</TD>
+          <TD><INPUT name="Lease" type="text" class="text" value="" size="4" maxlength="4">
+            <SPAN id = "t_def_min">&nbsp;minutes (1~2880 minutes, the default value is 120)</SPAN></TD>
+        </TR>
+        <TR>
+          <TD class=Item id = "t_def_gt">Default Gateway:</TD>
+          <TD><INPUT name="gateway" type="text" class="text" value="" size="15" maxlength="15">
+            <SPAN id = "t_optional" name="t_optional"> (optional)</SPAN></TD>
+        </TR>
+        <TR>
+          <TD class=Item id = "t_def_domain">Default Domain:</TD>
+          <TD><INPUT name="domain" type="text" class="text" value="" size="15" maxlength="30">
+            <SPAN id = "t_optional" name="t_optional"> (optional)</SPAN></TD>
+        </TR>
+        <TR>
+          <TD class=Item id = "t_prima_dns">Primary DNS:</TD>
+          <TD><INPUT name="dnsserver" type="text" class="text" value="" size="15" maxlength="15">
+            <SPAN id = "t_optional" name="t_optional"> (optional)</SPAN></TD>
+        </TR>
+        <TR>
+          <TD class=Item id = "t_sec_dns">Secondary DNS:</TD>
+          <TD><INPUT name="dnsserver2" type="text" class="text" value="" size="15" maxlength="15">
+            <SPAN id = "t_optional" name="t_optional"> (optional)</SPAN></TD>
+        </TR>
+        <!--added by zqq,08.12.05-->
+        <SCRIPT type="text/javascript">
+if(DHCPPara[8] == 1)
+{
+        document.write('<TR><TD colspan=2><span style="color:#FF0000" id="t_chng">The change of DHCP config will not take effect until the Router reboots, please </span><A href="../userRpm/SysRebootRpm.htm" id="t_click">click here</A><span id="t_to_reboot" style="color:#FF0000"> to reboot.</span> </TD></TR>');  
+	
+}
+</SCRIPT>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR>
+          <TD></TD>
+          <TD><INPUT name="Save" type="submit" class="buttonBig" value="Save" onClick="return doSubmit();"></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+if (DHCPPara[0] == 0)
+{
+	document.forms[0].dhcpserver[0].checked = true;
+}
+else
+{
+	document.forms[0].dhcpserver[1].checked = true;
+}
+document.forms[0].ip1.value =DHCPPara[1];
+document.forms[0].ip2.value =DHCPPara[2];
+document.forms[0].Lease.value =DHCPPara[3];
+document.forms[0].gateway.value =DHCPPara[4];
+document.forms[0].domain.value =DHCPPara[5];
+document.forms[0].dnsserver.value =DHCPPara[6];
+document.forms[0].dnsserver2.value =DHCPPara[7];
+</SCRIPT>

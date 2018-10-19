@@ -1,0 +1,53 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript"><!--
+function Click(){ window.event.returnValue=false;}
+document.oncontextmenu=Click;
+//--></SCRIPT>
+<SCRIPT type="text/javascript"><!--//
+function doExit()
+{
+	if (window.parent == window)
+	{
+		window.close();
+	}
+	else
+	{
+		parent.bottomLeftFrame.collapseAll();
+		parent.mainFrame.location.href = "/userRpm/StatusRpm.htm";
+	}
+}
+//--></SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_wzd_start');LoadHelp('WzdStartHelpRpm.htm');resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="WzdStartRpm.htm" method=get enctype=multipart/form-data>
+    <TABLE id="autoWidth">
+      <TBODY>
+        <TR>
+          <TD class=h1 colspan=2 id="t_title">Quick Setup</TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR>
+          <TD class=info colspan=2 id="t_guide">Run the Quick Setup to manually configure your internet connection and wireless settings.</TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR>
+          <TD class=mbtn colspan=2><INPUT type=hidden name="ClientId">
+            <INPUT name="Exit" class="buttonBig" id="Submit" type="button" value="Exit" onClick="doExit();">
+            &nbsp; &nbsp;&nbsp;&nbsp;
+            <INPUT name="Next" class="buttonBig" id="Submit" type="submit" value="Next"></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+</HTML>
+<SCRIPT type="text/javascript"><!--//
+document.forms[0].ClientId.value = wzdStartInf[1]; 
+//--></SCRIPT>

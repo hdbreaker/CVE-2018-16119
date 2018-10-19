@@ -1,0 +1,122 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<!--JS-->
+<SCRIPT type="text/javascript">
+<!--
+function doPrev(){
+	history.go(-1);
+}
+var freshTime=0;
+function doFresh()
+{
+	var	timeInterVal = 500;
+	if (freshTime>3)
+	{
+		location.href='/userRpm/MailResultRpm.htm';
+	}
+	else
+	{
+		document.getElementById("resStr").innerHTML += "<b>.</b>";
+		freshTime ++;
+		setTimeout("doFresh()",timeInterVal);
+	}
+}
+
+//-->
+</SCRIPT>
+</HEAD>
+<!-- change XXXX to your dest page.-->
+<BODY onLoad="setTagStr(document,'ntw_mail_res');LoadHelp('SystemLogHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM>
+    <TABLE id="autoWidth" >
+      <TBODY>
+        <!--chang your title below.-->
+        <TR>
+          <TD class=h1 id = "t_title">Mail Result</TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <!--Content-->
+        <TR>
+          <TD ><TABLE >
+              <TR>
+                <TD align="center">&nbsp;</TD>
+              </TR>
+              <TR>
+                <TD class="Text" id="resStr" align="center"></TD>
+              </TR>
+              <TR>
+                <TD align="center">&nbsp;</TD>
+              </TR>
+              <TR>
+                <TD class="Text" id="tipStr" align="left"></TD>
+              </TR>
+            </TABLE></TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <TR>
+          <TD class = "mbtn"><!--Button-->
+            <INPUT name="Back" type="button" class="buttonBig" value="Back" onClick="location.href='SystemLogRpm.htm';"></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+<!--JS page up & page down-->
+<SCRIPT type="text/javascript">
+var cf1 = document.getElementById("resStr");
+var cf2 = document.getElementById("tipStr");
+if(mailResult[0] == 0)
+{
+	cf1.innerHTML = "<B id = \"t_mal_snd\">Mail is being sent.</B>";
+	cf2.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;<SPAN id = \"t_mal_snd1\">You can also click the </SPAN><B id = \"t_mal_snd2\">Back</B><SPAN id = \"t_mal_snd3\"> button and get the mail result in </SPAN><B id = \"t_mal_snd4\">System Log</B><SPAN id = \"t_mal_snd5\"> later.</SPAN>";
+	doFresh();
+}
+else if(mailResult[0] == 1)
+{
+	cf1.innerHTML = "<B id = \"t_mal_use\">Someone is using this feature now.</B>";
+	cf2.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;<SPAN id = \"t_mal_use1\">This feature is being used, which might take 30 seconds at most. Please wait and then try again.</SPAN>";
+}
+else
+{
+	switch(mailResult[1])
+	{
+	case 0:	
+		cf1.innerHTML = "<B id = \"t_mal_suc\">Sent successfully.</B>";
+		break;
+	case 1:
+		cf1.innerHTML = "<B id = \"t_mal_fal\">Failed to connect to the mail server.</B>";
+		cf2.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;<SPAN id = \"t_mal_fal1\">Please check the connection and the address of the SMTP Server in </SPAN><B id = \"t_mal_fal2\">Mail Settings</B><SPAN id = \"t_mal_fal3\">, and make sure the mail server supports SMTP.</SPAN>";
+		break;
+	case 2:
+		cf1.innerHTML = "<B id = \"t_mal_wro\">Wrong username or password.</B>";
+		cf2.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;<SPAN id = \"t_mal_wro1\">Please ensure the Authentication feature is enabled and then check the authentic information of Username and Password in </SPAN><B id = \"t_mal_wro2\">Mail Settings</B>.";
+		break;
+	case 3:
+		cf1.innerHTML = "<B id = \"t_mal_add\">Wrong email address.</B>";
+		cf2.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;<SPAN id = \"t_mal_add1\">Please check the email address of the recipient.</SPAN>";	
+		break;	
+	case 4:
+		cf1.innerHTML = "<B id = \"t_mal_ath\">Your SMTP server doesn't require authentication.</B>";
+		cf2.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;<SPAN id = \"t_mal_ath1\">Please disable Authentication in </SPAN><B id = \"t_mal_ath2\">Mail Settings</B>.";	
+		break;
+	case 5:
+		cf1.innerHTML = "<B id = \"t_mal_cnf\">Mail Settings have not been configured.</B>";
+		cf2.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;<SPAN id = \"t_mal_cnf1\">Please configure the </SPAN><B id = \"t_mal_cnf2\">Mail Settings</B><SPAN id = \"t_mal_cnf3\"> first.</SPAN>";	
+		break;				
+	default:
+		cf1.innerHTML = "<B id = \"t_mal_oth\">Other error.</B>";
+		cf2.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;<SPAN id = \"t_mal_oth1\">Please check all configurations in </SPAN><B id = \"t_mal_oth2\">Mail Settings</B><SPAN id = \"t_mal_oth2\">. If there is still error, change the recipient's email address to another one that suppprts SMTP.</SPAN>";
+		break;
+	}
+}
+</SCRIPT>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

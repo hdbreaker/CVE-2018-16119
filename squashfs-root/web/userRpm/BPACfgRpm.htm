@@ -1,0 +1,307 @@
+
+<SCRIPT type="text/javascript">
+<!--
+var wanType = new Array(
+"id=\"t_dynip\">Dynamic IP<",	//	WAN_TYPE_DHCP = 0,
+"id=\"t_statip\">Static IP<",	//	WAN_TYPE_STATIC_IP, 
+"id=\"t_pppoe\">PPPoE/Russia PPPoE<",	//	WAN_TYPE_PPPOE, 
+"id=\"t_802dyip\">802.1X + Dynamic IP<",	//	WAN_TYPE_802_1X_DHCP,
+"id=\"t_802statip\">802.1X + Static IP<",	//	WAN_TYPE_802_1X_STATIC_IP,
+"id=\"t_bpa\" selected>BigPond Cable<",	//	WAN_TYPE_BPA,
+"id=\"t_l2tp\">L2TP/Russia L2TP<",	//	WAN_TYPE_L2TP,
+"id=\"t_pptp\">PPTP/Russia PPTP<",	//	WAN_TYPE_PPTP,
+""	//	WAN_TYPE_END
+);
+function doSelect()
+{
+	if(document.forms[0].linktype[0].checked)
+	{
+		document.forms[0].waittime.disabled = false;
+		selectype=1;
+	}
+	else
+		document.forms[0].waittime.disabled = true;
+	if(document.forms[0].linktype[1].checked)
+	{
+		document.forms[0].waittime.disabled = true;
+		document.forms[0].waittime2.disabled = true;
+		selectype=2;
+	}
+	if(document.forms[0].linktype[2].checked)
+	{
+		document.forms[0].waittime2.disabled = false;
+		selectype=3;
+	}
+	else
+		document.forms[0].waittime2.disabled = true;
+	return true;
+}
+function doSubmit()
+{
+	var element = document.forms[0].usr;
+	if (element && element.value == "")
+	{
+		alert(js_usrname_req = "User Name is required.");
+		element.focus();
+		element.select();
+		return false;
+	}
+	
+	element = document.forms[0].pwd;
+	if (element && element.value == "")
+	{
+		alert(js_passwd_req = "Password is required.");
+		element.focus();
+		element.select();
+		return false;
+	}
+	
+	var value=document.forms[0].mtu.value;
+	if(!is_number(value))
+		return false;
+	if(document.forms[0].linktype[0].checked)
+	{
+		if(!is_number(document.forms[0].waittime.value))
+			return false;
+	}
+	if(document.forms[0].linktype[2].checked)
+	{
+		if(!is_number(value))
+			return false;
+	}
+	if((bpaData[8]!=selectype)&&(2==bpaData[11] || 1==bpaData[11]))
+	{
+		if(!confirm(js_mksure_bpa_change="BPA connection type is changed, so the old\n\nconnection will be disconnected. Continue?"))
+			return false;
+	}
+	var val;
+	val=document.forms[0].mtu.value;
+	if(val<576||val>1500||val=="")
+	{
+		alert(js_bad_mtu="Bad MTU,please input another number!\n(576~1500,the default is 1500)");
+		return false;
+	}
+	return true;
+}
+function doChange()
+{
+	var n = 0;
+	if(bpaData[0] > 1)
+		n = document.forms[0].wan.value;
+	s = "wan="+n;
+	var t = document.forms[0].wantype.selectedIndex;
+	location.href = "/userRpm/"+wantypeinfo[t*2+2]+"?"+s;
+}
+function doWanChange()
+{
+	var n = document.forms[0].wan.selectedIndex;
+	var s = "wan="+n;
+	location.href = "/userRpm/WanCfgRpm.htm"+"?"+s;
+}
+var stopRefresh=0;
+function doClick()
+{
+	stopRefresh=1;
+	return true;
+}
+function doRefresh()
+{
+	if (0==stopRefresh)
+		location.href="BPACfgRpm.htm";
+	return true;
+}
+function doOnblur()
+{
+	stopRefresh=1;
+	return true;
+}
+-->
+</SCRIPT>
+</HEAD><BODY onLoad="setTagStr(document,'ntw_bpa_cfg');LoadHelp('BpaCfgHelpRpm.htm'); doSelect(); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="BPACfgRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth">
+      <TR>
+        <TD class=h1 colspan=2 id="t_title">WAN</TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+      <SCRIPT type="text/javascript">
+if(bpaData[0] > 1)
+{
+	document.write('<TR><TD class=Item id = \"t_wan_port\">WAN Port:</TD><TD><select name=\"wan\" id=\"wan\" onChange=\"doWanChange()\" onblur = \"doOnbulr()\" onFocus = \"doFocus()\">');
+	for(var i=0;i<dhcpInf[0];i++)
+		document.write('<option value=\"'+i+'\">WAN'+(i+1)+'</option>');
+	document.write('</select>');
+}
+//added by ZQQ,08.12.10 , if one wan, it should be exist but not display
+else
+{	
+	document.write('<TR style ="display:none"><TD class=Item id = \"t_wan_port\">WAN Port:</TD><TD><select name=\"wan\" id=\"wan\" onChange=\"doWanChange()\">')
+	document.write('<option value=0>WAN1</option>');
+    document.write('</select>');
+}
+</SCRIPT>
+      <TR>
+        <TD class=Item id="t_wan_con_type">WAN Connection Type:</TD>
+        <TD><SELECT name="wantype"  onchange="doChange()" onFocus="doClick();">
+            <SCRIPT type="text/javascript">
+for ( var t=0; t < wantypeinfo[0]; t++)
+{
+	document.write('<option '+wanType[wantypeinfo[t*2+1]]+'/option>');
+}
+		</SCRIPT>
+          </SELECT></TD>
+        <TD colspan=2></TD>
+      </TR>
+      <TR>
+        <TD></TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_usrname">User Name:</TD>
+        <TD><INPUT name="usr" type="text" class="text" value="" size="25" maxlength="15" onFocus="doClick();"></TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_pwd">Password:</TD>
+        <TD><INPUT name="pwd" type="password" class="text" value="" size="25" maxlength="15" onFocus="doClick();"></TD>
+      </TR>
+      <TR>
+        <TD class=Item>&nbsp;</TD>
+        <TD>&nbsp;</TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_auth_srv">Auth Server:</TD>
+        <TD><INPUT name="AuthSrv" type="text" class="text" value="sm-server" size="32" maxlength="32" onFocus="doClick();"></TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_auth_domain">Auth Domain:</TD>
+        <TD><INPUT name="AuthDomain" type="text" class="text" value="" size="32" maxlength="32" onFocus="doClick();"></TD>
+      </TR>
+<SCRIPT type="text/javascript">
+if(bpaData[0] > 1)
+{
+	document.write("<tr><td class=Item id = \"t_egress_bdwth\">Egress Bandwidth:</td>");
+	document.write("<td><input name = \"EgressBandwidth\" type = \"text\" class = \"text\" size = 5 onblur = \"is_digit(this.value)\">");
+	document.write("<span id = \"t_option0\">Kbps (Optional)</span></td></tr>")
+	document.write("<tr><td class=Item id = \"t_ingress_bdwth\">Ingress Bandwidth:</td>");
+	document.write("<td><input name = \"IngressBandwidth\" type = \"text\" class = \"text\" size = 5 onblur = \"is_digit(this.value)\">");
+	document.write("<span id = \"t_option1\">Kbps (Optional)</span></td></tr>")
+}
+</SCRIPT>
+      <TR>
+        <TD class=Item>&nbsp;</TD>
+        <TD>&nbsp;</TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_mtu_size">MTU Size (in bytes):</TD>
+        <TD><INPUT name="mtu" type="text" class="text" value="" size="5" maxlength="4" onFocus="doClick();" >
+          &nbsp; <SPAN id = "t_mtu_deault">(The default is 1500, do not change unless necessary.)</SPAN></TD>
+      </TR>
+      <TR>
+        <TD class=Item>&nbsp;</TD>
+        <TD><INPUT name="linktype" type="radio" onClick="doSelect();doClick();" value="1">
+          <SPAN id="t_con_on_demand">Connect on Demand</SPAN></TD>
+      </TR>
+      <TR>
+        <TD class=Item>&nbsp;</TD>
+        <TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN id="t_max_idle_time0">Max Idle Time: </SPAN>&nbsp; 
+          <INPUT name="waittime" class="text" value="" size="2" maxlength="2" onFocus="doClick();">
+          <SPAN id = "t_minutes0">minutes (0 means remain active at all times.)</SPAN></TD>
+      </TR>
+      <TR>
+        <TD class=Item>&nbsp;</TD>
+        <TD><INPUT name="linktype" type="radio" value="2" onClick="doSelect();doClick();">
+          <SPAN id="t_con_auto">Connect Automatically</SPAN></TD>
+      </TR>
+      <TR>
+        <TD class=Item>&nbsp;</TD>
+        <TD><INPUT name="linktype" type="radio" onClick="doSelect();doClick();" value="3">
+          <SPAN id="t_con_manually">Connect Manually</SPAN></TD>
+      </TR>
+      <TR>
+        <TD class=Item>&nbsp;</TD>
+        <TD>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<SPAN id="t_max_idle_time1">Max Idle Time:</SPAN> &nbsp; 
+          <INPUT name="waittime2" class="text" value="" size="2" maxlength="2" onFocus="doClick();" >
+          <SPAN id = "t_minutes1">minutes (0 means remain active at all times.)</SPAN></TD>
+      </TR>
+      <TR>
+        <TD colspan=2></TD>
+      </TR>
+      <TR>
+        <TD class=Item>&nbsp;</TD>
+        <TD class=emp><INPUT name="Connect" type="submit" class="button" value="Connect">
+          &nbsp;&nbsp;
+          <INPUT name="Disconnect" type="submit" class="button" value="Disconnect">
+          <SCRIPT type="text/javascript">
+		switch(bpaData[10])
+		{
+		case 0:
+			document.write('&nbsp;&nbsp;<span id = "t_disconnected">Disconnected!</span>');
+			break;
+		case 1:
+			document.write('&nbsp;&nbsp;<span id = "t_connected">Connected!</span>');
+			break;
+		case 2:
+			document.write('&nbsp;&nbsp;<span id = "t_Connecting">Connecting...</span>');
+			break;
+		default:
+			document.write('&nbsp;&nbsp;--');
+			break;
+		}
+		</SCRIPT></TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+      <TR>
+        <TD></TD>
+        <TD><INPUT name="Save" type="submit" class="buttonBig" value="Save"></TD>
+      </TR>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+</HTML><SCRIPT type="text/javascript">
+if(bpaData[14])
+	window.setTimeout("doRefresh()",10000);
+if(bpaData[0] != 1)
+	document.forms[0].wan.selectedIndex = bpaData[1];
+//document.forms[0].wantype.selectedIndex = bpaData[2];
+document.forms[0].usr.value=bpaData[3];
+document.forms[0].pwd.value=bpaData[4];
+document.forms[0].AuthSrv.value=bpaData[5];
+document.forms[0].AuthDomain.value=bpaData[6];
+document.forms[0].mtu.value=bpaData[7];
+if (1==bpaData[8])
+{
+	document.forms[0].linktype[0].checked=true;
+	selectype=1;
+}
+else if (2==bpaData[8])
+{
+	document.forms[0].linktype[1].checked=true;
+	selectype=2;
+}
+else
+{
+	document.forms[0].linktype[2].checked=true;
+	selectype=3;
+}
+document.forms[0].waittime.value=bpaData[9];
+document.forms[0].waittime2.value=bpaData[9];
+if(0==bpaData[11])
+	document.forms[0].Disconnect.disabled=true;
+else
+	document.forms[0].Connect.disabled=true;
+if(5!=bpaData[2])
+{
+	document.forms[0].Connect.disabled=true;
+	document.forms[0].Disconnect.disabled=true;
+}
+if(bpaData[0] > 1)
+{
+	document.forms[0].IngressBandwidth.value = bpaData[12];
+	document.forms[0].EgressBandwidth.value = bpaData[13];
+}
+</SCRIPT>

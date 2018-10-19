@@ -1,0 +1,187 @@
+
+<SCRIPT type="text/javascript">
+<!--
+function doBack(){location.href="/userRpm/WlanNetworkRpm.htm?newBridgessid=&ssid=" + transToURL(pagePara[0].toString())
+	                             + "&curRegion=" + pagePara[1]
+	                              + "&channel=" + pagePara[2] 
+	                              + "&chanWidth=" + pagePara[3]	
+	                              + "&mode=" + pagePara[4] 
+	                              + "&wrr=" + pagePara[5] 
+	                              + "&sb=" + pagePara[6]
+	                              + "&select=" + pagePara[7]
+								  + "&detect=" + pagePara[9];
+}
+function doRefresh(rescan)
+{
+	location.href="/userRpm/popupSiteSurveyRpm.htm?refresh=" + rescan
+	               + "&ssid=" + transToURL(pagePara[0].toString())
+	               + "&curRegion=" + pagePara[1]
+	               + "&channel=" + pagePara[2]
+	               + "&chanWidth=" + pagePara[3]
+	               + "&mode=" + pagePara[4]
+	               + "&wrr=" + pagePara[5]
+	               + "&sb=" + pagePara[6]
+	               + "&select=" + pagePara[7]
+				   + "&detect=" + pagePara[9];
+}
+var transMatrixHTML = new Array(
+	/&/g, "&amp;",
+	/\\/g, "&#92;",
+	/'/g, "&#39;",
+	/"/g, "&quot;",
+	/</g, "&lt;",
+	/>/g, "&gt;",
+	/ /g, "&nbsp;"
+);
+function transToHTML(str)
+{
+	for (var i = 0; i < transMatrixHTML.length; i+=2)
+	{
+		str = str.replace(transMatrixHTML[i], transMatrixHTML[i+1]);
+	}
+	return str;
+}
+var transMatrixURL = new Array(
+	/%/g, "%25",
+	/#/g, "%23",
+	/&/g, "%26",
+	/;/g, "%3B",
+	/\\/g, "%5C",
+	/'/g, "%27",
+	/"/g, "%22",
+	/</g, "%3C",
+	/>/g, "%3E",
+	/ /g, "%20",
+	/\+/g, "%2B",
+	/\=/g, "%3D"
+);
+function transToURL(str)
+{
+	for (var i = 0; i < transMatrixURL.length; i+=2)
+	{
+		str = str.replace(transMatrixURL[i], transMatrixURL[i+1]);
+	}
+	return str;
+}
+var bssidName = new Array(
+	"<span id=\"t_none\">none<\/span>",
+	"apBssid",
+	"staBssid",
+	"staBssid",
+	"rptBssid",
+	"pptBssid",
+	"mptBssid",
+	"rptBssid"
+);
+var ssidName = new Array(
+	"<span id=\"t_none\">none<\/span>",
+	"apSsid",
+	"staSsid",
+	"staSsid",
+	"rptSsid",
+	"pptSsid",
+	"mptSsid",
+	"rptSsid"
+);
+//-->
+</SCRIPT>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_sit_survey'); LoadHelp('SiteSurveyHelpRpm.htm'); resize(this);" >
+  <FORM action="SiteSurveyRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+    <table width="502" border="0" cellpadding="0" cellspacing="0">
+    <TR>
+          <TD class="h1" colspan=2 id="t_title">AP List</TD>
+        </TR>
+        <TR>
+          <TD class="blue" colspan=2></TD>
+    </TR>
+    <TR>
+      <TD colspan="2"><TABLE width="502" border="0" cellspacing="0" cellpadding="0">
+          <TR>
+            <TD width="1" rowspan="15" class="vline"><BR></TD>
+            <TD width="500"><TABLE align="center" width="400" border="0" cellpadding="0" cellspacing="0" class="space">
+                <TR>
+                  <TD><TABLE border="0" width="390">
+                      <TR>
+                        <TD>&nbsp;<SPAN  id="t_ap_num">AP Count:</SPAN>  &nbsp;
+                          <SCRIPT type="text/javascript">
+	document.write(siteSurveyPara[1]);
+</SCRIPT></TD>
+                      </TR>
+                      <TABLE width="450" border="0" align="center" class="space" cellspacing="0" cellpadding="0">
+                        <TR>
+                          <TD colspan=2><TABLE border=1 width="450" align="center" cellspacing="0" cellpadding="0">
+                              <TR align="center">
+                                <TD>ID</TD>
+                                <TD >MAC Address</TD>
+                                <TD>SSID</TD>
+                                <TD id="t_signal">Signal</TD>
+                                <TD id="t_channel">Channel</TD>
+                                <TD id="t_security">Security</TD>
+                                <TD id="t_choose">Choose</TD>
+                              </TR>
+                              <SCRIPT type="text/javascript">
+var listLen = siteSurveyPara[1];
+if (listLen >0)
+{
+	var row = 0;
+	var statusIndex;
+	var idStart = 0;
+	for(var i = 0; i < listLen; i++)
+	{
+		row = i * 5;
+		idStart ++;
+		document.write('<tr align="center"><td>' + idStart + '<\/td>');
+		for (var j = 0; j <= 4; j++)
+		{
+			var content = siteList[row+j].toString() ? siteList[row+j] : " ";
+			if (j == 4)
+			{
+				document.write('<td>' + (content == 0 ? 'OFF' : 'ON') + '<\/td>');
+			}
+			else if (j == 2)
+			{
+				document.write('<td>' + transToHTML(content.toString()) + 'dB<\/td>');
+			}
+			else
+			{
+				document.write('<td>' + transToHTML(content.toString()) + '<\/td>');
+			}
+		}
+		if ((0 == siteSurveyPara[0]) || (1 == siteSurveyPara[0]))
+		{
+			document.write('<td>&nbsp;<\/td><\/tr>');
+		}
+		else
+		{
+			document.write('<td>' + '<a href="/userRpm/WlanNetworkRpm.htm?newBridgessid=' + transToURL(siteList[row + 1].toString())+ '&newBrdgeBssid=' + transToURL(siteList[row + 0].toString()) + '&ssid=' + transToURL(pagePara[0].toString())+ '&curRegion=' + pagePara[1]+ '&channel=' + pagePara[2]+ '&BrlChannel=' + siteList[row+3] + '&chanWidth=' + pagePara[3]+ '&mode=' + pagePara[4]+ '&wrr=' + pagePara[5]+ '&sb=' + pagePara[6]+ '&select=' + pagePara[7] + '&detect=' + pagePara[9] + '" id="t_conn" name="t_conn">Connect<\/a><\/td><\/tr>');}
+	}
+}
+else
+{
+	document.write('<tr align="center"><td>&nbsp;<\/td><td>&nbsp;<\/td><td>&nbsp;<\/td><td>&nbsp;<\/td><td>&nbsp;<\/td><td>&nbsp;<\/td><td>&nbsp;<\/td><\/TR>');
+}
+</SCRIPT>
+                            </TABLE>
+                      </TABLE>
+                      <TR>
+                        <TD height="10"></TD>
+                      </TR>
+                    </TABLE></TD>
+                  <TD class="vline" rowspan="15"><BR></TD>
+                </TR>
+            </TABLE></TD>
+                </TR>
+                <TR>
+                     <TD colspan=2 class=blue>&nbsp;</TD>
+                </TR>
+                <TR>
+        	<TD class="Item">&nbsp;</TD>
+        	<TD> <INPUT name="Back" type="button" class="button" value="Back" onClick="doBack();">
+             <INPUT name="Reflesh" type="button" class="button" value="Refresh" onClick="doRefresh(1);"></TD>
+          </TR>
+        </TABLE>
+  </FORM>
+</BODY>
+</HTML>

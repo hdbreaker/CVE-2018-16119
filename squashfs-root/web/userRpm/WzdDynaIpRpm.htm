@@ -1,0 +1,107 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript"><!--
+function Click(){ window.event.returnValue=false;}
+document.oncontextmenu=Click;
+</SCRIPT>
+<SCRIPT type="text/javascript">
+function radioClick(isNeedClone)
+{
+	if (isNeedClone == 0)
+	{
+		document.forms[0].CloneMAC.disabled = true;
+	}
+	else
+	{
+		document.forms[0].CloneMAC.disabled = false;
+	}
+}
+function doRestore()
+{
+	document.forms[0].wan_mac.value =  wzdDynaIpMacClone[3];
+}
+function doClone()
+{
+    document.forms[0].wan_mac.value =  wzdDynaIpMacClone[2];
+}
+
+function doSubmit()
+{
+	if(!is_macaddr(document.forms[0].wan_mac.value))
+	{
+		var element =document.forms[0].wan_mac;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	return true;
+}
+
+function doBack()
+{	
+	location.href="WzdDynaIpRpm.htm?Return=Back";
+}
+</SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_wzd_dynaip');LoadHelp('WzdDynaIpHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+	<FORM action="WzdDynaIpRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+	<TABLE id="autoWidth" border = "0">
+	</TBODY>
+		<TR>
+			<TD class="h1" colspan = "2" id="t_title">Quick Setup - MAC Clone</TD>
+		</TR>
+		<TR>
+			<TD class="blue" colspan = "2"></TD>
+        </TR>
+        <TR>
+			<TD colspan="2"><SPAN id="t_mac_info1" style="color: #FF0000">Please read help carefully on the right.</SPAN></TD>
+		</TR>
+		<TR>
+			<TD colspan=2>
+				<INPUT name="is_need_clone" type="radio" value="0" onClick="radioClick(1)">&nbsp;
+				<SPAN id = "t_need_clone">Yes, I am connected by the main computer (clone MAC address)</SPAN><br><br>
+				<INPUT name="is_need_clone" type="radio" value="1" onClick="radioClick(0)" checked>&nbsp;
+				<SPAN id = "t_not_need_clone">No, I am connected by another computer (do NOT clone MAC address)</SPAN>
+			</TD>
+		</TR>
+		<TR>
+			<TD class=Item id="t_wan_mac_addr">WAN MAC Address:</TD>
+			<TD><input type="text" class="text" name ="wan_mac" size="18" maxlength="17">&nbsp;
+			<INPUT name="RestoreMAC" id="restore" type="button" class="buttonL" onClick="doRestore();" value="Restore Factory MAC"></TD>
+		</TR>
+		<TR>
+			<TD class=Item id="t_pc_mac_addr">Your PC's MAC Address:</TD>
+			<TD><input type="text" class="text" name ="pc_mac" size="18" maxlength="17">&nbsp;
+			<INPUT name="CloneMAC" id="clone" type="button" class="buttonL" onClick="doClone();" value="Clone MAC Address"></TD>
+		</TR>		
+		<TR>
+			<TD class="blue" colspan = "2"></TD>
+		</TR>
+		<TR>
+			<TD class=mbtn colspan=2>
+			<INPUT name="Return" class="buttonBig" id="PrevStep" type="button" value="Back" onClick="doBack();">
+			&nbsp;&nbsp;
+			<INPUT name="Next" class=buttonBig id=Submit onClick="return doSubmit();" type=submit value="Next">
+			<INPUT type=hidden name=ClientId></TD>
+		</TR>
+	</TBODY>
+	</TABLE>
+	</FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+
+<SCRIPT type="text/javascript">
+document.forms[0].wan_mac.value = wzdDynaIpMacClone[1];
+document.forms[0].pc_mac.value = wzdDynaIpMacClone[2];
+document.forms[0].pc_mac.disabled = true;
+document.forms[0].CloneMAC.disabled = true;
+document.forms[0].ClientId.value=wzdDynaIpMacClone[0];
+</SCRIPT>

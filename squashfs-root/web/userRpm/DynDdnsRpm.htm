@@ -1,0 +1,200 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+<!--//
+var bRefreshFlag=1;
+function stopRefresh()
+{
+	bRefreshFlag=0;
+}
+function startRefresh()
+{
+	bRefreshFlag=1;
+}
+function doChange()
+{
+	var nIndex;
+	nIndex=document.forms[0].provider.value;
+	location.href="DdnsAddRpm.htm?provider="+nIndex;
+}
+function ResetStatus()
+{
+	window.status=" ";
+	return true;
+}
+function goUrl(url)
+{
+	window.open(url,'','');
+}
+function doRefresh()
+{
+	var nIndex;    
+	if(1==bRefreshFlag && document.forms[0].EnDdns.checked == true)
+	{
+		nIndex=document.forms[0].provider.value;
+		location.href="DdnsAddRpm.htm?provider="+nIndex;
+	}
+}
+function doLoad()
+{
+	window.setTimeout("doRefresh()",6000);
+}
+function doWanChange()
+{
+	var n = document.forms[0].wan.selectedIndex;
+	var s = "wan="+n;
+	location.href = "/userRpm/DynDdnsRpm.htm"+"?"+s;
+}
+function doSubmit()
+{
+if(!is_domain(document.forms[0].cliUrl.value))
+{
+	return false;
+}
+return true;
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_dyn_ddns');LoadHelp('DynDdnsHelpRpm.htm'); resize(this);doLoad();" onResize="resize(this);">
+<CENTER>
+  <FORM action="DynDdnsRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth" border =0>
+      <TR>
+        <TD class=h1 colspan=2 id="t_title">DDNS</TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_srv_provider">Service Provider:</TD>
+        <TD><SELECT name="provider" onChange="doChange()" onFocus="stopRefresh();">
+            <SCRIPT type="text/javascript">
+<!--//
+if(ddnsType[0]) document.write("<option value=0 >PeanutHull ( www.oray.net )</option>");
+if(ddnsType[1]) document.write("<option value=1 >Comexe ( www.comexe.cn )</option>");
+if(ddnsType[2]) document.write("<option value=2 selected>Dyndns ( www.dyndns.org )</option>");
+if(ddnsType[3]) document.write("<option value=3 >No-IP ( www.no-ip.com )</option>");
+//-->
+</SCRIPT>
+          </SELECT>
+          &nbsp;<A href="javascript:goUrl('http://www.dyndns.org');" onMouseOver="return ResetStatus();" id="t_register">Go to register...</A></TD>
+      </TR>
+      <SCRIPT type="text/javascript">
+if(serInf[8] != 1)
+{
+document.write('<TR><TD class=Item id = \"t_wan_port\">WAN Port:</TD><TD><select name=\"wan\" id=\"wan\" onChange=\"doWanChange()\">');
+	for(var i=0;i<serInf[8];i++)
+	{
+		document.write('<option value=\"'+i+'\">WAN'+ (i+1)+'</option>');
+	}
+	document.write('</select></td></tr>');
+}
+else
+{
+    document.write('<TR style = "display:none"><TD class=Item id = \"t_wan_port\">WAN Port:</TD><TD><select name=\"wan\" id=\"wan\" onChange=\"doWanChange()\">');
+	for(var i=0;i<serInf[8];i++)
+	{
+		document.write('<option value=\"'+i+'\">WAN</option>');
+	}
+	document.write('</select></td></tr>');
+}
+</SCRIPT>
+      <TR>
+        <TD colspan = 2></TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_usrname">User Name:</TD>
+        <TD><INPUT name="username" value="" type="text" class="text" size="15" maxlength="63" onFocus="stopRefresh();" onblur = "startRefresh()"></TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_psw">Password:</TD>
+        <TD><INPUT name="pwd" value="" type="password" class="text" size="15" maxlength="63" onFocus="stopRefresh();" onblur = "startRefresh()"></TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_domainname">Domain Name:</TD>
+        <TD><INPUT name="cliUrl" value="" maxlength="127" size="32" class="text" onFocus="stopRefresh();" onblur = "startRefresh()"></TD>
+      </TR>
+      <TR>
+        <TD colspan=2></TD>
+      </TR>
+      <TR>
+        <TD></TD>
+        <TD ><TABLE border =0>
+            <TR>
+              <TD style="width:1px"><INPUT name="EnDdns" type="checkbox" value="2"></TD>
+              <TD id="t_enbddns">&nbsp;Enable DDNS</TD>
+              <TD width= 100%>&nbsp;</TD>
+            </TR>
+          </TABLE></TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_cntstatus">Connection Status:</TD>
+        <TD><DIV id="connectStatus"></DIV></TD>
+      </TR>
+      <TR>
+        <TD></TD>
+        <TD><INPUT class="button" type="submit" name="Login" value="Login">
+          &nbsp;
+          <INPUT class="button" type="submit" name="Logout" value="Logout"></TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+      <TR>
+        <TD></TD>
+        <TD><INPUT class="buttonBig" type="submit" value="Save" name="Save"></TD>
+      </TR>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+if(serInf[8] != 1)
+{
+	document.forms[0].wan.selectedIndex = serInf[7];
+}
+	document.forms[0].username.value = serInf[0];
+	if(""==serInf[0])
+	{
+		document.forms[0].pwd.value="";
+	}
+	else
+	{
+		document.forms[0].pwd.value = serInf[1];
+	}
+	document.forms[0].cliUrl.value = serInf[2];
+	document.forms[0].EnDdns.checked = serInf[3];
+	switch (serInf[4])
+	{
+		case 0:
+document.getElementById("connectStatus").innerHTML = "<span id = \"t_not_laun\">DDNS not launching!</span>";
+		break;
+		
+		case 1: 
+document.getElementById("connectStatus").innerHTML = "<span id =\"t_conn\">Connecting...</span>";
+		break;
+		
+		case 2: 
+document.getElementById("connectStatus").innerHTML = "<span id = \"t_succeeded\">Succeeded!</span>";
+		break;
+		
+		case 3:
+document.getElementById("connectStatus").innerHTML = "<span id = \"t_pwd_err\">User Name or Password error!</span>";
+		break;
+		
+		case 4:
+document.getElementById("connectStatus").innerHTML = "<span id = \"t_domain_err\">Domain Name error</span>";
+		break;
+		
+		default:
+		document.getElementById("connectStatus").innerHTML = "---";
+		break;
+	}
+	document.forms[0].provider.value = serInf[5];
+	document.forms[0].EnDdns.value = serInf[6];
+</SCRIPT>

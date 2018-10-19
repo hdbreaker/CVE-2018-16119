@@ -1,0 +1,86 @@
+<SCRIPT type="text/javascript">
+<!--//
+function doSubmit()
+{
+        return true;
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY onload = "setTagStr(document,'wlan_band');LoadHelp('DualBandSelectionHelpRpm.htm')">
+<FORM action="WlanBandRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+  <CENTER>
+    <TABLE border="0" cellspacing="0" cellpadding="0">
+      <TR>
+        <TD align="left" valign="middle" class="h1" id = "t_title">Dual Band Selection</TD>
+      </TR>
+      <TR>
+        <TD colspan=3><SPAN id="t_vs_note">This router supports dual band, please choose the frequency that you would like to work with:</SPAN></TD>
+    </TR>
+      <TR>         <TD class = "blue" colspan=4></TD>
+      </TR>
+      <TR>
+        <TD colspan=2>
+          <INPUT name="WlanBand" id="WlanBand" type=radio value="3">
+          <SPAN id="t_2g_5g_note">Concurrently with 2.4GHz and 5GHz (802.11a/b/g/n)</SPAN></TD>
+      </TR>
+      <TR>
+        <TD colspan=2>
+          <INPUT name="WlanBand" id="WlanBand" type=radio value="1">
+          <SPAN id="t_2g_note">Only work in 2.4GHz (802.11b/g/n)</SPAN></TD>
+      </TR>
+      <TR>
+        <TD colspan=2>
+          <INPUT name="WlanBand" id="WlanBand" type=radio value="2">
+          <SPAN id="t_5g_note">Only work in 5GHz (802.11a/n)</SPAN><br></TD>
+      </TR>
+	<SCRIPT type="text/javascript">
+      if(wlanBandInf[0] == 0)
+      {
+      		document.write('<TR><TD colspan=2><B><span id="t_off_note">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To turn on the wireless radio, you can switch the Wireless On/Off button located on the back panel of the device to the ON position.<\/span> <\/TD><\/B><\/TR>');
+      }
+      else
+      {
+      		document.write('<TR><TD colspan=2><B><span id="t_off_note">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To turn off the wireless radio, you can switch the Wireless On/Off button located on the back panel of the device to the OFF position.<\/span> <\/TD><\/B><\/TR>');      		
+      }
+      </SCRIPT>
+	<SCRIPT type="text/javascript">
+	if(wlanBandInf[1] == 1)
+	{
+		document.write('<TR><TD colspan=2><span style="color:#FF0000" id="t_chng">The change of wireless config will not take effect until the Router reboots, please <\/span><A href="../userRpm/SysRebootRpm.htm" id="t_click">click here<\/A><span id="t_to_reboot" style="color:#FF0000"> to reboot.<\/span> <\/TD><\/TR>');
+	}
+	</SCRIPT>
+      <TR>
+        <TD class="blue"></TD>
+      </TR>
+          <TR>
+        <TD class = "mbtn" colspan=2><INPUT name="Save" type="submit" class="buttonBig" value="Save"></TD>
+      </TR>
+    </TABLE>
+  </CENTER>
+</FORM>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+if(wlanBandInf[0] == 0)
+{
+	document.forms[0].WlanBand[0].disabled = true;
+	document.forms[0].WlanBand[1].disabled = true;
+	document.forms[0].WlanBand[2].disabled = true;
+}
+else if(wlanBandInf[0] == 3)
+{
+	document.forms[0].WlanBand[0].checked = true;
+}
+else if(wlanBandInf[0] == 2)
+{
+	document.forms[0].WlanBand[2].checked = true;
+}
+else if(wlanBandInf[0] == 1)
+{
+	document.forms[0].WlanBand[1].checked = true;
+}
+</SCRIPT>

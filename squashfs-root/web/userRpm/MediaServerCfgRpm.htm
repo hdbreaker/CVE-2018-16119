@@ -1,0 +1,274 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+
+<script language="Javascript" type="text/javascript">
+var scanIntervelIndex = MediaServerInfo[4];
+var prefixPath = " ";
+if(mntPointInfo[0] > 1)
+{	
+	var len = mntPointInfo[2].length;
+	prefixPath = mntPointInfo[2].substring(0,(len-mntPointInfo[4].length -1));
+}
+else if(1 == mntPointInfo[0])
+{
+	prefixPath = mntPointInfo[2];
+}
+
+function onSpecifyFolder()
+{
+	location.href="MediaServerFoldersCfgRpm.htm";				   
+}
+
+function onScanFolder(folderIndex)
+{		
+	//alert('scan index: ' + folderIndex);
+	return true;
+}
+
+function onDeleteFolder(folderIndex)
+{	
+	location.href="MediaServerCfgRpm.htm?delete_folder="+folderIndex;
+}
+
+function charCompareA(szname, en_limit, cn_limit)
+{
+	var c;
+	var ch = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+
+	if (szname.length > en_limit)
+	{
+		return false;
+	}
+	for (var i = 0; i < szname.length; i++)
+	{
+		c = szname.charAt(i);
+		if (ch.indexOf(c) == -1)
+		{
+			if(szname.length > cn_limit)
+			{				
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+function onAutoScan()
+{
+	if(document.forms[0].auto_scan.checked == true)
+	{
+		document.forms[0].scan_interval.disabled = false;
+	}
+	else
+	{
+		document.forms[0].scan_interval.disabled = true;
+	}
+	doSaveScan();
+	
+}
+
+function doSaveScan()
+{
+	if(document.forms[0].auto_scan.checked == true)
+	{
+		location.href="MediaServerCfgRpm.htm?auto_scan=autoScan&Save=serverInfoSave&scan_interval="+scanIntervelIndex;
+	}
+	else
+	{
+		location.href="MediaServerCfgRpm.htm?Save=serverInfoSave";
+	}
+}
+
+function doChange()
+{
+	scanIntervelIndex = document.forms[0].scan_interval.selectedIndex;
+	doSaveScan();
+}
+
+function doSubmit()
+{			
+	return true;
+}
+
+function deleteShareFolder(index)
+{
+	delete_id = "deleteindex"+index;
+	obj = document.getElementById(delete_id);
+	
+	if(obj.disabled){
+		return;
+	}
+	
+	obj.disabled = true;
+	obj.style.color = 'gray';
+	
+	location.href="MediaServerCfgRpm.htm?delete_folder="+index;
+	
+	/*
+	window.setTimeout(function(){
+		if (obj)
+		{
+			obj.disabled = false;
+			obj.style.color = 'blue';
+		}
+	}, 5000);
+	*/
+}
+
+</script></head>
+<BODY onload="LoadHelp('MediaServerCfgHelpRpm.htm');setTagStr(document,'ntw_nas_media_server_cfg'); resize(this);" onResize="resize(this);">
+<center><form action="MediaServerCfgRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+<TABLE id="autoWidth">
+<TR><TD class=h1 colspan=2 id ="t_media_server_setting">Media Server Setting</TD></TR>
+<TR>
+	<TD>
+		<TABLE>
+			<TR>
+			<TD class="Item" id="t_serv_name">Server Name:</TD>
+			<TD class=emp>
+				<SCRIPT language = "JavaScript" type="text/javascript">
+					document.write(''+ MediaServerInfo[0]);
+				</SCRIPT>				
+			</TD>
+			</TR>
+
+			<TR>
+				<TD class="Item" id="t_serv_status">Server Status:</TD>&nbsp;
+				<TD class=emp>
+					<SCRIPT language = "JavaScript" type="text/javascript">
+					if (MediaServerInfo[1] == 0)
+					{
+						document.write('<span id="t_disabled">Stopped<\/span>');					
+					}
+					else
+					{
+						document.write('<span id="t_enabled">Started<\/span>')					
+					}
+					</SCRIPT>
+					&nbsp;<INPUT name="start_serv"  type="submit" class="buttonBig" value="Start" >
+					<INPUT name="stop_serv" type="submit" class="buttonBig" value="Stop" >	
+				</TD>			
+			</TR>
+		</TABLE>
+	</TD>
+</TR>
+
+<script language="JavaScript" type="text/javascript">
+if (MediaServerInfo[1] == 1)
+{
+	document.forms[0].start_serv.style.display = "none";
+}
+else
+{
+	document.forms[0].stop_serv.style.display = "none";
+}
+</script>
+
+<TR><TD class=blue></TD></TR>
+
+<TR>	
+	<TD>
+	<INPUT type="checkbox" value="autoScan" name="auto_scan" onClick = "onAutoScan();">&nbsp;&nbsp;&nbsp; Auto-scan every&nbsp;&nbsp;	
+	<select name="scan_interval" onChange="doChange()">	
+		<option id="t_2h" value="0" >2 hours</option>
+		<option id="t_6h" value="1" >6 hours</option>
+		<option id="t_12h" value="2">12 hours</option>
+		<option id="t_24h" value="3">24 hours</option>
+		<option id="t_48h" value="4">48 hours</option>
+	</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	
+	<input name="Refresh" type="submit" class="buttonBig" value="Scan All" onClick="return doSubmit();">&nbsp;</TD>	
+</TR>
+
+<TR>
+	<TD>&nbsp;<INPUT name="add_new_folder" class="buttonLL" type="button" value="Add share folder" onclick="return onSpecifyFolder();">&nbsp;&nbsp;&nbsp;
+	<!--<input name="Save" type="button" class="buttonBig" value="Save" onClick="return doSaveScan();">--></TD>			
+</TR>
+
+<TR><TD>	
+	<TABLE>
+	
+	<TR>
+		<TD><b>Name</b></TD>
+		<TD><b>File System</b></TD>
+		<TD><b>Folder</b></TD>
+		<!--<TD><b>Scan</b></TD>-->
+		<TD><b>Delete</b></TD>
+	</TR>
+	<SCRIPT language = "JavaScript" type="text/javascript">			
+		//mount usb disk num
+		if(mntPointInfo[0] != 0)
+		{
+			//media server status is stop
+			if(MediaServerInfo[1] == 0)
+			{
+				//document.write('<TR align="center"><TD class=info1 colspan="10" id = "t_device_empty">Server did not started<\/TD><\/TR>');
+			}
+			else
+			{
+				var i = 0;
+				var path = "";
+				for(i=0; i<ShareFoldersInfo[0]; i++)
+				{	
+					document.write('<TR>');
+					document.write('<TD>' + ShareFoldersInfo[i*6+2] + '<\/TD>');
+					document.write('<TD>' + ShareFoldersInfo[i*6+3] + '<\/TD>');
+					
+					path = ShareFoldersInfo[i*6+4].substr(prefixPath.length);
+					if(0 == path.length)
+					{
+						path = "/";
+					}
+					document.write('<TD>' + path + '<\/TD>');
+					
+					document.write('<TD align="center"><a href=\"javascript:deleteShareFolder(' + ShareFoldersInfo[i*6+1] + ') \"id="deleteindex' + ShareFoldersInfo[i*6+1] + '"><span id="t_delete">Delete</span><\/a><\/TD><\/TR>');					
+					
+					document.write('<\/TR>');
+				}
+			}			
+		}
+		else
+		{
+			document.forms[0].start_serv.disabled = true;
+			//document.forms[0].Refresh.disabled = true;
+			document.write('<TR align="center"><TD class=info1 colspan="10" id = "t_device_empty">No external storage device was found<\/TD><\/TR>');			
+		}	
+	</SCRIPT>		
+	</TABLE>	
+</TD></TR>
+
+<TR><TD class=blue></TD></TR>
+</TABLE>
+
+</form>
+</center>
+</BODY></HTML>
+<script language="JavaScript" type="text/javascript">
+
+/*share folders has reach to max shares*/
+if(ShareFoldersInfo[0] == MediaServerInfo[2])
+{
+	document.forms[0].add_new_folder.disabled = true;
+}
+
+document.forms[0].scan_interval.selectedIndex = MediaServerInfo[4];
+/*do not auto scan*/
+if(0 == MediaServerInfo[3])
+{
+	document.forms[0].auto_scan.checked = false;
+	document.forms[0].scan_interval.disabled = true;
+}
+else
+{
+	document.forms[0].auto_scan.checked = true;
+	document.forms[0].scan_interval.disabled = false;
+}
+
+/*server has been stoped,all must be disabled*/
+if(0 == MediaServerInfo[1])
+{
+	document.forms[0].add_new_folder.disabled = true;
+	document.forms[0].Refresh.disabled = true;
+	document.forms[0].auto_scan.disabled = true;
+	document.forms[0].scan_interval.disabled = true;
+}
+</script>

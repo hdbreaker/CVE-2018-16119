@@ -1,0 +1,104 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+<!--
+function Click(){ window.event.returnValue=false;}
+document.oncontextmenu=Click;
+//-->
+</SCRIPT>
+<SCRIPT type="text/javascript">
+<!--//
+function doFinish()
+{
+	if (window.parent == window)
+		window.close();
+	else 
+	{
+		parent.bottomLeftFrame.collapseAll();
+		parent.mainFrame.location.href="/userRpm/StatusRpm.htm";
+	}
+} 
+
+function doReboot()
+{
+	if(confirm(js_sure_reboot = "Are you sure to reboot the Router?"))
+	{
+		location.href = "/userRpm/SysRebootRpm.htm?Reboot=Reboot";
+		return true;
+	}
+	else 
+	{
+		return false;
+	}
+}
+
+//-->
+</SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'wzd_end');LoadHelp('WzdFinishHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="WzdEndRpm.htm" enctype=multipart/form-data method="get">
+    <TABLE id=autoWidth>
+      <TBODY>
+        <TR>
+          <TD class=h1 colspan=2 id="t_wzdEndT">Quick Setup - Finish</TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR>
+          		<TD class=h2 id="t_wzdEndMsg"><B>Congratulations!</B></TD>
+		</TR>
+		<TR>
+			<TD>&nbsp; &nbsp; The basic internet and wireless settings are finished, please click <B>Finish</B> button and test your internet connection.</TD>
+		</TR>
+		<TR>
+			<TD>&nbsp; &nbsp; If it is failed, please reboot your modem and wait 2 minutes or run the Quick Setup again.</TD>
+        </TR>
+        <SCRIPT type="text/javascript">
+			if(wzdFinishInf[5] == 1)
+			{
+				document.write('<TR><TD style = "padding-left: 5%"><SPAN style="color:#FF0000" id="t_chg_warn">The change of wireless config will not take effect until the Router reboot.</SPAN> </TD></TR>'); 
+			}
+		</SCRIPT>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <TR>
+          <TD class=mbtn><INPUT class=buttonBig id=Return type=submit value="Back" name="Return">
+            &nbsp; 
+            &nbsp;
+            <SCRIPT type="text/javascript">
+<!--//
+if(wzdFinishInf[0])
+{
+	document.write('<input name=\"SecWzd\" type=\"submit\" class=\"buttonBig\" id=\"Submit\" value=\"FireWall Cfg\" >&nbsp; &nbsp;');
+}
+
+     if ((wzdFinishInf[5] == 1))
+     {
+     	document.write('<INPUT class=buttonBig id=Submit type=button value=Reboot name=\"Reboot\" onClick=\"doReboot();\">');
+     }
+     else
+     {
+   	  document.write('<INPUT class=buttonBig id=Submit type=button value=Finish name=\"Complete\" onClick=\"doFinish();\"> ');     
+    }
+      
+//-->
+</SCRIPT>
+            <INPUT type=hidden name=ClientId></TD>
+        </TR>
+        <SCRIPT type="text/javascript">
+<!--//
+document.forms[0].ClientId.value = wzdFinishInf[1];
+//-->
+</SCRIPT>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

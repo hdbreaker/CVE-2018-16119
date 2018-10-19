@@ -1,0 +1,271 @@
+
+<SCRIPT type="text/javascript">
+<!--
+function doGetResu()
+{
+	location.href="/userRpm/PingIframeRpm.htm?ping_addr="+parent.pingAddr+"&doType="+parent.doType+"&isNew=old"+"&lineNum="+parent.disLineNum;
+}
+//-->
+</SCRIPT>
+<HEAD>
+</HEAD>
+<BODY>
+</BODY>
+</HTML>
+<SCRIPT type="text/javascript">
+var	timeInterVal = 400;
+var	arrayLen = 0;
+var	arrayNum = 0;
+var	i = 0;
+var	trSeq = 0;
+var	timeout = 0;
+var timerId_0, timerId_1, timerId_2;
+
+parent.doSetButton(0);
+
+function setScroll()
+{
+	var obj;
+	obj = parent.document.getElementById("result");
+	obj.scrollTop = obj.scrollHeight;
+	//obj.scrollIntoView(true);
+}
+
+
+if(diagnostic_para.length == 2)
+{
+	parent.document.getElementById("Sub").value = parent.document.getElementById("t_start_only").innerHTML;
+}
+else if(parent.doType=="ping")
+{
+	if((diagnostic_para[0] == 0) && (diagnostic_para.length > 2))
+	{
+		printPingHead();
+	}
+	if(diagnostic_para[2] == 0)
+	{
+		arrayNum = 0;
+		var line=diagnostic_para[3] - parent.disLineNum;
+		parent.disLineNum = diagnostic_para[3];
+		for(i = 0; i < line; i++)
+		{
+			timerId_0 = setTimeout("printPingOnLine()",timeInterVal*(i+1));
+		}
+		if((diagnostic_para[3] == diagnostic_para[4]) && (diagnostic_para[3] != 0))
+		{
+			setTimeout("printPingTail()",timeInterVal*(i+1));
+		}
+		if(diagnostic_para[1] == 0)
+		{
+			if(i == 0)
+			{
+				timerId_1 = setTimeout("doGetResu()",timeInterVal);
+			}
+			else
+			{
+				timerId_1 = setTimeout("doGetResu()",timeInterVal*i);
+			}
+		}
+	}
+	else
+	{
+		parent.document.getElementById("Sub").value = parent.document.getElementById("t_start_only").innerHTML;
+	}
+}
+else if(parent.doType == "tracert")
+{
+	if((diagnostic_para[0] == 0)&&(diagnostic_para.length > 2))
+	{
+		printTracertHead();
+	}
+	if(diagnostic_para[2] == 0)
+	{
+		arrayNum=0;
+		var line=diagnostic_para[3] - parent.disLineNum;
+		parent.disLineNum = diagnostic_para[3];
+		for(i = 0;i < line; i++)
+		{
+			timeout = setTimeout("printTracertOnLine()", 1.5*timeInterVal*(i+1));
+		}
+		if((diagnostic_para[3] == diagnostic_para[4])&&(diagnostic_para[3] != 0))
+		{
+			setTimeout("printTracertTail()", 1.5*timeInterVal*i+timeInterVal);
+		}
+		if(diagnostic_para[1] == 0)
+		{
+			if(i==0)
+			{
+				setTimeout("doGetResu()",1.5*timeInterVal);
+			}
+			else
+			{
+				setTimeout("doGetResu()",2*timeInterVal*i);
+			}
+		}
+	}
+	else
+	{
+		parent.document.getElementById("Sub").value = parent.document.getElementById("t_start_only").innerHTML;
+	}
+}
+function printPingHead()
+{
+	var errType = diagnostic_para[2];
+	if(errType == 0)
+	{
+		parent.document.getElementById("result").value += " Pinging "+parent.pingAddr;
+		if(parent.pingAddr != diagnostic_para[5])
+		{
+			parent.document.getElementById("result").value += " ["+diagnostic_para[5]+"]";
+		}
+		parent.document.getElementById("result").value += " with "+parent.pSize+" bytes of data:\n\n";
+	}
+	else if(errType == 53)
+	{
+		parent.document.getElementById("result").value += " Ping request could not find host "+parent.pingAddr+". Please check the name and try again.\n";
+	}
+	else if(errType == 8)
+	{
+		parent.document.getElementById("result").value += " Error IP address.\n";
+	}
+	else if(errType == 9)
+	{
+		parent.document.getElementById("result").value += " Some other task is running. Please wait for a moment and try again.\n";
+	}
+	else
+	{
+		parent.document.getElementById("result").value += " Some wrong happened..";
+	}
+	setScroll();
+}
+function printPingOnLine()
+{
+	var n = ping_verbos_result[arrayNum++];
+
+	if(n == 0)
+	{
+		parent.document.getElementById("result").value += " Reply from "+ping_verbos_result[arrayNum++];
+		parent.document.getElementById("result").value += ":  bytes="+ping_verbos_result[arrayNum++];
+		var n1 = ping_verbos_result[arrayNum];
+		parent.pnTotalTime += parseInt(n1);
+		if(n1>parent.pnMaxTime)
+		{
+			parent.pnMaxTime = n1;
+		}
+		if(n1<parent.pnMinTime)
+		{
+			parent.pnMinTime = n1;
+		}
+		parent.document.getElementById("result").value += "  time="+ping_verbos_result[arrayNum++];
+		parent.document.getElementById("result").value += "  TTL="+ping_verbos_result[arrayNum++];
+		parent.document.getElementById("result").value += "  seq="+ping_verbos_result[arrayNum++]+"\n";
+		parent.pnRecvTimes++;
+	}
+	else
+	{
+		parent.document.getElementById("result").value += " Request timed out.\n";
+	}
+	parent.pnSendTimes++;
+	setScroll();
+}
+function printPingTail()
+{
+	if(parent.pnSendTimes!=0)
+	{
+		var n1 = parent.pnRecvTimes;
+		var n2 = parent.pnSendTimes - n1;
+		var lostRate = parseInt(100*n2/parent.pnSendTimes);
+		clearTimeout(timerId_0);
+		clearTimeout(timerId_1);
+
+		parent.document.getElementById("result").value += "\n Ping statistics for "+parent.pingAddr;
+
+		parent.document.getElementById("result").value += "\n  Packets: Sent = "+parent.pnSendTimes;
+
+		parent.document.getElementById("result").value += ", Received = "+ parent.pnRecvTimes;
+		parent.document.getElementById("result").value += ", Lost = "+ n2;
+		parent.document.getElementById("result").value += " ("+lostRate+"% loss),\n";
+		if(n1 > 0)
+		{
+			var averageTime = parseInt(parent.pnTotalTime/parent.pnRecvTimes);
+
+			parent.document.getElementById("result").value += " Approximate round trip times in milliseconds:\n  Minimum = ";
+			parent.document.getElementById("result").value += parent.pnMinTime + ", Maximum = ";
+			parent.document.getElementById("result").value += parent.pnMaxTime + ", Average = " + averageTime;
+		}
+	}
+	parent.document.getElementById("Sub").value = parent.document.getElementById("t_start_only").innerHTML;
+	setScroll();
+}
+function printTracertHead()
+{
+	var errType = diagnostic_para[2];
+	if(errType==0)
+	{
+		parent.document.getElementById("result").value +="Tracing route to "+parent.pingAddr;
+		if(parent.pingAddr != diagnostic_para[5])
+		{
+			parent.document.getElementById("result").value +=" ["+diagnostic_para[5]+"]";
+		}
+		parent.document.getElementById("result").value +=" over a maximum of "+parent.trHops+" hops\n\n";
+	}
+	else if(errType==53)
+	{
+		parent.document.getElementById("result").value += "Tracert request could not find host "+parent.pingAddr+". Please check the name and try again.\n";
+	}
+	else if(errType==8)
+	{
+		parent.document.getElementById("result").value += "Error IP address.\n";
+	}
+	else if(errType==9)
+	{
+		parent.document.getElementById("result").value += "Some other task is running. Please wait for a moment and try again.\n";
+	}
+	else
+	{
+		parent.document.getElementById("result").value += "Some wrong happened..";
+	}
+	setScroll();
+}
+function printTracertOnLine()
+{
+
+	if(tracert_verbos_result[arrayNum] < 10)
+	{
+		parent.document.getElementById("result").value += " ";
+	}
+	parent.document.getElementById("result").value += tracert_verbos_result[arrayNum++] +" ";
+	for(i = 0; i < 3; i++)
+	{
+		if((tracert_verbos_result[arrayNum] < 10)||(tracert_verbos_result[arrayNum] == 255))
+		{
+			parent.document.getElementById("result").value += "   ";
+		}
+		if(tracert_verbos_result[arrayNum] == 255)
+		{
+			parent.document.getElementById("result").value += "*   ";
+			arrayNum++;
+		}
+		else
+		{
+			parent.document.getElementById("result").value += tracert_verbos_result[arrayNum++] + "ms ";
+		}
+	}
+	if(tracert_verbos_result[arrayNum-1] != 255)
+	{
+		parent.document.getElementById("result").value += "   " + tracert_verbos_result[arrayNum++] + "\n";
+	}
+	else
+	{
+		parent.document.getElementById("result").value += "   Request timed out.\n";
+	}
+	setScroll();
+}
+function printTracertTail()
+{
+
+	parent.document.getElementById("result").value += "\nTrace complete."
+	parent.document.getElementById("Sub").value = parent.document.getElementById("t_start_only").innerHTML;
+	setScroll();
+}
+</SCRIPT>

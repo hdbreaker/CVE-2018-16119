@@ -1,0 +1,12 @@
+
+prefix=/mnt/slave/workspace/SOHO3_build_Linux_AP136/build/../rootfs.build.2.6.31_ap135_hnat
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+xtlibdir=${exec_prefix}/libexec/xtables
+includedir=${prefix}/include
+
+Name:		xtables
+Description:	Shared Xtables code for extensions and iproute2
+Version:	1.4.5
+Cflags:		-I${includedir}
+Libs:		-L${libdir} -lxtables

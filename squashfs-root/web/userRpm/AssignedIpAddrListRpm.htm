@@ -1,0 +1,74 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+<!--//
+//-->
+</SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_assigned_ip_addr_list'); LoadHelp('AssignedIpAddrListHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="AssignedIpAddrListRpm.htm" enctype="multipart/form-data" method="get">
+    <TABLE id="autoWidth">
+      <TBODY>
+        <TR>
+          <TD class=h1 id = "t_title">DHCP Clients List</TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <SCRIPT type="text/javascript">
+if (DHCPDynPara[0] > 0)
+{
+	var row = 0;
+	var i = 0;
+	var j;
+	document.write('<TR><TD><table border=0>');
+	document.write('<TR><TD class=ListB id = "t_id">ID</TD><TD class=ListB id = "t_client_name">Client Name</TD><td class=ListB id = "t_mac_address">MAC Address</td><TD class=ListB id = "t_assigned_ip">Assigned IP</TD><TD class=ListB id = "t_lease_time">Lease Time</TD></TR>');
+	for(i = 0; i < DHCPDynPara[0]; i++)
+	{	
+		j = i+1;
+		row = i * DHCPDynPara[1];
+		document.write('<tr><td >' + j + '</td>');
+		document.write('<td >' + DHCPDynList[row] + '</td>');
+		document.write('<td >' + DHCPDynList[row+1] + '</td>');
+		document.write('<td >' + DHCPDynList[row+2] + '</td>');
+		//Changed by zhouqiqiu 2007-7-25
+		if(null != DHCPDynList[row+3].match(':'))
+		{
+			document.write('<td>' + DHCPDynList[row+3] + '</TD></TR>');
+		}
+		else
+		{
+            if(DHCPDynList[row+3]=="Permanent")
+            {
+                           document.write('<td id="t_permanent" name="t_permanent">Permanent</TD></TR>');
+            }
+            else
+            {
+                 document.write('<td>' + DHCPDynList[row+3] + '</TD></TR>');
+            }
+		}
+	}
+	document.write('</table></TD></TR>');
+}
+	else	
+	{
+	document.write('<TR><TD class=info1 id = "t_list_none">No attached client currently.</TD></TR>');
+	}
+
+</SCRIPT>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <TR>
+          <TD class=mbtn><INPUT name="Refresh" type="submit" class="buttonBig" value="Refresh"></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

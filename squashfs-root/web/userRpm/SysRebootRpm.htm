@@ -1,0 +1,46 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript"><!--//
+function doSubmit()
+{
+	if(confirm(js_to_reboot="Are you sure to reboot the Router?"))
+	{
+		location.href = "/userRpm/SysRebootRpm.htm";
+		return true;
+	}
+	else 
+	{
+		return false;
+	}
+}
+//--></SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_sys_reboot');LoadHelp('SysRebootHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="SysRebootRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth">
+      <TBODY>
+        <TR>
+          <TD class=h1 id="t_title">Reboot</TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <TR>
+          <TD class=info id = "t_notice">Click this button to reboot the device.</TD>
+        </TR>
+        <TR>
+          <TD class="mbtn"><INPUT name="Reboot" type="submit" class="buttonBig" value="Reboot" id = "reboot"></TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

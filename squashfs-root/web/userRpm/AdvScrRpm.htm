@@ -1,0 +1,162 @@
+
+<SCRIPT type="text/javascript">
+<!--
+function showDosOpt(show)
+{
+	if(!advPara[0])
+	{
+		return true;
+	}	
+	document.forms[0].bIcmpFlood.disabled  = !show;
+	document.forms[0].usIcmpFlood.disabled  = !show;
+	document.forms[0].bUdpFlood.disabled  = !show;
+	document.forms[0].usUdpFlood.disabled  = !show;
+	document.forms[0].bTcpSynFlood.disabled  = !show;
+	document.forms[0].usTcpSynFlood.disabled  = !show;
+	document.forms[0].ping.disabled  = !show;
+	document.forms[0].lanPing.disabled = !show;
+	return true;
+}
+function doShow()
+{
+location.href="/userRpm/MiscShowRpm.htm";
+}
+function doSubmit()
+{
+if (advPara[0])
+{
+var element;
+element=document.forms[0].usIcmpFlood;
+if((!is_number(element.value,5,3600))||(element.value==""))
+		 {
+                       alert(js_bad_icmp_thrd="Invalid ICMP-FLOOD Packets threshold, please input another number(5-3600)!"); 
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+element=document.forms[0].usUdpFlood;
+if((!is_number(element.value,5,3600))||(element.value=="")) 
+		{
+		
+                        alert(js_bad_udp_thrd="Invalid UDP-FLOOD Packets threshold, please input another number(5-3600)!");
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+element=document.forms[0].usTcpSynFlood;
+if((!is_number(element.value,5,3600))||(element.value=="")) 
+		{
+		
+alert(js_bad_tcp_thrd="Invalid TCP-FLOOD Packets threshold, please input another number(5-3600)!"); 
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+	}
+	return true;
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY onLoad="showDosOpt(advPara[3]);setTagStr(document,'ntw_adv_scr'); LoadHelp('MiscHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="AdvScrRpm.htm" enctype="multipart/form-data" method="get" >
+    <TABLE id="autoWidth">
+      <TR>
+        <TD class=h1 colspan=2><DIV id="t_title">Advanced Security</DIV></TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+      <SCRIPT type="text/javascript">
+if (advPara[0] && advPara[1])
+	document.getElementById("t_title").innerHTML = "<span id=\"t_adv_scr\">Advanced Security</span>";
+else if (advPara[1])
+	document.getElementById("t_title").innerHTML = "<span id=\"t_ping\">Ping</span>";
+else
+	document.getElementById("t_title").innerHTML = "<span id=\"t_ping_wan\">Ping from WAN</span>";
+if (advPara[0])
+{
+	document.write('<TR><TD class=Item id="t_interval">Packets Statistics Interval (5 ~ 60):</TD><TD><select name=interval class=listS>');
+document.write('<option value=5> 5 </option>');
+document.write('<option value=10> 10 </option>');
+document.write('<option value=15> 15 </option>');
+document.write('<option value=20> 20 </option>');
+document.write('<option value=25> 25 </option>');
+document.write('<option value=30> 30 </option>');
+document.write('<option value=35> 35 </option>');
+document.write('<option value=40> 40 </option>');
+document.write('<option value=45> 45 </option>');
+document.write('<option value=50> 50 </option>');
+document.write('<option value=55> 55 </option>');
+document.write('<option value=60> 60 </option>');
+document.write('</select><span id="t_seconds">&nbsp;Seconds</span></TD></TR>');
+document.write('<TR><TD colspan=2></TD></TR>');
+	document.write('<TR><TD class=Item id="t_dos_prot">DoS Protection:</TD><TD><input type=\"radio\" value=1 name=\"dosAttack\" Checked onclick="showDosOpt(false);"><span id="t_disable">Disable</span>&nbsp;&nbsp;<input type="radio" value="2" name="dosAttack" onclick="showDosOpt(true);"><span id="t_enable">Enable</span></TD></TR>');
+document.write('<TR><TD colspan=2></TD></TR>');
+	document.write('<TR><TD class=clk colspan=2><input name="bIcmpFlood" type="checkbox" value="2" >&nbsp;<span id="t_en_icmp">Enable ICMP-FLOOD Attack Filtering</span></TD></TR>');
+	document.write('<TR><TD class=Item id="t_icmp_thrd">ICMP-FLOOD Packets Threshold (5 ~ 3600):</TD><TD><input name="usIcmpFlood" type="text" class="text" value="50" size="6" maxlength="5" >&nbsp;<span id="t_pkts" name="t_pkts">Packets/s </span></TD></TR> ');
+document.write('<TR><TD colspan=2></TD></TR>');
+	document.write('<TR><TD class=clk colspan=2><input name="bUdpFlood" type="checkbox" value="2" >&nbsp;<span id="t_en_udp">Enable UDP-FLOOD Filtering</span></TD></TR>');
+	document.write('<TR><TD class=Item id="t_udp_thrd">UDP-FLOOD Packets Threshold (5 ~ 3600):</TD><TD><input name="usUdpFlood" type="text" class="text" value="500" size="6" maxlength="5" ><span id="t_pkts" name="t_pkts">&nbsp;Packets/s</span></TD></TR>');
+document.write('<TR><TD colspan=2></TD></TR>');
+	document.write('<TR><TD class=clk colspan=2><input name="bTcpSynFlood" type="checkbox" value="2" >&nbsp;<span id="t_en_tcp">Enable TCP-SYN-FLOOD Attack Filtering</span></TD></TR>');
+	document.write('<TR><TD class=Item id="t_tcp_thrd">TCP-SYN-FLOOD Packets Threshold (5 ~ 3600):</TD><TD><input name="usTcpSynFlood" type="text" class="text" value="50" size="6" maxlength="5" ><span id="t_pkts" name="t_pkts">&nbsp;Packets/s</span></TD></TR>');
+document.write('<TR><TD colspan=2></TD></TR>');
+document.forms[0].interval.value =advPara[2];
+if (advPara[3] == 0)	
+{
+	document.forms[0].dosAttack[0].checked =true;
+}
+else	
+{
+	document.forms[0].dosAttack[1].checked =true;	
+}
+document.forms[0].bIcmpFlood.checked =advPara[4];
+document.forms[0].usIcmpFlood.value =advPara[5];
+document.forms[0].bUdpFlood.checked =advPara[6];
+document.forms[0].usUdpFlood.value =advPara[7];
+document.forms[0].bTcpSynFlood.checked =advPara[8];
+document.forms[0].usTcpSynFlood.value =advPara[9];	
+}
+</SCRIPT>
+      <TR>
+        <TD class=clk colspan=2><INPUT name="ping" type="checkbox" value="2">
+          &nbsp;<SPAN id="t_ingore_ping">Ignore Ping Packet From WAN Port</SPAN></TD>
+      </TR>
+      <SCRIPT type="text/javascript">
+document.forms[0].ping.checked =advPara[10];
+if (advPara[1]) 
+{
+document.write('<TR><TD class=clk colspan=2><input name=lanPing type=checkbox value=2>&nbsp;<span id="t_forbid_ping">Forbid Ping Packet From LAN Port</span></TD></TR>');
+document.forms[0].lanPing.checked =advPara[11];
+}
+</SCRIPT>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+      <TR>
+        <TD colspan=2 class="clk"><INPUT name="Save" type="submit" class="buttonBig" value="Save" onClick="return doSubmit();">
+          &nbsp;
+          <SCRIPT type="text/javascript">
+if (advPara[0]) 
+	document.write('<input name=Showhostlist type=button class=buttonBigL onClick=\"doShow();\" value=\"Blocked DoS Host List\">');
+</SCRIPT></TD>
+      </TR>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

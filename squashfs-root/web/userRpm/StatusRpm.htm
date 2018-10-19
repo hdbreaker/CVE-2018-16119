@@ -1,0 +1,486 @@
+
+<SCRIPT language="javascript" src="../dynaform/custom.js" type="text/javascript"></SCRIPT>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript"><!--//
+
+function doRefresh()
+{
+	location.href="StatusRpm.htm"; return true;
+}
+
+function doConnect(n)
+{
+	var s = "&wan="+n;
+	location.href="StatusRpm.htm?Connect=Connect"+s;return true;
+}
+
+function doDisConnect(n)
+{
+	var s = "&wan="+n;
+	location.href="StatusRpm.htm?Disconnect=Disconnect"+s;return true;
+}
+
+function doRenew(n)
+{
+	var s = "&wan="+n;
+	location.href="StatusRpm.htm?RenewIp=Renew"+s;return true;
+}
+
+function doRelease(n)
+{
+	var s = "&wan="+n;
+	location.href="StatusRpm.htm?ReleaseIp=Release"+s;return true;
+}
+
+function doSecRenew(n)
+{
+	var s = "&wan="+n;
+	location.href="StatusRpm.htm?RenewSecIp=1"+s;return true;
+}
+
+function doSecRelease(n)
+{
+	var s = "&wan="+n;
+	location.href="StatusRpm.htm?ReleaseSecIp=1"+s;return true;
+}
+
+function doLogin(n)
+{	
+	var s = "&wan="+n;
+	location.href="StatusRpm.htm?Login=Login"+s;return true;
+}
+function doLogout(n)
+{
+	var s = "&wan="+n;
+	location.href="StatusRpm.htm?Logout=Logout"+s;return true;
+}
+
+var wanTypeStringArray = new Array(
+" ",
+"<span id = \"t_dyn_ip\">Dynamic IP<\/span>",
+"<span id =\"t_static_ip\">Static IP<\/span>",
+"<span id = \"t_pppoe\">PPPoE<\/span>",
+"<span id = \"t_ie_dyn\">IEEE802.1X + Dynamic IP<\/span>" ,
+"<span id = \"t_ie_static\">IEEE802.1X + Static IP<\/span>",
+"<span id = \"t_big_pond_cable\">BigPond Cable<\/span>",
+"<span id = \"t_l2tp\">L2TP<\/span>",
+"<span id = \"t_pptp\">PPTP<\/span>"
+);
+
+var wanLinkModeStringArray = new Array(
+new Array(0),
+new Array(1),
+new Array(2),
+new Array(" ",
+	"<span id = \"t_conn_on_demand\">(Connect on Demand)<\/span>",
+	"<span id = \"t_conn_auto\">(Connect Automatically)<\/span>",
+	"<span id = \"t_conn_time_based\">(Connect Time-based)<\/span>",
+	"<span id = \"t_conn_manually\">(Connect Manually)<\/span>"	
+),
+new Array(4),
+new Array(5),
+new Array(6),
+new Array(" ",
+	"<span id = \"t_conn_on_demand\">(Connect on Demand)<\/span>",
+	"<span id = \"t_conn_auto\">(Connect Automatically)<\/span>",
+	"<span id = \"t_conn_manually\">(Connect Manually)<\/span>"),
+new Array(" ",
+"<span id = \"t_conn_on_demand\">(Connect on Demand)<\/span>",
+"<span id = \"t_conn_auto\">(Connect Automatically)<\/span>",
+	"<span id = \"t_conn_manually\">(Connect Manually)<\/span>"
+),
+new Array(9)
+);
+
+var wanStatusStringArray = new Array(
+" ",
+"<span id = \"t_disabled\">Disabled<\/span>",
+"<span id = \"t_timeout\">Timeout<\/span>",
+"<span id = \"t_link_down\">Link Down<\/span>",
+"<span id = \"t_link_up\">Link Up<\/span>"
+);
+var wlanTypeStringArray = new Array(
+" ",
+"<span id = \"t_11bo\">11b only<\/span>",
+"<span id = \"t_11go\">11g only<\/span>",
+"<span id = \"t_11no\">11n only<\/span>",
+"<span id = \"t_11bgm\">11bg mixed<\/span>",
+"<span id = \"t_11bgnm\">11bgn mixed<\/span>",
+"<span id = \"t_11ao\">11a only<\/span>",
+"<span id = \"t_11nao\">11n only<\/span>",
+"<span id = \"t_11anm\">11an mixed<\/span>",
+" "
+);
+
+var IEEE8021xLoginStringArray = new Array(
+" ",				//0
+"<span id = \"t_not_log_in\">Not log in<\/span>"	,		//1
+"<span id = \"t_logging_in\">Logging in, please wait...<\/span>"	,	//2
+"<span id = \"t_longin_suc\">Login successfully<\/span>"//3
+);
+var DHCPStringArray = new Array(
+" ",				//0
+"<span id = \"t_obt_net_para\">Obtaining network parameters...<\/span>"	,	//1
+"<span id = \"t_unpluged_info\" style=\"color:#FF0000\">WAN port is unplugged!<\/span>"
+);
+var maskArray = new Array(
+"255.0.0.0",			//0		class A
+"255.255.0.0",			//1		class B
+"255.255.255.0"			//2		class C
+);
+var wlanChannelWidthArray = new Array(
+"",
+"20MHz",
+"<span id=\"t_automatic\" name=\"t_automatic\">Automatic<\/span>",
+"40MHz"
+);
+
+--></SCRIPT>
+</HEAD>
+<BODY onLoad="LoadHelp('StatusHelpRpm.htm');setTagStr(document,'ntw_status'); resize(this);" onResize="resize(this);">
+<FORM action="StatusRpm.htm" enctype="multipart/form-data" method="get">
+  <TABLE id="autoWidth">
+    <TBODY>
+      <TR>
+        <TD class=h1 colspan=3 id = "t_title">Status</TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=3></TD>
+      </TR>
+      <TR>
+        <TD class=Item id = "t_firm_vs">Firmware Version:</TD>
+        <TD colspan=2><DIV id="fversion"></DIV></TD>
+      </TR>
+      <TR>
+        <TD class=Item id = "t_hd_vs">Hardware Version:</TD>
+        <TD colspan=2><DIV id="hversion"></DIV></TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=3></TD>
+      </TR>
+      <TR>
+        <TD class=h2 colspan=3 id = "t_lan">LAN</TD>
+      </TR>
+      <TR>
+        <TD width=25% class=Item id = "t_mac_addr" name="t_mac_addr">MAC Address:</TD>
+        <TD colspan=2><DIV id="lanMac">-</DIV></TD>
+      </TR>
+      <TR>
+        <TD class=Item id = "t_ip_addr" name="t_ip_addr">IP Address:</TD>
+        <TD colspan=2 ><DIV id="lanIP">-</DIV></TD>
+      </TR>
+      <TR>
+        <TD class=Item id = "t_sub_mask" name="t_sub_mask">Subnet Mask:</TD>
+        <TD colspan=2 ><DIV id="lanMask">-</DIV></TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=3></TD>
+      </TR>
+      <SCRIPT type="text/javascript"><!--
+
+
+
+var maskType = lanPara[2];
+if (statusPara[0] == 1)
+{
+	var wlanSta = (wlanPara[0] == 0)? "<span id = \"t_disable\">Disable<\/span>" : "<span id = \"t_enable\">Enable<\/span>" ;
+	var wlanName =wlanPara[1];
+	if (wlanPara[2] == 15)
+		var wlanChannel = "<SPAN id=\"t_auto\" name=\"t_auto\">Auto</SPAN> (<SPAN id=\"t_cur_chl\" name=\"t_cur_chl\">Current channel</SPAN> " +wlanPara[9]+ ")" ;
+	else
+                var wlanChannel=wlanPara[2];
+	var wlanModeIndex=wlanPara[3];
+	var wlanMac=wlanPara[4];
+	var wlanIp=wlanPara[5];
+	var wlanWDSStatus=wlanPara[10];
+		
+	document.write('<TR><TD class=h2 colspan=3 id = "t_wireless">Wireless<\/TD><\/TR>');
+	document.write('<TR><TD class=Item id = "t_wl_radio">Wireless Radio:<\/TD><TD colspan=2>' + wlanSta +'<\/TD><\/TR>');
+	
+
+	document.write('<TR><TD class=Item id = "t_name_ssid">Name (SSID):<\/TD><TD colspan=2>'); 
+	var i = 0;
+	for (i=0;i<wlanName.length; i++)
+	{
+		if (wlanName.charAt(i) == ' ')
+		   document.write('&nbsp;');
+		else if (wlanName.charAt(i) == '<')
+		{
+			document.write('&lt;');
+		}		 
+	  else
+		  	document.write(wlanName.charAt(i));
+		 } 
+	document.write('<\/TD><\/TR>');
+	/*add by chenlifeng
+	if((wlanModeIndex == 6) || (wlanModeIndex == 7) || (wlanModeIndex == 8))
+	{
+		document.write('<TR><TD class=Item id = "t_band">Band:<\/TD><TD colspan=2>' + "5G " +'<\/TD><\/TR>');//"<span id = \"t_11ao\">11a <\/span>"
+	}
+	else
+	{
+		document.write('<TR><TD class=Item id = "t_band">Band:<\/TD><TD colspan=2>' + "2.4G " +'<\/TD><\/TR>');
+	}
+	end add*/
+	document.write('<TR><TD class=Item id = "t_mode">Mode:<\/TD><TD colspan=2>' + wlanTypeStringArray[wlanModeIndex] +'<\/TD><\/TR>');
+
+	document.write('<TR><TD class=Item id = "t_channel">Channel:<\/TD><TD colspan=2>' + wlanChannel +'<\/TD><\/TR>');
+
+	document.write('<TR><TD class=Item id="t_chanel_width">Channel Width:<\/TD><td>'+ wlanChannelWidthArray[wlanPara[6]] +'<\/td><\/TR>');
+
+	document.write('<TR><TD class=Item id = "t_mac_addr" name="t_mac_addr">MAC Address:<\/TD><TD colspan=2>' + wlanMac +'<\/TD><\/TR>');
+	switch (wlanWDSStatus)
+	{
+		case 0:wlanWDSStatus = "<SPAN id=\"t_wds_init\">Init...</SPAN>";break;
+		case 1:wlanWDSStatus = "<SPAN id=\"t_wds_scan\">Scan...</SPAN>";break;
+		case 2:wlanWDSStatus = "<SPAN id=\"t_wds_join\">Join...</SPAN>";break;
+		case 3:wlanWDSStatus = "<SPAN id=\"t_wds_auth\">Auth...</SPAN>";break;
+		case 4:wlanWDSStatus = "<SPAN id=\"t_wds_asso\">Assoc...</SPAN>";break;
+		case 5:wlanWDSStatus = "<SPAN id=\"t_wds_run\">Run</SPAN>";break;
+		case 6:wlanWDSStatus = "<SPAN id=\"t_wds_dis\">Disable</SPAN>";break;
+		default:wlanWDSStatus = "<SPAN id=\"t_wds_inv\">Invalid</SPAN>";break;
+	}
+	if (wlan_wds)
+       document.write('<TR><TD class=Item id = "t_wds_status">WDS Status:<\/TD><TD colspan=2>' + wlanWDSStatus +'<\/TD><\/TR>');
+
+	document.write('<TR><TD class=blue colspan=3><\/TD><\/TR>');
+}
+
+if (statusPara[1] == 1)
+{
+	var wlanSta = (wlan5GPara[0] == 0)? "<span id = \"t_disable\">Disable<\/span>" : "<span id = \"t_enable\">Enable<\/span>" ;
+	var wlanName =wlan5GPara[1];
+	if (wlan5GPara[2] == 15)
+		var wlanChannel = "<SPAN id=\"t_auto\" name=\"t_auto\">Auto</SPAN> (<SPAN id=\"t_cur_chl\" name=\"t_cur_chl\">Current channel</SPAN> " +wlan5GPara[9]+ ")" ;
+	else
+                var wlanChannel=wlan5GPara[2];
+	var wlanModeIndex=wlan5GPara[3];
+	var wlanMac=wlan5GPara[4];
+	var wlanIp=wlan5GPara[5];
+	var wlanWDSStatus=wlan5GPara[10];
+		
+	document.write('<TR><TD class=h2 colspan=3 id = "t_wireless">Wireless 5GHz<\/TD><\/TR>');
+	document.write('<TR><TD class=Item id = "t_wl_radio">Wireless Radio:<\/TD><TD colspan=2>' + wlanSta +'<\/TD><\/TR>');
+	
+
+	document.write('<TR><TD class=Item id = "t_name_ssid">Name (SSID):<\/TD><TD colspan=2>'); 
+	var i = 0;
+	for (i=0;i<wlanName.length; i++)
+	{
+		if (wlanName.charAt(i) == ' ')
+		   document.write('&nbsp;');
+		else if (wlanName.charAt(i) == '<')
+		{
+			document.write('&lt;');
+		}		 
+	  else
+		  	document.write(wlanName.charAt(i));
+		 } 
+	document.write('<\/TD><\/TR>');
+
+	document.write('<TR><TD class=Item id = "t_mode">Mode:<\/TD><TD colspan=2>' + wlanTypeStringArray[wlanModeIndex] +'<\/TD><\/TR>');
+
+	document.write('<TR><TD class=Item id = "t_channel">Channel:<\/TD><TD colspan=2>' + wlanChannel +'<\/TD><\/TR>');
+
+	document.write('<TR><TD class=Item id="t_chanel_width">Channel Width:<\/TD><td>'+ wlanChannelWidthArray[wlan5GPara[6]] +'<\/td><\/TR>');
+
+	document.write('<TR><TD class=Item id = "t_mac_addr" name="t_mac_addr">MAC Address:<\/TD><TD colspan=2>' + wlanMac +'<\/TD><\/TR>');
+	switch (wlanWDSStatus)
+	{
+		case 0:wlanWDSStatus = "<SPAN id=\"t_wds_init\">Init...</SPAN>";break;
+		case 1:wlanWDSStatus = "<SPAN id=\"t_wds_scan\">Scan...</SPAN>";break;
+		case 2:wlanWDSStatus = "<SPAN id=\"t_wds_join\">Join...</SPAN>";break;
+		case 3:wlanWDSStatus = "<SPAN id=\"t_wds_auth\">Auth...</SPAN>";break;
+		case 4:wlanWDSStatus = "<SPAN id=\"t_wds_asso\">Assoc...</SPAN>";break;
+		case 5:wlanWDSStatus = "<SPAN id=\"t_wds_run\">Run</SPAN>";break;
+		case 6:wlanWDSStatus = "<SPAN id=\"t_wds_dis\">Disable</SPAN>";break;
+		default:wlanWDSStatus = "<SPAN id=\"t_wds_inv\">Invalid</SPAN>";break;
+	}
+	if (wlan_wds)
+       document.write('<TR><TD class=Item id = "t_wds_status">WDS Status:<\/TD><TD colspan=2>' + wlanWDSStatus +'<\/TD><\/TR>');
+
+	document.write('<TR><TD class=blue colspan=3><\/TD><\/TR>');
+}
+
+var row = 0;
+var wanStatusIndex;
+var wanTypeIndex;
+var IEEE8021xStatusIndex;
+var DHCPBtnStatus;
+var DHCPStatusIndex;
+for (var i=1; i<=statusPara[2]; i++)
+{
+	row = (i-1) * statusPara[3];
+	if (statusPara[2] == 1)
+		document.write('<TR><TD class=h2 colspan=3 id = "t_wan1">WAN<\/TD><\/TR>');
+	else
+	{	
+		wanStatusIndex = wanPara[row];
+		document.write('<TR><TD class=h2 colspan=3>WAN'+ i +'<\/TD><\/TR>');
+		
+		document.write('<TR><TD class=Item id = "t_status">Status:<\/TD><TD colspan=2>' +
+		wanStatusStringArray[wanStatusIndex] +'<\/TD><\/TR>');
+	}
+	
+	document.write('<TR><TD class=Item id = "t_mac_addr"  name="t_mac_addr">MAC Address:<\/TD><TD colspan=2>' + wanPara[row+1] +'<\/TD><\/TR>');
+	wanTypeIndex = wanPara[row+3];
+	if (wanTypeIndex == 3 ||
+		wanTypeIndex == 7 ||
+		wanTypeIndex == 8)
+		{
+			document.write('<TR><TD class=Item id = "t_ip_addr" name="t_ip_addr">IP Address:<\/TD><TD>' + wanPara[row+2] +'<\/TD><TD>' + wanTypeStringArray[wanTypeIndex] +wanLinkModeStringArray[wanTypeIndex][wanPara[row+22]]+'<\/TD><\/TR>');
+		}
+		else
+		{
+	document.write('<TR><TD class=Item id = "t_ip_addr" name="t_ip_addr">IP Address:<\/TD><TD>' + wanPara[row+2] +'<\/TD><TD>' + wanTypeStringArray[wanTypeIndex] +'<\/TD><\/TR>');
+		}
+	
+	document.write('<TR><TD class=Item id = "t_sub_mask" name="t_sub_mask">Subnet Mask:<\/TD><TD>' + wanPara[row+4] +'<\/TD>');
+	IEEE8021xStatusIndex = wanPara[row+6];
+	if (wanPara[row+5] == 1)			//button is logout
+	{
+		document.write('<TD class=emp><input name=Logout type=button class=button value=Logout onClick="return doLogout(' + i +');">&nbsp;&nbsp;' + IEEE8021xLoginStringArray[IEEE8021xStatusIndex] +'<\/TD><\/TR>');
+	}
+	else if 	(wanPara[row+5] == 2)	//button is login
+	{
+		document.write('<TD class=emp><input name=Login type=button class=button value=Login onClick="return 	doLogin(' + i +');">&nbsp;&nbsp;' + IEEE8021xLoginStringArray[IEEE8021xStatusIndex] +'<\/TD><\/TR>');
+	}
+	else								//not 802.1x
+	{
+		document.write('<TD>&nbsp;<\/TD><\/TR>');
+	}
+	document.write('<TR><TD class=Item id = "t_def_gt">Default Gateway:<\/TD><TD>' + wanPara[row+7] +'<\/TD>');
+	DHCPBtnStatus = (wanPara[row+9] == 0)?"disable" :" ";
+	DHCPStatusIndex = wanPara[row+10];
+	if (wanPara[row+8] == 1)			//DHCP release
+	{
+		document.write('<TD class=emp><input name=ReleaseIp type=button class=button value=Release 	    onClick="return doRelease(' + i +');" ' + DHCPBtnStatus +'>&nbsp;&nbsp;' + DHCPStringArray[DHCPStatusIndex] +'<\/TD><\/TR>');
+	}
+	else if 	(wanPara[row+8] == 2)	//DHCP renew
+	{
+		document.write('<TD class=emp><input name=RenewIp type=button class=button value=Renew onClick="return doRenew(' + i +');" ' + DHCPBtnStatus +'>&nbsp;&nbsp;' + DHCPStringArray[DHCPStatusIndex] +'<\/TD><\/TR>');
+	}
+	else if(wanPara[row+8] == 3)
+	{
+	document.write('<TD class=emp>'+DHCPStringArray[DHCPStatusIndex]+'<\/TD><\/TR>');
+	}
+	else								//DHCP disable
+	{
+		document.write('<TD>&nbsp;<\/TD><\/TR>');
+	}
+	document.write('<TR><TD class=Item id = "t_ddns_ser">DNS Server:<\/TD><TD colspan=2>' + wanPara[row+11] +'<\/TD><\/TR>');
+if(3==wanTypeIndex || 6==wanTypeIndex || 7==wanTypeIndex || 8==wanTypeIndex)
+	{
+		document.write('<TR><TD class=Item id = "t_online_time">Online Time:<\/TD><TD>' + wanPara[row+12] +'<\/TD>');
+		if (wanPara[row+13] == 0)
+			document.write('<TD><input name=Connect type=button class=button id=Connect value=Connect onClick="return doConnect(' + i +');" ><\/TD><\/TR>');
+		else if 	(wanPara[row+13] == 1)
+			document.write('<TD><input name=Disconnect type=button class=button id=Disconnect value=Disconnect onClick="return doDisConnect(' + i +');" ><\/TD><\/TR>');
+		else if (wanPara[row+13] == 2)
+			document.write('<TD class=emp id="t_connecting">Connecting...<\/TD><\/TR>');
+	}
+	if(3==wanTypeIndex || 7 == wanTypeIndex || 8 == wanTypeIndex)
+	{
+		if(0!=wanPara[14])
+		{
+			var SecType = wanPara[14];
+			document.write('<TR><TD class=h2 colspan=3 id="t_secondary_conn">Secondary Connection<\/TD><\/TR>');
+			document.write('<TR><TD class=Item id = "t_ip_addr" name="t_ip_addr">IP Address:<\/TD><TD>' + wanPara[15] +'<\/TD><TD>' + wanTypeStringArray[SecType] +'<\/TD><\/TR>');
+			document.write('<TR><TD class=Item id = "t_sub_mask" name="t_sub_mask">Subnet Mask:<\/TD><TD>' + wanPara[16] +'<\/TD>');
+			
+			if (7 == wanTypeIndex || 8 == wanTypeIndex)
+			{
+				document.write('<\/TR><TR><TD class=Item id = "t_sub_gateway" name="t_sub_gateway">Gateway:<\/TD><TD>' + wanPara[17] +'<\/TD><\/TR>');
+				document.write('<TR><TD class=Item id = "t_sub_dns_server" name="t_sub_dns_server">DNS Server:<\/TD><TD colspan=2>' + wanPara[18] +'<\/TD><\/TR>');
+			}
+			
+			if (1==SecType && 3 == wanTypeIndex)
+			{
+				var SecDHCPStat = wanPara[19];
+				if (wanPara[20]==1)
+				{
+					document.write('<TD class=emp><input name=RenewSecIp type=button class=button value=Renew onClick="return doSecRenew(' + i +');">&nbsp;&nbsp;' + DHCPStringArray[SecDHCPStat] +'<\/TD><\/TR>');
+				}
+				else if(wanPara[21]==1)
+				{
+					document.write('<TD class=emp><input name=ReleaseSecIp type=button class=button value=Release onClick="return doSecRelease(' + i +');">&nbsp;&nbsp;' + DHCPStringArray[SecDHCPStat] +'<\/TD><\/TR>');
+				}
+				else
+				{
+					document.write('<TD class=emp><input name=RenewSecIp type=button class=button value=Renew onClick="return doSecRenew(' + i +');" disabled>&nbsp;&nbsp;' + DHCPStringArray[SecDHCPStat] +'<\/TD><\/TR>');
+				}			
+			}
+		}
+	}
+}
+--></SCRIPT>
+      <TR>
+        <TD class=blue colspan=3></TD>
+      </TR>
+      <TR>
+        <TD class=h2 colspan=3 id = "t_trff_stat">Traffic Statistics</TD>
+      </TR>
+      <TR>
+        <TD colspan=3><TABLE border=0>
+            <SCRIPT type="text/javascript"><!--
+
+if (statusPara[2] == 1)
+{
+	document.write('<TR><TD width=30%><\/TD><TD class=ListTC2 width=30% id="t_received">Received<\/TD><TD class=ListTC2 id="t_sent">Sent<\/TD><\/TR>');
+	document.write('<TR><TD class=Item id = "t_byt">Bytes:<\/TD><TD class=ListC2>' + statistList[0] + '<\/TD><TD class=ListC2>' + statistList[1] + '<\/TD><\/TR>');
+	document.write('<TR><TD class=Item id = "t_pcks">Packets:<\/TD><TD class=ListC2>' + statistList[2] + '<\/TD><TD class=ListC2>' + statistList[3] + '<\/TD><\/TR>');
+}
+else
+{
+	document.write('<tr><td>&nbsp;<\/td><td class = ListTC2 id = "t_rate" >Rate<\/td><td class=ListTC2 id = "t_rece_byt">Received (Bytes)<\/td><td class=ListTC2 id=\"t_sent_bytes\">Sent (Bytes)<\/td><td class=ListTC2 id = "t_rece_pck">Received (Packets)<\/td><td class=ListTC2 id = "t_sent_pcks">Sent (Packets)<\/td><\/tr>');
+	var total0 =0;
+	var total1=0;
+	var total2=0;
+	var total3=0;
+	var total4=0;
+	for (var i=0; i<statusPara[2]; i++)	{
+	total1 = total1 + statistList[i*4];
+	total2 = total2 + statistList[i*4+1];
+	total3 = total3 + statistList[i*4+2];
+	total4 = total4 + statistList[i*4+3];
+}
+document.write('<tr><td class=Item id = "t_total">Total<\/td><td class=ListC2>' + total1 + '<\/td><td class=ListC2>' + total2 + '<\/td><td class=ListC2>' + total3 + '<\/td>' +'<td class=ListC2>'+ total4 +'<\/td><\/tr>');
+for (var i=1; i<=statusPara[2]; i++)
+	document.write('<tr><td class=Item>WAN'+i + '<\/td><td class=ListC2>' + statistList[i*4-4] + '<\/td><td class=ListC2>' + statistList[i*4-3] + '<\/td><td class=ListC2>' + statistList[i*4-2] + '<\/td> '+ '<td class=ListC2>' + statistList[i*4-1]  + '<\/td><\/tr>');
+}
+--></SCRIPT>
+          </TABLE></TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=3></TD>
+      </TR>
+      <TR>
+        <TD class=Item id = "t_sys_up_time">System Up Time:</TD>
+        <TD><DIV id="activeTime">-</DIV></TD>
+        <TD><INPUT name="Refresh" class="button" type="button" id="Refresh" value="Refresh" onClick="return doRefresh();"></TD>
+      </TR>
+    </TBODY>
+  </TABLE>
+</FORM>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript"><!--
+var timeout = statusPara[4];
+window.setTimeout("doRefresh()",timeout);
+var unDays		= parseInt(statusPara[5]/(24*60*60),10);
+var unHours 	= parseInt((statusPara[5]%(24*60*60))/(60*60),10);
+var unMinutes	= parseInt(((statusPara[5]%(24*60*60))%(60*60))/60,10);
+var unSeconds 	= ((statusPara[5]%(24*60*60))%(60*60))%60;
+unHours = (unHours < 10)?("0"+unHours):unHours;
+unMinutes = (unMinutes < 10)?("0"+unMinutes):unMinutes;
+unSeconds = (unSeconds < 10)?("0"+unSeconds):unSeconds;
+document.getElementById("activeTime").innerHTML = unDays+" <SPAN id=\"t_days\">days<\/SPAN> "+unHours+":"+unMinutes+":"+unSeconds;
+document.getElementById("fversion").innerHTML = statusPara[6];
+document.getElementById("hversion").innerHTML = statusPara[7];
+document.getElementById("lanMac").innerHTML = lanPara[0];
+document.getElementById("lanIP").innerHTML = lanPara[1];
+document.getElementById("lanMask").innerHTML = lanPara[2];
+--></SCRIPT>

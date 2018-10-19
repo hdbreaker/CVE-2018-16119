@@ -1,0 +1,159 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+
+<script language="Javascript" type="text/javascript">
+
+var n_field = 6;
+var max_len = 15;
+//var isSubmit = "1";
+
+
+function charCompareA(szname, en_limit, cn_limit)
+{
+	var c;
+	var ch = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_";
+
+	if (szname.length > en_limit)
+	{
+		return false;
+	}
+	for (var i = 0; i < szname.length; i++)
+	{
+		c = szname.charAt(i);
+		if (ch.indexOf(c) == -1)
+		{
+			if(szname.length > cn_limit)
+			{				
+				return false;
+			}
+		}
+	}
+	return true;
+}
+function doClear()
+{
+	for (var i = 0; i < n_field; i ++)
+	{
+		document.forms[0].elements[i].value = "";
+	}
+	//isSubmit = "0";
+}
+function doBack()
+{
+	location.href="NasUserCfgRpm.htm"; 
+}
+function doSubmit()
+{
+	for (var i = 0; i < n_field; i ++)
+	{
+		if (document.forms[0].elements[i].value != "")
+		{
+			if (!charCompareA(document.forms[0].elements[i].value, max_len, 0))
+			{
+				alert(js_wrong_character_num="You should enter 1 to 15 characters using letters, numbers or underscores.");				
+				var element = document.forms[0].elements[i];
+				if(element)
+				{
+					element.focus();
+					element.select();
+				}
+				return false;
+			}
+		} 
+		else 
+		{
+			alert(js_no_input="Field value required.");
+			var element = document.forms[0].elements[i];
+			if(element){
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+	}
+
+	return true;
+}
+
+
+</script></head>
+<BODY onload="LoadHelp('NasUserCfgHelpRpm.htm');setTagStr(document,'ntw_nas_user_cfg'); resize(this);" onResize="resize(this);">
+<center><form action="NasUserAdvRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+<TABLE id="autoWidth">
+<TR>
+	<TD class=h1 colspan=2 id ="t_nas_user">Add or Modify User Account</TD>
+</TR>
+
+<TR>
+	<TD>
+		<BR>
+	</TD>
+</TR>
+
+<TR>
+	<TD class=Item id ="t_nas_admin_name">User Name:</TD>
+	<TD>
+		<INPUT class="text" maxLength=15 size="16" name="nas_admin_name">
+	</TD>
+</TR>
+
+<TR>
+	<TD class=Item id ="t_nas_admin_pwd">Password:</TD>
+	<TD>
+		<INPUT class="text" maxLength="15" size="16" name="nas_admin_pwd">
+	</TD>
+</TR>
+
+<TR>
+	<TD class=Item id ="t_nas_admin_authority">Storage Authority:</TD>
+	<TD>
+		<select name="nas_admin_authority">
+			<OPTION value="1" selected>Read and Write</OPTION>
+			<OPTION value="0">Read Only</OPTION>
+		</select>
+	</TD>
+</TR>
+
+<TR>
+	<TD class=Item id="t_ftp_acc">FTP Access:</TD>
+	<TD>
+		<select name="nas_admin_ftp">
+			<OPTION value="1" selected>Read and Write</OPTION>
+			<OPTION value="0">No</OPTION>
+			<OPTION value="2">Read Only</OPTION>
+		</select>
+	</TD>
+</TR>
+
+<TR>
+	<TD>
+		<INPUT class="text" name="Modify" value="" type="hidden">
+	</TD>
+</TR>
+
+<TR><TD></TD></TR>
+
+<TR>
+	<TD class=blue colspan=2></TD>
+</TR>
+
+<TR>
+<TD></TD>
+<TD> &nbsp; <INPUT class="buttonBig" type="submit" value="Save" name="Save">&nbsp; 
+<INPUT class="buttonBig" type="button" value="Back" name="back" onclick="doBack()">
+</TD></TR>	
+</TABLE>
+</form></center></BODY></HTML>
+<script language="JavaScript" type="text/javascript">
+document.forms[0].nas_admin_name.value = UserInfo[0];
+document.forms[0].nas_admin_pwd.value = UserInfo[1];
+document.forms[0].nas_admin_authority.value = UserInfo[2];
+document.forms[0].nas_admin_ftp.value = UserInfo[3];
+document.forms[0].Modify.value = UserInfo[4];
+
+if ( (UserInfo[0] == "admin")
+	|| (UserInfo[0] == "guest") )
+{	
+	document.forms[0].nas_admin_name.disabled = true;
+}
+</script>

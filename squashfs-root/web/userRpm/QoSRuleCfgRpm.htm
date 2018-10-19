@@ -1,0 +1,246 @@
+
+<SCRIPT type="text/javascript"><!--//
+function goBack(nPage)
+{
+	location.href="QoSRuleListRpm.htm?Page="+nPage;
+}
+function my_is_port(port_string)
+{
+	if(port_string.length == 0)
+	{
+		alert(js_pl_input_port="Please input port number (1-65535)!");
+		return false;
+	}
+	if (!is_number(port_string, 1, 65535))
+	{
+		alert(js_bad_port_num="Bad port number, please input another number (1-65535)!");
+		return false;
+	}
+	return true;
+}
+function doSubmit()
+{
+	var start_ipaddr = document.forms[0].start_ip_addr.value;
+	var end_ipaddr = document.forms[0].end_ip_addr.value;
+	var startport = document.forms[0].start_port.value;
+	var endport = document.forms[0].end_port.value;
+if(start_ipaddr == "")
+{
+alert(js_start_ip="Start IP can not be blank, please input an IP address!");
+document.forms[0].start_ip_addr.select();
+return false;
+}
+	if (startport == "" && endport !="")
+	{
+		alert(js_start_port="The Starting port can not be blank, please input a port number!");
+		document.forms[0].start_port.select();
+		return false;
+	}
+	if(start_ipaddr!="" && !is_ipaddr(start_ipaddr))
+	{
+		document.forms[0].start_ip_addr.select();
+		return false;
+	}
+	if(end_ipaddr!="" && !is_ipaddr(end_ipaddr))
+	{
+		document.forms[0].end_ip_addr.select();
+		return false;
+	}
+	if(startport!="" && !my_is_port(startport))
+	{
+		document.forms[0].start_port.select();
+		return false;
+	}
+	if(endport!="" && !my_is_port(endport))
+	{
+		document.forms[0].end_port.select();
+		return false;
+	}
+	if(parseInt(startport,10) > parseInt(endport,10))
+	{
+		alert(js_end_ip="The ending port can not be less than start port,please input again!");
+		document.forms[0].end_port.select();
+		return false;
+	}
+	var start_ip_array = start_ipaddr.split('.');
+	var end_ip_array = end_ipaddr.split('.');
+	for(i=0;i<4;i++)
+	{
+		var start = parseInt(start_ip_array[i],10);
+		var end = parseInt(end_ip_array[i],10);
+		if(start<end)
+		{
+			break;
+		}
+		else if(start == end)
+		{
+			continue;
+		}
+		else if(start>end)
+		{
+			alert(js_end_addr_ls="The ending address can not be less than start address,please input again!");
+			document.forms[0].end_ip_addr.select();
+			return false;
+		}
+	}
+	if(document.forms[0].min_up_band_width.value == "")
+	{
+		document.forms[0].min_up_band_width.value = 0;
+	}
+	if(document.forms[0].max_up_band_width.value == "")
+	{
+		document.forms[0].max_up_band_width.value = 0;
+	}
+	if(document.forms[0].min_down_band_width.value == "")
+	{
+		document.forms[0].min_down_band_width.value = 0;
+	}
+	if(document.forms[0].max_down_band_width.value == "")
+	{
+		document.forms[0].max_down_band_width.value = 0;
+	}
+	var min_upbandwidth = document.forms[0].min_up_band_width.value;
+	var max_upbandwidth = document.forms[0].max_up_band_width.value;
+	var min_downbandwidth = document.forms[0].min_down_band_width.value;
+	var max_downbandwidth = document.forms[0].max_down_band_width.value;
+	if(!is_number(min_upbandwidth))
+	{
+		alert(js_upload_err="The min upload bandwidth is error,please input again!");
+		document.forms[0].min_up_band_width.select();
+		return false;
+	}
+	if(!is_number(max_upbandwidth))
+	{
+		alert(js_max_upload_err="The max upload bandwidth is error,please input again!");
+		document.forms[0].max_up_band_width.select();
+		return false;
+	}
+	if(parseInt(max_upbandwidth,10)!=0&&
+		parseInt(min_upbandwidth,10) > parseInt(max_upbandwidth,10))
+	{
+		alert(js_max_upload_ls="The max upload bandwidth can not be less than the min bandwidth,please input again!");
+		document.forms[0].max_up_band_width.select();
+		return false;
+	}
+	if(!is_number(min_downbandwidth))
+	{
+		alert(js_min_upload_err="The min download bandwidth is error,please input again!");
+		document.forms[0].min_down_band_width.select();
+		return false;
+	}
+	if(!is_number(max_downbandwidth))
+	{
+		alert(js_max_upload_err="The max download bandwidth is error,please input again!");
+		document.forms[0].max_down_band_width.select();
+		return false;
+	}
+	if(parseInt(max_downbandwidth,10)!=0&&
+		parseInt(min_downbandwidth,10) > parseInt(max_downbandwidth,10))
+	{
+		alert(js_max_upload_ls="The max upload bandwidth can not be less than the min bandwidth,please input again!");
+		document.forms[0].max_down_band_width.select();
+		return false;
+	}
+	return true;
+}
+//--></SCRIPT>
+</HEAD>
+<SCRIPT type="text/javascript"><!--
+--></SCRIPT>
+<BODY  onload = "setTagStr(document,'ntw_qos_rule_cfg');LoadHelp('QoSRuleCfgHelpRpm.htm');resize(this);" onResize="resize(this);">
+<FORM action="QoSRuleListRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+  <CENTER>
+    <TABLE border="0" cellspacing="0" cellpadding="0" id=autoWidth>
+      <TR>
+      <TD class = "h1" colspan = 3 id = "t_title">Bandwidth Control Rule Settings</TD>
+      </TR>
+      <TR>
+        <TD class = "blue" colspan = 3></TD>
+      </TR>
+      <TR>
+        <TD><TABLE style = "width:100%" border =0>
+            <TR>
+              <TD class = "Item" id = "t_enable">Enable:</TD>
+              <TD colspan = "3"><INPUT type="checkbox" name="enable" value="true" ></TD>
+            </TR>
+            <TR>
+              <TD class = "Item" id = "t_addr_rng">IP Range:</TD>
+              <TD colspan = "3"><INPUT type="text" class="text" name="start_ip_addr" value="" size="15" maxlength="15">
+                &nbsp;-&nbsp;
+                <INPUT type="text" class="text" name="end_ip_addr" value="" size="15" maxlength="15"></TD>
+            </TR>
+            <TR>
+              <TD width="60" class = "Item" id = "t_prt_rng">Port Range:</TD>
+              <TD colspan = "3"><INPUT type="text" class="text" name="start_port" value="" size="5" maxlength="5">
+                &nbsp;-&nbsp;
+                <INPUT type="text" class="text" name="end_port" value="" size="5" maxlength="5"></TD>
+            </TR>
+            <TR>
+              <TD class = "Item" id = "t_protocol">Protocol:</TD>
+              <TD colspan = "3"><SELECT name="protocol">
+                  <OPTION value="0" id = "t_all">ALL</OPTION>
+                  <OPTION value="1">TCP</OPTION>
+                  <OPTION value="2">UDP</OPTION>
+                </SELECT>
+                <!--<span id = "t_select_and_eff">(Only select port range,this domain will work)</span>--></TD>
+            </TR>
+            <!--<tr><td class = "Item" id = "t_mode">Mode:</td>
+<td colspan = "3"><select name="mode" width = "120">
+<option value="0" id ="t_ind_band">Independent Bandwidth</option>
+<option value="1" selected id = "t_shr_bnd">Share Bandwidth</option></select></td>
+</tr>-->
+            <TR >
+              <TD width="80">&nbsp;</TD>
+              <TD width="150" id = "t_min_band">Min Bandwidth(Kbps)</TD>
+              <TD id = "t_max_band" width="150" style = "padding-left:0px">Max Bandwidth(Kbps)</TD>
+              <TD width = 100>&nbsp;</TD>
+            </TR>
+            <TR >
+              <TD class = "Item" id = "t_up_bnd">Egress Bandwidth:</TD>
+              <TD><INPUT type="text" class="text" name="min_up_band_width" size="15" maxlength="7"></TD>
+              <TD><INPUT type="text" class="text" name="max_up_band_width" size="15" maxlength="7"></TD>
+              <TD width = 100>&nbsp;</TD>
+            </TR>
+            <TR >
+              <TD class = "Item" id = "t_down_bnd">Ingress Bandwidth:</TD>
+              <TD><INPUT type="text" class="text" name="min_down_band_width" size="15" maxlength="7"></TD>
+              <TD><INPUT type="text" class="text" name="max_down_band_width" size="15" maxlength="7"></TD>
+              <TD width = 100>&nbsp;</TD>
+            </TR>
+          </TABLE></TD>
+      </TR>
+      <TR>
+        <TD class = "blue" colspan = "2"></TD>
+      </TR>
+      <TR>
+        <TD colspan = "2" align = "center" class="mbtn"><INPUT name="Save" type="submit" class="button" value="Save">
+          &nbsp;
+          <INPUT name="Back" type="button" class="button" value="Back" onClick="goBack(curPage);">
+          &nbsp;
+          <INPUT type="hidden" name="curEditId" value="">
+          <INPUT type="hidden" name="Page" value=""></TD>
+      </TR>
+    </TABLE>
+  </CENTER>
+</FORM>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript"><!--
+document.forms[0].start_ip_addr.value = QoSRuleCfgParam[0];
+document.forms[0].end_ip_addr.value = QoSRuleCfgParam[1];
+//document.forms[0].mode.value = QoSRuleCfgParam[2];
+document.forms[0].min_up_band_width.value = QoSRuleCfgParam[3];
+document.forms[0].max_up_band_width.value = QoSRuleCfgParam[4];
+document.forms[0].min_down_band_width.value = QoSRuleCfgParam[5];
+document.forms[0].max_down_band_width.value = QoSRuleCfgParam[6];
+curPage = QoSRuleCfgParam[7];
+document.forms[0].Page.value = curPage;
+document.forms[0].curEditId.value = QoSRuleCfgParam[8];
+document.forms[0].enable.checked = QoSRuleCfgParam[9]?true:false;
+document.forms[0].start_port.value = QoSRuleCfgParam[10];
+document.forms[0].end_port.value = QoSRuleCfgParam[11];
+document.forms[0].protocol.value = QoSRuleCfgParam[12];
+--></SCRIPT>

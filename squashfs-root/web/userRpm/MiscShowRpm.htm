@@ -1,0 +1,62 @@
+
+<SCRIPT type="text/javascript">
+function doRefresh(){location.href="/userRpm/MiscShowRpm.htm";}
+function doPrev(){location.href="/userRpm/AdvScrRpm.htm";}
+function doSubmit()
+{
+	if (confirm(js_to_clr_list = "Are you sure to clear the list?")) 
+		return true;
+	else 
+		return false;
+}
+</SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_misc_show');LoadHelp('MiscAdvHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="MiscShowRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth">
+      <TBODY>
+        <TR>
+          <TD class=h1 id="t_title">Blocked DoS Host List</TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <SCRIPT type="text/javascript">
+if (dosPara[0] > 0)	{
+var row = 0;
+document.write('<TR><TD><table border=0>');
+document.write('<TR><TD class=ListTC1 id="t_id">ID</TD><TD class=ListTC2 id="t_host_ip">Host IP Address</TD><td class=ListTC2 id="t_host_mac">Host MAC Address</TD></TR>');
+for(var i = 1; i <= dosPara[0]; i++)
+{
+row = (i-1) * dosPara[1];
+document.write('<tr><td class=ListC1>' + i + '</td>');
+document.write('<td class=ListC2>'
++ dosList[row] + '</td>');
+document.write('<td class=ListC2>'
++ dosList[row+1] + '</TD></TR>');
+}
+document.write('</table></TD></TR>');
+}
+else	{
+document.write('<TR><TD class=h2 id="t_no_host">No thwarted DoS Host.</TD></TR>');}
+</SCRIPT>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <TR>
+          <TD class="mbtn"><INPUT name="Refresh" type="button" class="buttonBig" value="Refresh" onClick="doRefresh();">
+            &nbsp;
+            <INPUT name="Clear" type="submit" class="buttonBig" value="Clear">
+            &nbsp;
+            <INPUT name="Return" type="button" class="buttonBig" value="Back" onClick="doPrev();"></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

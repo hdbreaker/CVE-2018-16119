@@ -1,0 +1,250 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<!--JS-->
+<SCRIPT type="text/javascript">
+<!-- 
+var LP=location.pathname;
+
+var logPerPage = 30;
+
+function doSubmit(){
+if(confirm(js_clr_all_logs = "Are you sure to clear all the logs?")){
+return true;}
+else {return false;}}
+function doClick(){
+location.href = LP + "?logType=" + document.getElementById("logType").value + "&logLevel=" + document.getElementById("logLevel").value + "&pageNum="+ curPage;
+}
+
+function doTypeChange(obj, i)
+{
+	obj.blur();
+	var j = document.getElementById("logLevel").value;
+	location.href = LP + "?logType=" + i + "&logLevel=" + j + "&pageNum=1";
+	return true;
+}
+
+function doLevelChange(obj, i)
+{
+	obj.blur();
+	var j = document.getElementById("logType").value;
+	location.href = LP + "?logLevel=" + i + "&logType=" + j + "&pageNum=1";
+	return true;
+}
+
+function doPage(j)
+{
+	
+	location.href = LP + "?logType=" + document.getElementById("logType").value + "&logLevel=" + document.getElementById("logLevel").value + "&pageNum="+j;
+	return true;
+}
+//-->
+</SCRIPT>
+</HEAD>
+<!-- change XXXX to your dest page.-->
+<BODY onLoad="setTagStr(document,'ntw_system_log');LoadHelp('SystemLogHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="SystemLogRpm.htm" enctype="multipart/form-data" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth" >
+      <TBODY>
+        <!--chang your title below.-->
+        <TR>
+          <TD class=h1 id = "t_title">System Log</TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <!--Content-->
+        <TR>
+          <TD><TABLE border="0" width="698" cellspacing="0" cellpadding="0" class="space">
+              <TR>
+                <TD width ="120"><B id="t_auto_mail">&nbsp;&nbsp;Auto Mail Feature:</B></TD>
+                <TD class=emp width="100"><SCRIPT type="text/javascript">
+if (syslogWebConf[2] == 0)
+{
+	document.write("<div id=\"t_disabled\">Disabled<\/div>");
+}
+else
+{
+   	document.write("<div id=\"t_enabled\">Enabled<\/div>");
+}
+</SCRIPT></TD>
+                &nbsp;&nbsp;
+                <TD><INPUT name="AutoMail" type="button" class="buttonBigL" value="Mail Settings" onClick="location.href='AutoEmailRpm.htm';" onmousewheel=disabled></TD>
+              </TR>
+            </TABLE></TD>
+        </TR>
+        <TR>
+          <TD><TABLE border="0" width="698" cellspacing="0" cellpadding="0" class="space">
+              <TR>
+                <TD width="200">&nbsp;&nbsp;<B id="t_log_type">Log Type:</B>&nbsp;
+                  <SELECT id="logType" name="logType"  tabindex="-1" onChange="doTypeChange(this, this.value)" ONMOUSEWHEEL="return false;" ONKEYDOWN="return false;">
+                  <SCRIPT type="text/javascript">					
+					var logListNum = (logTypeArray.length - 2)/2;					
+					for (var i = 0; i < logListNum; i++)
+					{
+						document.write("\<OPTION VALUE=" + logTypeArray[2*i] +">"+logTypeArray[2*i+1]+"\<\/OPTION\>");
+					}
+				  </SCRIPT>
+                  </SELECT></TD>
+                <TD>&nbsp;&nbsp;<B id="t_log_level">Log Level:</B>&nbsp;
+                  <SELECT id="logLevel" name="logLevel" VALUE="7" tabindex="-1" onChange="doLevelChange(this, this.value)" ONMOUSEWHEEL="return false;" ONKEYDOWN="return false;">
+                    <OPTION value=3 id="t_err" name="t_err"> ERROR </OPTION>
+                    <OPTION value=4 id="t_warn" name="t_warn"> WARNING </OPTION>
+                    <OPTION value=5 id="t_note" name="t_note"> NOTICE </OPTION>
+                    <OPTION value=6 id="t_info" name="t_info"> INFO </OPTION>
+                    <OPTION value=7 id="t_all" name="t_all"> ALL </OPTION>
+                  </SELECT></TD>
+              </TR>
+            </TABLE></TD>
+        </TR>
+        <SCRIPT type="text/javascript">
+var maxRow = 0;
+var i;
+var j;
+var content;
+var imax;
+var contentid;
+document.write('<TR><TD WIDTH="698" ALIGN="center"> <TABLE BORDER="1" ALIGN="center" WIDTH="698" CELLSPACING="0" CELLPADDING="0">');
+if((logList.length-2)>=1)
+{
+	maxRow = logList.length-2;
+	imax = (syslogWebConf[3] * logPerPage ) > maxRow ? maxRow : (syslogWebConf[3] * logPerPage);
+	document.write('<TR><TD class=ListM style="padding:0 2 0 2;"><B id="t_idx">Index</B></TD>\
+	<TD class=ListM><B id="t_time">Time</B></TD>\
+	<TD class=ListM><B id="t_type">Type</B></TD>\
+	<TD class=ListM><B id="t_level">Level</B></TD>\
+	<TD class=ListM width="100%"><B id="t_log_content">Log Content</B></TD></TR>');
+	for(i = (syslogWebConf[3] - 1)*logPerPage; i < imax; i++)
+	{
+		document.write('<TR><TD class=ListM>'+(maxRow-i)+'</TD>');
+		//document.write('<TD STYLE="word-break:break-all">&nbsp;'+logList[i]+'</TD></TR>');					
+		start = 0;
+		end = 0;
+		for (j = 0; j < 3; j++)
+		{
+			
+			end = logList[i].indexOf("\t", start);		
+			if (end < 0)
+			{	document.write('<TD STYLE="padding:0 2 0 2;word-break:break-all"><SPAN id="t_null">NULL</SPAN></TD>');
+			}
+			else
+			{
+				content = logList[i].substring(start, end);
+				contentid = "";
+				if (j == 1)
+				{
+				if (content.indexOf("OTHER") != -1)
+					{
+					contentid = "id=\"t_other\" name=\"t_other\"";
+					}						
+				}
+				else if (j == 2)
+				{
+				if (content.indexOf("ERROR") != -1)
+					contentid = "id=\"t_err\" name=\"t_err\"";
+				else if(content.indexOf("WARNING") != -1)
+					contentid = "id=\"t_warn\" name=\"t_warn\"";
+				else if(content.indexOf("NOTICE") != -1)
+					contentid = "id=\"t_note\" name=\"t_note\"";
+				else if(content.indexOf("INFO") != -1)
+					contentid = "id=\"t_info\" name=\"t_info\"";	
+				}
+				start = end + 1;
+				document.write('<TD STYLE="padding:0 2 0 2;word-break:break-all"'+ contentid +'>'+content+'</TD>');
+			}								
+		}
+		
+		content = logList[i].substring(start);
+		document.write('<TD STYLE="padding:0 2 0 2;word-break:break-all;">'+content+'</TD>');								
+		document.write('</TR>');	
+	};
+	
+}
+
+
+if((logExpList.length-2)>=1)
+{
+	maxRow = logExpList.length-2;
+	for(i = 0;i < maxRow;i++)
+	{
+		document.write('<TR><TD COLSPAN ="2"><B>'+logExpList[i]+'</TD></TR>');
+	};
+}
+if((logList.length-2)<1 && (logExpList.length-2)<1)
+{
+	document.write('<TR><TD COLSPAN=2 ALIGN="center" id="t_log_empty">Log is Empty.</TD></TR>');
+}
+
+document.write('</TABLE></TD></TR>');
+document.write('<TR HEIGHT="10"><TD></TD></TR>');
+document.write('<TR><TD WIDTH="698"><TABLE BORDER="0" >');
+document.write('<TR><TD COLSPAN=2><B>' + logInf[0]+'</TD></TR>');
+document.write('<TR><TD COLSPAN=2><B>' + logInf[1]+'</TD></TR>');
+document.write('<TR><TD COLSPAN=2><B>' + logInf[2]+'</TD></TR>');
+if((logWanList.length-2)>=1)
+{
+    maxRow = logWanList.length-2;
+	for(i=0;i<maxRow;i++)
+{
+	document.write('<TR><TD  COLSPAN="2"><B>' + logWanList[i]+'</TD></TR>');
+}
+}
+document.write('<TR><TD  COLSPAN="2"><B>' + logInf[3]+'</TD></TR>');
+document.write('</TABLE></TD></TR>');
+
+</SCRIPT>
+        <TR>
+          <TD><!--Button-->
+            &nbsp;
+            <INPUT name="Refresh" type="button" class="buttonBig" value="Refresh" onClick="doClick();" >
+            &nbsp;
+            <INPUT name="SaveLog" type="button" class="buttonBig" value="Save Log" onClick="location.href='SystemLog.txt';" >
+            &nbsp;
+            <INPUT name="MailLog" type="button" class="buttonBig" value="Mail Log" onClick="this.disabled = true; location.href='SystemLogRpm.htm?doMailLog=2';" >
+            &nbsp;
+            <INPUT name="ClearLog" type="submit" class="buttonBig" value="Clear Log"></TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <TR>
+          <TD class = "mbtn"><INPUT name="PrevPage" type="button" class="buttonBig" onClick="doPage(prePage);" value="Previous" disabled>
+            &nbsp;
+            <INPUT name="NextPage" type="button" class="buttonBig" onClick="doPage(nextPage);" value="Next" disabled>
+            &nbsp;
+			<SPAN id="t_page1">Current No.</SPAN>
+            <SELECT onChange="doPage(document.forms[0].selPage.value);" size="1" name="selPage">
+              <SCRIPT type="text/javascript">
+var maxpageNum = (logList.length - 2 - 1)/logPerPage + 1;
+var pIndex = 1;
+do
+{
+	document.write("<option value='" + pIndex + "' selected>"+ pIndex +"</option>");
+}while(++pIndex <= maxpageNum);
+
+</SCRIPT>
+            </SELECT>
+            &nbsp;
+			<SPAN id="t_page2">Page</SPAN>
+            <INPUT name="Page" type="hidden" value="1"></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+<!--JS page up & page down-->
+<SCRIPT type="text/javascript">
+document.forms[0].logType.value = syslogWebConf[0];
+document.forms[0].logLevel.value = syslogWebConf[1];
+var curPage = syslogWebConf[3];
+var prePage = (curPage == 1) ? 1 : curPage - 1;
+var nextPage = (curPage + 1 > maxpageNum) ? curPage : curPage + 1;
+document.forms[0].PrevPage.disabled = (curPage == 1) ? true : false;
+document.forms[0].NextPage.disabled = (curPage == nextPage) ? true : false;
+document.forms[0].selPage.value = curPage;
+</SCRIPT>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

@@ -1,0 +1,120 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript"><!--//
+function doRefresh()
+{
+	location.href="/userRpm/UpnpCfgRpm.htm";
+}
+function doSubmit()
+{
+	document.forms[0].upnpenb.value = (uPnPPara[0] == 0)?"Enable":"Disable";
+	return true;
+}
+//--></SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_upnp_cfg');LoadHelp('UpnpCfgHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="UpnpCfgRpm.htm" enctype="multipart/form-data" method="get">
+    <TABLE id="autoWidth" border=0>
+      <TBODY>
+        <TR>
+          <TD class=h1 colspan=4 id="t_titlt">UPnP</TD>
+        </TR>
+		<TR>
+			<TD><B><SPAN id="t_upnp_note">Note:&nbsp;&nbsp;&nbsp;&nbsp;Make sure the nat is <SPAN style="color:#FF0000">enable</SPAN> if you want the UPnP configuration take effect</SPAN></B></TD>
+		</TR>
+        <TR>
+          <TD class=blue colspan=4></TD>
+        </TR>
+        <TR>
+          <TD colspan=3><INPUT type=hidden name=upnpenb></TD>
+        </TR>
+        <TR>
+          <TD class=ListB id="t_tol_status" width ="15%">Current UPnP Status:</TD>
+          <TD class=emp>
+<SCRIPT type="text/javascript">
+if(uPnPPara[0] == 0)
+{
+	document.write('<DIV id="t_tol_dis">Disabled</DIV>');
+}
+else
+{
+	document.write('<DIV id="t_tol_en">Enabled</DIV>');
+}
+</SCRIPT></TD>
+          <TD><INPUT name="Upnpdisable" id="upnpdisable" type="submit" class="button" value="Disable" onClick="return doSubmit();">
+            <INPUT name = "Upnpenable" id="upnpenable" type = "submit" class = "button" value = "Enable" style ="display:none" onClick="return doSubmit();"></TD>
+        </TR>
+        <!--<td width = "65%">&nbsp;</TD></TR>-->
+        <TR>
+          <TD class=blue colspan=4></TD>
+        </TR>
+        <TR>
+          <TD colspan=4 class=h2 id="t_curlist">Current UPnP Settings List</TD>
+        </TR>
+        <TR>
+          <TD colspan=4><TABLE border=0>
+              <TR>
+                <TD class="ListTC1" id="t_id">ID</TD>
+                <TD class="LISTB" id="t_app">App Description</TD>
+                <TD class="LISTB" id="t_ex_port">External Port</TD>
+                <TD class="LISTB" id="t_proto">Protocol</TD>
+                <TD class="LISTB" id="t_inter_port">Internal Port</TD>
+                <TD class="LISTB" id="t_ip">IP Address</TD>
+                <TD class="LISTB" id="t_status">Status</TD>
+              </TR>
+              <SCRIPT type="text/javascript"><!--//
+if (uPnPPara[1] > 0) 
+{
+	var ProtocolArray = new Array(
+	"TCP",	"UDP");
+	var	protocolType;
+	var row = 0;
+	var statusString;
+	var j;
+	for(var i = 0; i < uPnPPara[1]; i++)
+	{
+		j = i+1;
+		row = i * uPnPPara[2];
+		protocolType = uPnPList[row+2];
+statusString = (uPnPList[row+5] == 0)?"<span name=\"t_disabled\" id=\"t_disabled\">Disabled</span>":"<span name=\"t_enabled\" id = \"t_enabled\">Enabled</span>";
+document.write('<tr><td class="ListC1" align="center">' + j + '</td>');
+document.write('<td align="center">'
+					 + uPnPList[row] + '</td>');
+document.write('<td align="center">' + uPnPList[row+1] + '</td>');
+document.write('<td align="center">' + ProtocolArray[protocolType] + '</td>');
+document.write('<td align="center">' + uPnPList[row+3] + '</td>');
+document.write('<td align="center">' + uPnPList[row+4] + '</td>');
+document.write('<td align="center">' + statusString + '</TD></TR>');
+	}
+}
+//--></SCRIPT>
+            </TABLE></TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=4></TD>
+        </TR>
+        <TR>
+          <TD colspan=4 class = "mbtn"><INPUT name="Refresh"type="button" class="buttonBig" id="Refresh" value="Refresh" onClick="return doRefresh();"></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+if((uPnPPara[0] == 0))
+{
+document.forms[0].Upnpdisable.style.display = "none";
+document.forms[0].Upnpenable.style.display = "block";
+}
+else
+{
+document.forms[0].Upnpdisable.style.display = "block";
+document.forms[0].Upnpenable.style.display = "none";
+}
+</SCRIPT>

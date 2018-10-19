@@ -1,0 +1,194 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<!--JS-->
+<SCRIPT type="text/javascript">
+<!--
+function getValLen(val)
+{
+	var len = 0;
+	var i = 0;
+	for (i = 0; i < val.length; i ++)
+	{
+		var c = val.charAt(i);
+		len += ((c >= ' ') && (c <= '~')) ? 1 : 2;
+	}
+	return len;
+}
+function doBack()
+{
+	var LP = location.pathname;
+	location.href = LP + "?Return=Back";
+}
+function doSubmit()
+{
+	var desc_len = getValLen(document.forms[0].hosts_lists_name.value);
+	if ((desc_len < 1) || (desc_len > 24))
+	{
+		alert(js_pl_host_name="Please input a valid host description (Length < 25)!");
+		var element = document.forms[0].hosts_lists_name;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	if (document.forms[0].addr_type.value == 1)
+	{
+		if (!(document.forms[0].src_ip_start.value.length) && (!document.forms[0].src_ip_end.value.length))
+		{
+			alert(js_pl_ip_addr="Please input the IP address !");
+			var element = document.forms[0].src_ip_start;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+		else
+		{
+			if (document.forms[0].src_ip_start.value.length)
+			{
+				if (false == is_ipaddr(document.forms[0].src_ip_start.value))
+				{
+					var element = document.forms[0].src_ip_start;
+					if(element)
+					{
+						element.focus();
+						element.select();
+					}
+					return false;
+				}
+			}
+			if (document.forms[0].src_ip_end.value.length)
+			{
+				if (false == is_ipaddr(document.forms[0].src_ip_end.value))
+				{
+					var element = document.forms[0].src_ip_end;
+					if(element)
+					{
+						element.focus();
+						element.select();
+					}
+					return false;
+				}
+			}
+		}
+	}
+	else if (document.forms[0].addr_type.value == 0)
+	{
+		if (false == is_macaddr(document.forms[0].mac_addr.value))
+		{
+			var element = document.forms[0].mac_addr;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+	}
+	return true;
+}
+function style_display_on()
+{
+	if (window.ActiveXObject)
+	{ // IE
+		return "block";
+	}
+	else if (window.XMLHttpRequest)
+	{ // Mozilla, Safari,...
+		return "table-row";
+	}
+}
+function doSwitchTr()
+{
+	str=style_display_on();
+	document.getElementById("ip_area").style.display=(document.forms[0].addr_type.value==1)?str:"none";
+	document.getElementById("mac_area").style.display=(document.forms[0].addr_type.value==1)?"none":str;
+}
+function doHelp(){location.href="/help/LanArpBindingHelpRpm.htm";}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_wzd_acc_ctl_host');LoadHelp('WzdAccessCtrlHostAddHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="WzdAccessCtrlHostAddRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth" >
+      <TBODY>
+        <TR>
+          <TD class=h1 id = "t_title">Quick Setup - Create a Host Entry</TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <TR>
+          <TD><TABLE width="420" border="0" align="center" cellpadding="2" cellspacing="0" class="space">
+              <TR>
+                <TD class="item" width="90" id="t_mode">Mode:</TD>
+                <TD width="320"><SELECT size="1" name="addr_type" class="list" onChange="doSwitchTr()">
+                    <OPTION value="0" id="t_mac_addr">MAC Address</OPTION>
+                    <OPTION value="1" selected id="t_ip_addr">IP Address</OPTION>
+                  </SELECT></TD>
+              </TR>
+              <TR>
+                <TD class="item" id="t_host_desc">Host Description:</TD>
+                <TD><INPUT name="hosts_lists_name" type="text" class="text" value="" size="25" maxlength="24"></TD>
+              </TR>
+              <TR id="ip_area" style="display:none">
+                <TD class="item" width="90" id="t_lan_ip_addr">LAN IP Address:</TD>
+                <TD width="320"><INPUT type="text" name="src_ip_start" value="" size="15" maxlength="15" class="text">
+                  &nbsp;-&nbsp;
+                  <INPUT type="text" name="src_ip_end" value="" size="15" maxlength="15" class="text"></TD>
+              </TR>
+              <TR id="mac_area" style="display:none">
+                <TD class="item" width="90" id="t_mac_address">MAC Address:</TD>
+                <TD width="320"><INPUT name="mac_addr" type="text" class="text" value="" size="17" maxlength="17"></TD>
+              </TR>
+            </TABLE></TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <TR>
+          <TD class=mbtn colspan=2>
+			<INPUT name="Return" class=buttonBig id=PrevStep type=button value="Back" onClick="return doBack();">&nbsp;&nbsp;
+            <INPUT name="Next" class=buttonBig id=Submit onClick="return doSubmit();" type=submit value=Next>
+            <INPUT type=hidden name=ClientId>
+          </TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+<SCRIPT type="text/javascript">
+	document.forms[0].addr_type.value = wzdHostInf[0];
+	document.forms[0].hosts_lists_name.value = wzdHostInf[1];
+	str=style_display_on();
+	document.getElementById("ip_area").style.display=(wzdHostInf[0])?str:"none";
+	document.getElementById("mac_area").style.display=(wzdHostInf[0])?"none":str;
+	if (wzdHostInf[0] == 1)
+	{
+		if (wzdHostInf[2] == wzdHostInf[3])
+		{
+			document.forms[0].src_ip_start.value = wzdHostInf[2];
+			document.forms[0].src_ip_end.value = "";
+		}
+		else
+		{
+			document.forms[0].src_ip_start.value = wzdHostInf[2];
+			document.forms[0].src_ip_end.value = wzdHostInf[3];
+		}
+	}
+	else
+	{
+		document.forms[0].mac_addr.value = wzdHostInf[4];
+	}
+	document.forms[0].ClientId.value = wzdHostInf[5];
+</SCRIPT>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

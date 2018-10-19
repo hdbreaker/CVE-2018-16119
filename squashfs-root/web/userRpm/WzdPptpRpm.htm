@@ -1,0 +1,269 @@
+
+<SCRIPT type="text/javascript"><!--//
+function doSubmit()
+{
+	var element =document.forms[0].acc;
+	if(element.value.length==0)
+	{
+		alert(js_usrname_req = "Please input user name!");
+		element.focus();
+		element.select()
+		return false;
+	}
+	
+	element = document.forms[0].psw;
+	if(element.value.length==0)
+	{
+		alert(js_password_req = "Please input password!");
+		element.focus();
+		element.select()
+		return false;
+	}
+	
+	if ( document.forms[0].IpType[1].checked == true)
+	{
+		if ( !is_ipaddr( document.forms[0].sta_ip.value ) )
+		{
+			var element = document.forms[0].sta_ip;
+			if ( element )
+			{
+				element.focus();
+				element.select();			
+			}
+			return false;
+		}
+		if ( !is_maskaddr( document.forms[0].sta_mask.value ) )
+		{
+			var element = document.forms[0].sta_mask;
+			if ( element )
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+		
+		if ( document.forms[0].sta_gw.value != "" )
+		{
+			if ( !is_gatewayaddr( document.forms[0].sta_gw.value ) )
+			{
+				var element = document.forms[0].sta_gw;
+				if ( element )
+				{
+					element.focus();
+					element.select();
+				}
+				return false;
+			}
+		}
+		
+		if ( document.forms[0].sta_dns.value != "" )
+		{
+			if ( !is_dnsaddr( document.forms[0].sta_dns.value ) )
+			{
+				var element = document.forms[0].sta_dns;
+				if ( element )
+				{
+					element.focus();
+					element.select();
+				}
+				return false;
+			}
+		}
+	}
+
+	var ch = ".0123456789";
+	var c;
+	var n = 0;
+	var szarray = new Array();
+	szarray[0,0,0,0];
+	var str = document.forms[0].PPTPServerName.value;
+	var obj = document.forms[0].PPTPServerName;
+	if ( str == "" )
+	{
+		alert(js_svr_ip_emp="Please input the server's IP address or domain name!");
+		obj.focus();
+		obj.select();
+		return false;
+	}
+	if ( !is_domain( str ) )
+	{
+		obj.focus();
+		obj.select();
+		return false;
+	}
+
+     for( var i=0; i < str.length; i++ )
+     {
+        c = str.charAt( i );
+		if ( ch.indexOf( c ) == -1 )
+        {
+			n = 0;
+            break;
+        }
+        else
+        {
+            if( c == '.' )
+	{
+                n++; 
+            }
+        }
+     }
+     if( n == 3 )    
+     {
+        for( var j = 0; j < 3; j++ )
+        {
+            var n = str.indexOf( "." );
+            szarray[j] = str.substring( 0, n );
+            remain = str.substring( n + 1 );
+            str = remain;
+        }
+        szarray[3] = remain;
+        for( var j = 0; j < 4; j++ )
+        {
+            if( szarray[j] == "" || !is_number( szarray[j], 0, 255 ) )
+            {
+               alert("Please input valid ip address!");
+               obj.focus();
+               obj.select();
+		return false;
+	}
+        }
+     }
+	return true;
+}
+function changeIpType()
+{
+	if(document.forms[0].IpType[0].checked == true) 
+	{
+		document.getElementById("sta_ip_d").style.display = "none";
+		document.getElementById("sta_mask_d").style.display = "none";
+		document.getElementById("sta_gw_d").style.display = "none";
+		document.getElementById("sta_dns_d").style.display = "none";
+		document.getElementById("t_ip_addr").style.display = "none";
+		document.getElementById("t_sub_mask").style.display = "none";
+		document.getElementById("t_gateway").style.display = "none";
+		document.getElementById("t_dns").style.display = "none";
+    }
+    else
+    {
+		document.getElementById("sta_ip_d").style.display = "";
+		document.getElementById("sta_mask_d").style.display = "";
+		document.getElementById("sta_gw_d").style.display = "";
+		document.getElementById("sta_dns_d").style.display = "";
+		document.getElementById("t_ip_addr").style.display = "";
+		document.getElementById("t_sub_mask").style.display = "";
+		document.getElementById("t_gateway").style.display = "";
+		document.getElementById("t_dns").style.display = "";
+    }
+    }
+
+var stopRefresh=0;
+function doClick()
+{
+	stopRefresh = 1;
+	return true;
+}
+function doOnblur()
+{
+    stopRefresh = 0;
+}
+//--></SCRIPT>
+</HEAD>
+<BODY onLoad="changeIpType();setTagStr(document,'ntw_pptp_cfg');LoadHelp('WzdPptpHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action=WzdPptpRpm.htm method=get enctype=multipart/form-data>
+    <TABLE id=autoWidth border = 0>
+      <TBODY>
+        <TR>
+          <TD class=h1 colspan=2 id="t_title">Quick Setup - PPTP</TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_name">User Name:</TD>
+          <TD><INPUT type="text" class=text id=acc maxlength=118 size=25 name=acc></TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_pwd">Password: </TD>
+          <TD><INPUT class=text id=psw type=password maxlength=118 size=25 name=psw></TD>
+        </TR>
+        <TR>
+			<TD colspan=2></TD>
+		</TR>
+		<TR>
+			<TD></TD>
+			<TD>
+				<INPUT type="radio" name="IpType" value="0" onClick="changeIpType();">
+			<SPAN id = "t_dynamic_ip">Dynamic IP</SPAN>&nbsp;&nbsp;
+			<INPUT type="radio" name="IpType" value="1" onClick="changeIpType();">
+				<SPAN id = "t_static_ip">Static IP</SPAN>
+			</TD>
+		</TR>
+		<TR>
+			<TD class=Item id = "t_svr_ip_addr">Server IP Address/Name:</TD>
+			<TD><INPUT name="PPTPServerName" type="text" class="text" value="" size="32" maxlength="63" onFocus="doClick();" onBlur="doOnblur()"></TD>
+		</TR>
+		<TR>
+			<TD class=Item id = "t_ip_addr">IP Address:</TD>
+			<TD id="sta_ip_d">
+				<INPUT name="sta_ip" type="text" class="text" value="" size="15" maxlength="15" onFocus="doClick();" onBlur="doOnblur()">
+			</TD>
+		</TR>
+		<TR>
+			<TD class=Item id = "t_sub_mask">Subnet Mask:</TD>
+			<TD id="sta_mask_d">
+				<INPUT name="sta_mask" type="text" class="text" value="" size="15" maxlength="15" onFocus="doClick();" onBlur="doOnblur()">
+			</TD>
+		</TR>
+		<TR>
+			<TD class=Item id = "t_gateway">Gateway:</TD>
+			<TD id="sta_gw_d">
+					<INPUT name="sta_gw" type="text" class="text" value="" size="15" maxlength="15" onFocus="doClick();" onBlur="doOnblur()">
+			</TD>
+		</TR>
+		<TR>
+			<TD class=Item id = "t_dns">DNS:</TD>
+			<TD id="sta_dns_d">
+					<INPUT name="sta_dns" type="text" class="text" value="" size="15" maxlength="15" onFocus="doClick();" onBlur="doOnblur()">
+			</TD>
+		</TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR >
+			<TD class=mbtn colspan=2><INPUT name="Return" class=buttonBig id=PrevStep type=submit value="Back">
+            &nbsp;&nbsp;
+            <INPUT name="Next" class=buttonBig id=Submit onClick="return doSubmit();" type=submit value="Next">
+            <INPUT type=hidden name=ClientId></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript"><!--//
+
+if (wzdPptpInf[4]==0)
+{
+	document.forms[0].IpType[0].checked =true;
+}
+else
+{
+	document.forms[0].IpType[1].checked =true;
+
+}
+document.forms[0].acc.value=wzdPptpInf[2];
+document.forms[0].psw.value=wzdPptpInf[3];
+document.forms[0].ClientId.value=wzdPptpInf[0];
+document.forms[0].PPTPServerName.value = wzdPptpInf[5];
+document.forms[0].sta_ip.value = wzdPptpInf[6];
+document.forms[0].sta_mask.value = wzdPptpInf[7];
+document.forms[0].sta_gw.value = wzdPptpInf[8];
+document.forms[0].sta_dns.value = wzdPptpInf[9];
+//--></SCRIPT>

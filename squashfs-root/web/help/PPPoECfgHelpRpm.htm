@@ -1,0 +1,43 @@
+
+<HTML><HEAD><TITLE></TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+</head>
+
+<H1>WAN Help</H1>
+<!--<p><b>WAN Port</b> - The WAN port name  you are going to configure.</p>-->
+<p><B>WAN Connection Type:</B> 
+<p>If your ISP is running a DHCP server, select the <B>Dynamic IP</B> option.</p>
+<p>If your ISP provides a static or fixed IP Address, Subnet Mask, Gateway and DNS setting, select the <B>Static IP</B> option.</p>
+<p>If your ISP provides a PPPoE connection, select <B>PPPoE/Russia PPPoE</B> option.</p>
+<!--<p>If your ISP provides IEEE802.1X connection, please select <B>802.1X+Dynamic IP</B> or <B>802.1X+Static IP</B> option.</p>-->
+<p>If your ISP provides BigPond Cable(or Heart Beat Signal) connection, please select <B>BigPond Cable</B> option.</p>
+<p>If your ISP provides L2TP connection, please select <B>L2TP/Russia L2TP</B> option.</p>
+<p>If your ISP provides PPTP connection, please select <B>PPTP/Russia PPTP</B> option.</p>
+<P><B>Note</B>: If you don't know how to choose the appropriate connection type, click the <B>Detect</B> button to allow the Router to automatically search your Internet connection for servers and protocols. The connection type will be reported when an active Internet service is successfully detected by the Router. This report is for your reference only. To make sure the connection type your ISP provides, please refer to the ISP. The various types of Internet connections that the Router can detect are as follows:</p> 
+<ul> 
+<li><B>PPPoE/Russia PPPoE</B> - Connections which use PPPoE that requires a user name and password.</li>
+<li><B>Dynamic IP</B>  - Connections which use dynamic IP address assignment.</li>
+<li><B>Static IP</B>  -  Connections which use static IP address assignment.</li>
+</ul> 
+<p><B>User Name/Password</B> - Enter the User Name and Password provided by your ISP. These fields are case-sensitive.</p>
+<p><B>Secondary Connection</B> - Secondary Connection - It's available only for PPPoE Connection. If your ISP provides an extra Connection type such as Dynamic/Static IP to connect to a local area network, then you can check the radio button of  Dynamic/Static IP to activate this secondary connection.</p>
+<ul> 
+<li><B>Disabled</B> - The Secondary Connection is disabled by default, so there is PPPoE connection only. This is recommended.</li>
+<li><B>Dynamic IP</B>  - Use dynamic IP address to connect to the local area network provided by ISP.</li>
+<li><B>Static IP</B>  -  Use static IP address to connect to the local area network provided by ISP. <B>IP Address</B>  -  IP Address - Enter the IP address provided by ISP for the secondary connection. This address is used only for accessing the local area network of the secondary connection. <B>Subnet Mask</B>  -  Enter the subnet mask provided by ISP for the secondary connection. </li>
+</ul>
+<p><B>Connect on Demand</B> - You can configure the Router to disconnect your Internet connection after a specified period of the Internet connectivity (<B>Max Idle Time</B>). If your Internet connection has been terminated due to inactivity, <B>Connect on Demand </B> enables the Router to automatically re-establish your connection when you attempt to access the Internet again. If you wish to activate <B>Connect on Demand</B>, put a check mark in the circle. If you want your Internet connection to remain active all the times, enter <B>0</B> in the <B>Max Idle Time</B> field. </p>
+<p><strong>Note:</strong> Sometimes the connection cannot be disconnected although you specify a time to <B>Max Idle Time</B>(0~99 mins) because some applications visit the Internet continually in the background.</p>
+<p> <strong>Connect Automatically</strong> - Connect automatically after the Router is disconnected. To use this option, click the radio button.</p>
+<p><B>Time-based Connecting</B> - You can configure the Router to make it connect or disconnect based on time. Enter the start time in HH-MM for connecting and end time in HH-MM for disconnecting in the <B>Period of Time</B> fields.
+</p>
+<p> <strong>Connect Manually</strong> - You can configure the Router to make it connect or disconnect manually. After a specified period of inactivity (<B>Max Idle Time</B>), the Router will disconnect your Internet connection, and not be able to re-establish your connection automatically as soon as you attempt to access the Internet again. To use this option, click the radio button. If you want your Internet connection to remain active all the times, enter <B>0</B> in the <B>Max Idle Time</B> field. Otherwise, enter the number in minutes that you wish to have the Internet connecting last unless a new link requested.</p>
+<p><strong>Note:</strong> Sometimes the connection cannot be disconnected although you specify a <B>Max Idle Time</B>(0~99 mins) because some applications visit the Internet continually in the background.</p>
+
+<p><B>Note:</B> Only when you have set the system time on <B>System Tools</B> -> <B>Time Settings</B> page, the <B>Time-based Connecting</B> function can take effect. </p>
+<p>Click the <B>Connect</B> button to connect immediately.</p>
+<p>Click the <B>Disconnect</B> button to disconnect immediately.</p>
+<p>Click the <B>Advanced</B> button to set up the advanced options.</p>
+<P>Click the <B>Save</B> button to save your settings.
+</DIV>
+</BODY></HTML>

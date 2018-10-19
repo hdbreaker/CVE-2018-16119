@@ -1,0 +1,387 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<!--JS-->
+<SCRIPT type="text/javascript">
+<!-- 
+function doHelp(){location.href="/help/AutoEmailHelpRpm.htm";}
+
+var addrChanged = 0;
+function doSMTPAddrAuto()
+{	
+	if(addrChanged == 1)
+	{
+		if(checkMailAddr(cf.FromAddr.value) && cf.SMTPAddr.value == "")
+		{
+			addrChanged = 0;	
+			cf.SMTPAddr.value = "smtp." + cf.FromAddr.value.substr(cf.FromAddr.value.lastIndexOf("@") + 1);
+		}
+	}
+}
+
+function checkMailAddr(addrStr)
+{
+	var re;
+	re = /^\w+([-+_+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/g;
+	if(addrStr.match(re) == null)
+	{
+		return false;
+	}
+	return true;
+}
+
+function checkServerAddr(addrStr)
+{
+	var re;
+	
+	re = /^\w+([-+_'\.]\w+)*\.\w+([-.]\w+)*\.\w+([-.]\w+)*$/g;
+
+	if(addrStr.match(re) == null)
+	{
+		return false;
+	}
+	
+	return true;
+}
+
+function doSubmit()
+{
+	if(cf.FromAddr.value != "" && checkMailAddr(cf.FromAddr.value) == false)
+	{
+		alert(js_fromaddr_error = "Sender address is wrong, please input again!");
+		return false;
+	}
+
+	if(checkMailAddr(cf.ToAddr.value) == false)
+	{
+		alert(js_toaddr_error = "Recipient address is wrong ,please input again!");
+		return false;
+	}
+	
+	if(checkServerAddr(cf.SMTPAddr.value) == false)
+	{
+		alert(js_smtp_error = "SMTP Server Address is wrong, please input again!");
+		return false;
+	}
+	
+	if(cf.Verify.checked == true)
+	{
+		if(cf.User.value =="")
+		{
+			alert(js_username_error = "please input the user name!");
+			return false;
+		}
+		
+		if(cf.Password.value =="")
+		{
+			alert(js_password_error = "please input your password!");
+			cf.Password.value = "";
+			cf.VeriPass.value = "";
+			return false;
+		}
+		
+		if(cf.Password.value != cf.VeriPass.value)
+		{
+			alert(js_verify_error = "Password doesn't confirm!");
+			cf.Password.value = "";
+			cf.VeriPass.value = "";
+			return false;
+		}
+	}
+		
+	if(cf.AutoMail.checked == true)
+	{
+		if(cf.TimeType[1].checked == true)
+		{
+			if(!is_number(cf.TimeLen.value,1,99) || cf.TimeLen.value == "")
+			{
+				alert(js_timelen_error = "time interval is wrong, please input a number between 1-99!");
+				return false;
+			}
+		}
+		else
+		{
+			if(!is_number(cf.Hour.value,0,23) || cf.Hour.value == "")
+			{
+
+				alert(js_hour_error = "hour should be within 0-23!");
+				return false;
+			}
+			
+			if(!is_number(cf.Minute.value,0,59) || cf.Minute.value == "")
+			{
+				alert(js_minute_error = "minute should be within 0-59!");
+				return false;
+			}
+		}
+	}
+	
+	
+	if(cf.FromAddr.value == "")
+	{
+		if(!confirm(js_sender_addr_empty = "your sender address is empty, usually smtp server doesn't support it. Save it?"))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+function doRadio1()
+{
+	var cf = document.forms[0];
+	cf.Hour.disabled = false;
+	cf.Minute.disabled = false;
+	cf.TimeLen.disabled = true;
+}
+
+function doRadio2()
+{
+	var cf = document.forms[0];
+	cf.TimeLen.disabled = false;
+	cf.Hour.disabled = true;
+	cf.Minute.disabled = true;
+}
+function style_display_on()
+{
+	if (window.ActiveXObject)
+	{ // IE
+		return "block";
+	}
+	else if (window.XMLHttpRequest)
+	{ // Mozilla, Safari,...
+		return "table-row";
+	}
+}
+
+function doEnableVeri()
+{
+	str=style_display_on();
+	document.getElementById("UserRow").style.display = str;
+	document.getElementById("PasswordRow").style.display = str;
+	document.getElementById("VeriPassRow").style.display = str;
+	
+}
+
+function doDisableVeri()
+{
+	document.getElementById("UserRow").style.display = "none";
+	document.getElementById("PasswordRow").style.display = "none";
+	document.getElementById("VeriPassRow").style.display = "none";	
+}
+
+function doDisableTimeTb()
+{
+	cf.TimeType[0].disabled = true;
+	cf.TimeType[1].disabled = true;
+	cf.Hour.disabled = true;
+	cf.Minute.disabled = true;
+	cf.TimeLen.disabled = true;
+}
+
+function doEnableTimeTb()
+{
+	cf.TimeType[0].disabled = false;
+	cf.TimeType[1].disabled = false;
+	if (cf.TimeType[0].checked == true)
+	{
+		doRadio1();
+	}
+	else 
+	{
+		doRadio2();
+	}
+}
+
+function doMainClick(obj)
+{
+	if (obj.checked == true)
+	{
+		doEnableTimeTb();
+	}
+	else 
+	{
+		doDisableTimeTb();
+	}
+}
+
+function doVeriClick(obj)
+{
+	if (obj.checked == true)
+	{
+		doEnableVeri();
+	}
+	else 
+	{
+		doDisableVeri();
+	}
+}
+
+function twoDigit(i)
+{
+  var temp;
+  if (i < 10)
+  {
+  	temp = "0"+i;
+  }
+  else
+  {
+  	temp = i;
+  }
+  return temp;
+}
+//-->
+</SCRIPT>
+</HEAD>
+<!-- change XXXX to your dest page.-->
+<BODY onLoad="setTagStr(document,'ntw_auto_mail');LoadHelp('AutoEmailHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<FORM action="AutoEmailRpm.htm" enctype="multipart/form-data" method="get">
+  <TABLE id="autoWidth" >
+    <TBODY>
+      <!--chang your title below.-->
+      <TR>
+        <TD class=h1 id = "t_title">Mail Account Settings</TD>
+      </TR>
+      <TR>
+        <TD class=blue></TD>
+      </TR>
+      <!--Content-->
+      <TR>
+        <TD><TABLE border="0" width="520" cellspacing="2" cellpadding="2" >
+            <TR>
+              <TD class="Item">&nbsp;&nbsp; <SPAN id="t_from">From:</SPAN></TD>
+              <TD><INPUT name="FromAddr" type="TEXT" class="text" maxlength="63" onChange="addrChanged = 1" onBlur="doSMTPAddrAuto()"></TD>
+            </TR>
+            <TR>
+              <TD class="Item">&nbsp;&nbsp;<SPAN id="t_to">To:</SPAN></TD>
+              <TD><INPUT  name="ToAddr" type="TEXT" class="text" maxlength="63"></TD>
+            </TR>
+            <TR>
+              <TD class="Item">&nbsp;&nbsp;<SPAN id="t_smtp_srv">SMTP Server:</SPAN></TD>
+              <TD><INPUT  name="SMTPAddr" type="TEXT" class="text" maxlength="63" onClick="doSMTPAddrAuto()"></TD>
+            </TR>
+            <TR>
+              <TD class="Item"><INPUT name="Verify" type="CHECKBOX" value="2" onClick="doVeriClick(this)"></TD>
+              <TD>&nbsp;&nbsp;<SPAN id="t_auth">Authentication</SPAN></TD>
+            </TR>
+            <TR id="UserRow">
+              <TD class="Item">&nbsp;&nbsp;<SPAN id="t_username">User Name:</SPAN></TD>
+              <TD><INPUT name="User" type="TEXT" class="text" maxlength="31"></TD>
+            </TR>
+            <TR id="PasswordRow">
+              <TD class="Item">&nbsp;&nbsp;<SPAN  id="t_passwd">Password:</SPAN></TD>
+              <TD><INPUT name="Password" type="PASSWORD" class="text" maxlength="31"></TD>
+            </TR>
+            <TR id="VeriPassRow">
+              <TD class="Item"><SPAN id="t_comfirm_passwd">Confirm The Password:</SPAN></TD>
+              <TD ><INPUT name="VeriPass" type="PASSWORD" class="text" maxlength="31"></TD>
+            </TR>
+          </TABLE></TD>
+      </TR>
+      <TR>
+        <TD class=blue></TD>
+      </TR>
+      <TR>
+        <TD ><TABLE>
+            <TR>
+              <TD class="item"><INPUT  name="AutoMail" type="CHECKBOX" value="2" onClick="doMainClick(this)"></TD>
+              <TD id="t_en_auto_mail">Enable Auto Mail Feature</TD>
+            </TR>
+            <TR>
+              <TD>&nbsp;</TD>
+            </TR>
+            <TR>
+              <TD class="item" align="CENTER"><INPUT  name="TimeType" type="radio" value="0" onClick="doRadio1()" checked></TD>
+              <TD><SPAN id="t_mail_time">Everyday, mail the log at</SPAN>&nbsp;
+                <INPUT name="Hour" type="text" class="text" size="2" maxlength="2" value="18">
+                &nbsp;:&nbsp;
+                <INPUT name="Minute" type="text" class="text" size="2" maxlength="2" value="00"></TD>
+            </TR>
+            <TR>
+              <TD class="item" align="CENTER"><INPUT name="TimeType" type="radio" value="1" onClick="doRadio2()"></TD>
+              <TD><SPAN id="t_mail_freq">Mail the log every</SPAN>
+                <INPUT name="TimeLen" id="TimeLen" class="text" type="text" size="2" maxlength="2" value="48">
+                <SPAN id="t_hours">hours</SPAN></TD>
+            </TR>
+          </TABLE></TD>
+      </TR>
+      <TR>
+        <TD class=blue></TD>
+      </TR>
+      <TR>
+        <TD class = "mbtn"><!--Button-->
+          &nbsp;
+          <INPUT name="Save" type="SUBMIT" class="BUTTONBIG" value="Save" onClick="return doSubmit();">
+          &nbsp;
+          <INPUT name="Return" type="BUTTON" class="BUTTONBIG" value="Back" onClick="location.href='SystemLogRpm.htm';"></TD>
+      </TR>
+    </TBODY>
+  </TABLE>
+</FORM>
+<!--JS page up & page down-->
+<SCRIPT type="text/javascript">
+var cf = document.forms[0];
+if(autoEmailConf[0] == 0)
+{
+	cf.FromAddr.value = "";
+}
+else
+{
+	cf.FromAddr.value = autoEmailConf[0];
+}
+if(autoEmailConf[1] == 0)
+{
+	cf.ToAddr.value = "";
+}
+else
+{
+	cf.ToAddr.value = autoEmailConf[1];
+}
+if(autoEmailConf[2] == 0)
+{
+	cf.SMTPAddr.value = "";
+}
+else
+{
+	cf.SMTPAddr.value = autoEmailConf[2];
+}
+if (autoEmailConf[3] == 0)
+{
+	cf.Verify.checked = false;
+	doDisableVeri();
+}
+else
+{
+	cf.Verify.checked = true;
+	cf.User.value = autoEmailConf[4];
+	cf.Password.value = "\t\t\t\t\t\t";
+	cf.VeriPass.value = "\t\t\t\t\t\t";
+	doEnableVeri();
+}
+if (autoEmailConf[5] == 0)
+{
+	cf.AutoMail.checked = false;
+	doDisableTimeTb();
+}
+else
+{
+	cf.AutoMail.checked = true;
+	if (autoEmailConf[6] == 0)
+	{
+		cf.TimeType[0].checked = true;		
+		doRadio1();
+		cf.Hour.value =  twoDigit(autoEmailConf[7]);
+		cf.Minute.value = twoDigit(autoEmailConf[8]);
+	}
+	else
+	{
+		cf.TimeType[1].checked = true;
+		doRadio2();
+		cf.TimeLen.value = autoEmailConf[6];
+	}
+}
+</SCRIPT>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

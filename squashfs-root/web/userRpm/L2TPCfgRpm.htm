@@ -1,0 +1,502 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+<!--
+var wanType = new Array(
+"id=\"t_dyma_ip\">Dynamic IP<",	//	WAN_TYPE_DHCP = 0,
+"id=\"t_stat_ip\">Static IP<",	//	WAN_TYPE_STATIC_IP, 
+"id=\"t_pppoe\">PPPoE/Russia PPPoE<",	//	WAN_TYPE_PPPOE, 
+"id=\"t_dhcp\">802.1x DHCP<",	//	WAN_TYPE_802_1X_DHCP,
+"id=\"t_802_stat_ip\">802.1x Static IP<",	//	WAN_TYPE_802_1X_STATIC_IP,
+"id=\"t_bpa\">BigPond Cable<",	//	WAN_TYPE_BPA,
+"id=\"t_l2tp\">L2TP/Russia L2TP<",	//	WAN_TYPE_L2TP,
+"id=\"t_pptp\">PPTP/Russia PPTP<",	//	WAN_TYPE_PPTP,
+""	//	WAN_TYPE_END
+);
+var PPPoELinkStat = new Array(
+"<span id=\"t_disconnect\">Disconnected!</span>",
+"<span id=\"t_connect\">Connected</span>",
+"<span id=\"t_connecting\">Connecting...</span>"
+);
+function doSubmit()
+{
+/* allow null user and/or null password */
+/*	var element = document.forms[0].L2TPName;
+	if (element && element.value == "")
+	{
+		alert(js_usrname_req = "User Name is required.");
+		element.focus();
+		element.select();
+		return false;
+	}
+	
+	element = document.forms[0].L2TPPwd;
+	if (element && element.value == "")
+	{
+		alert(js_passwd_req = "Password is required.");
+		element.focus();
+		element.select();
+		return false;
+	}
+*/	
+	var val;
+	val=document.forms[0].mtu.value;
+    element = document.forms[0].mtu;
+    if(is_digit(val) == false)
+    {
+        element.focus();
+        element.select();
+        return false;
+    }
+    
+	if(val < 576 || val > 1460 || val =="")
+	{
+		alert(js_bad_mtu="Bad MTU, please input another number!\n(576 ~ 1460, the default is 1460)");
+        element.focus();
+        element.select();
+		return false;
+	}
+	if(document.forms[0].IpType[1].checked == true)
+	{
+		if(!is_ipaddr(document.forms[0].sta_ip.value))
+		{
+			var element =document.forms[0].sta_ip;
+			if(element)
+			{
+				element.focus();
+        element.select();
+			}
+			return false;
+		}
+		if(!is_maskaddr(document.forms[0].sta_mask.value))
+		{
+			var element =document.forms[0].sta_mask;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+		if(document.forms[0].sta_gw.value != "")
+		{
+			if(!is_gatewayaddr(document.forms[0].sta_gw.value))
+			{
+				var element =document.forms[0].sta_gw;
+				if(element)
+				{
+					element.focus();
+          element.select();
+				}
+				return false;
+			}
+		}
+		if(document.forms[0].sta_dns.value != "")
+		{
+			if(!is_dnsaddr(document.forms[0].sta_dns.value))
+			{
+				var element =document.forms[0].sta_dns;
+				if(element)
+				{
+					element.focus();
+					element.select();
+				}
+				return false;
+			}
+		}
+	}
+     //added by ZQQ, 07.12.24 To check the IP is valid when the server is an IP address
+	 var ch = ".0123456789";
+     var c;
+     var n = 0;
+     var szarray = new Array();
+     szarray[0,0,0,0];
+     var str = document.forms[0].L2TPServerName.value;
+     var obj = document.forms[0].L2TPServerName;
+	 if (str == "")
+     {
+		alert(js_svr_ip_emp="Please input the server's IP address or domain name!");
+		obj.focus();
+		obj.select();
+		return false;
+     }
+     
+	if (!is_domain(str))
+	 {
+		obj.focus();
+		obj.select();
+		return false;
+	 }
+	 
+     for(var i=0; i<str.length; i++)
+     {
+        c = str.charAt(i);
+		if (ch.indexOf(c) == -1)
+        {
+			n = 0;
+            break;/* not ipaddr */
+        }
+        else
+        {
+            if(c == '.')
+            {
+                n++; /* count of dot */
+            }
+        }
+     }
+     if(n == 3)     /* 3 dots may be an ipaddr */
+     {
+        for(var j = 0; j < 3; j++)
+        {
+            var n = str.indexOf(".");
+            szarray[j] = str.substring(0,n);
+            remain = str.substring(n+1);
+            str = remain;
+        }
+        szarray[3] = remain;
+        for(var j = 0; j < 4; j++)
+        {
+            if(szarray[j] == "" || !is_number(szarray[j], 0, 255))
+            {
+               alert(js_ip_inv="The IP address is invalid, please input another one(1-254)!");
+               obj.focus();
+               obj.select();
+               return false;
+            }
+        }
+     }
+	
+	if(document.forms[0].idletime.value !="")
+	{
+		if(is_digit(document.forms[0].idletime.value) == false)
+        {
+            element = document.forms[0].idletime;
+            element.focus();element.select();
+            return false;
+        }
+	}
+	return true;
+}
+function doChange()
+{
+	var n = 0;
+	if(l2tpInf[0] > 1)
+	{
+		n = document.forms[0].wan.value;
+	}
+	s = "wan="+n;
+	var t = document.forms[0].wantype.selectedIndex;
+	location.href = "/userRpm/"+wantypeinfo[t*2+2]+"?"+s;
+}
+function changeIpType()
+{
+	if(document.forms[0].IpType[0].checked==true) 
+	{
+		document.getElementById("sta_ip_d").style.display = "none";
+		document.getElementById("sta_mask_d").style.display = "none";
+		document.getElementById("sta_gw_d").style.display = "none";
+		document.getElementById("sta_dns_d").style.display = "none";
+		document.getElementById("dyn_ip_d").style.display = "";
+		document.getElementById("dyn_mask_d").style.display = "";
+		document.getElementById("dyn_gw_d").style.display = "";
+		document.getElementById("dyn_dns_d").style.display = "";
+    }
+    else
+    {
+		document.getElementById("sta_ip_d").style.display = "";
+		document.getElementById("sta_mask_d").style.display = "";
+		document.getElementById("sta_gw_d").style.display = "";
+		document.getElementById("sta_dns_d").style.display = "";
+		document.getElementById("dyn_ip_d").style.display = "none";
+		document.getElementById("dyn_mask_d").style.display = "none";
+		document.getElementById("dyn_gw_d").style.display = "none";
+		document.getElementById("dyn_dns_d").style.display = "none";
+    }
+}
+var stopRefresh=0;
+function doClick()
+{
+	stopRefresh = 1;
+	return true;
+}
+function doOnblur()
+{
+    stopRefresh = 0;
+}
+function doRefresh()
+{    
+	if (0==stopRefresh)
+	{
+    var IPtype;
+	  if(document.forms[0].IpType[0].checked==true) 
+    {
+        IPtype=0;
+    }
+    else 
+    {
+        IPtype=1;
+    }
+		location.href="L2TPCfgRpm.htm?&IpType="+IPtype;
+	}
+	window.setTimeout("doRefresh()",10000);
+}
+function doDetect()
+{
+	location.href="L2TPCfgRpm.htm?detect=1";
+}
+
+function refresh()
+{	
+	location.href="L2TPCfgRpm.htm?dorefresh=1";	
+}
+
+
+function doWanChange()
+{
+	var n = document.forms[0].wan.value;
+	var s = "wan="+n;
+	location.href = "/userRpm/WanCfgRpm.htm"+"?"+s;
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY onLoad="changeIpType();LoadHelp('L2tpCfgHelpRpm.htm');setTagStr(document,'ntw_L2TP'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="L2TPCfgRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth">
+      <TR>
+        <TD class=h1 colspan=2 id = "t_title">WAN</TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+      <SCRIPT type="text/javascript">
+
+if(l2tpInf[0] > 1)
+{
+	document.write('<TR><TD class=Item id = \"t_wan_port\">WAN Port:</TD><TD><select name=\"wan\" id=\"wan\" onChange=\"doWanChange()\"  onFocus = \"doClick()\" onblur = \"doOnblur()\" >');
+	for(var i=0;i<l2tpInf[0];i++)
+	{
+		document.write('<option value=\"'+i+'\">WAN'+ (i+1) +'</option>');
+	}
+	document.write('</select>');
+}
+//added by ZQQ,08.12.10 , if one wan, it should be exist but not display
+else
+{	
+	document.write('<TR style ="display:none"><TD class=Item id = \"t_wan_port\">WAN Port:</TD><TD><select name=\"wan\" id=\"wan\" onChange=\"doWanChange()\">')
+	document.write('<option value=0>WAN1</option>');
+    document.write('</select>');
+}
+</SCRIPT>
+      <TR>
+        <TD class=Item id = "t_wan_conn_type">WAN Connection Type:</TD>
+        <TD><SELECT name="wantype" onblur = "doOnblur()" onFocus="doClick();" onChange="doChange()">
+            <SCRIPT type="text/javascript">
+for ( var t=0; t < wantypeinfo[0]; t++)
+{
+	document.write('<option value="'+wantypeinfo[t*2+1]+'" '+wanType[wantypeinfo[t*2+1]]+'/option>');
+}
+</SCRIPT>
+          </SELECT></TD>
+      </TR>
+      <TR>
+        <TD colspan=2></TD>
+      </TR>
+      <TR>
+        <TD class=Item id = "t_usr_name">User Name:</TD>
+        <TD><INPUT name="L2TPName" type="text" class="text" value="" size="25" maxlength="31" onFocus="doClick();" onBlur="doOnblur()"></TD>
+      </TR>
+      <TR>
+        <TD class=Item id = "t_password">Password:</TD>
+        <TD><INPUT name="L2TPPwd" type="password" class="text" value="" size="25" maxlength="63" onFocus="doClick();" onBlur="doOnblur()"></TD>
+      </TR>
+      <TR>
+        <TD></TD>
+        <TD class=emp><INPUT name="Connect" type="submit" class="button" value="Connect">
+          &nbsp;&nbsp;
+          <INPUT name="Disconnect" type="submit" class="button" value="Disconnect">
+          <SCRIPT type="text/javascript">
+switch(l2tpInf[8]) //0 -Disconected ; 1 -connected ; 2 -Connecting...
+{
+		
+	case 0:
+	document.write('&nbsp;&nbsp;<span id = "t_disconnected">Disconnected!</span>');
+	break;
+	
+	case 1:
+	document.write('&nbsp;&nbsp;<span id = "t_connected">Connected!</span>');
+	break;
+	
+	case 2:
+	document.write('&nbsp;&nbsp;<span id = "t_connecting">Connecting...</span>');
+	break;
+	
+	default:
+	document.write('&nbsp;&nbsp;--');
+	break;
+}
+</SCRIPT></TD>
+      </TR>
+      <TR>
+        <TD colspan=2></TD>
+      </TR>
+      <TR>
+        <TD></TD>
+        <TD><INPUT type="radio" name="IpType" value="0" onClick="changeIpType();">
+          <SPAN id = "t_dynamic_ip">Dynamic IP</SPAN>&nbsp;&nbsp;
+          <INPUT type="radio" name="IpType" value="1" onClick="changeIpType();">
+          <SPAN id = "t_static_ip">Static IP</SPAN></TD>
+      </TR>
+      <TR>
+        <TD class=Item id = "t_svr_ip_addr">Server IP Address/Name:</TD>
+        <TD><INPUT name="L2TPServerName" type="text" class="text" value="" size="32" maxlength="63" onFocus="doClick();" onBlur="doOnblur()"></TD>
+      </TR>
+      <TR>
+        <TD class=Item id = "t_ip_addr">IP Address:</TD>
+				<TD id="sta_ip_d">
+					<INPUT name="sta_ip" type="text" class="text" value="" size="15" maxlength="15" onFocus="doClick();" onBlur="doOnblur()">
+				</TD>
+				<TD id="dyn_ip_d">
+					<DIV id=dyn_ip>-</DIV>
+				</TD>
+      </TR>
+      <TR>
+        <TD class=Item id = "t_sub_mask">Subnet Mask:</TD>
+				<TD id="sta_mask_d">
+					<INPUT name="sta_mask" type="text" class="text" value="" size="15" maxlength="15" onFocus="doClick();" onBlur="doOnblur()">
+				</TD>
+				<TD id="dyn_mask_d">
+					<DIV id=dyn_mask>-</DIV>
+				</TD>
+      </TR>
+      <TR>
+        <TD class=Item id = "t_gateway">Gateway:</TD>
+				<TD id="sta_gw_d">
+					<INPUT name="sta_gw" type="text" class="text" value="" size="15" maxlength="15" onFocus="doClick();" onBlur="doOnblur()">
+				</TD>
+				<TD id="dyn_gw_d">
+					<DIV id=dyn_gw>-</DIV>
+				</TD>
+      </TR>
+      <TR>
+        <TD class=Item id = "t_dns">DNS:</TD>
+				<TD id="sta_dns_d">
+					<INPUT name="sta_dns" type="text" class="text" value="" size="15" maxlength="15" onFocus="doClick();" onBlur="doOnblur()">
+				</TD>
+				<TD id="dyn_dns_d">
+					<DIV id=dyn_dns>-</DIV>
+				</TD>
+      </TR>
+      <TR>
+        <TD colspan=2></TD>
+      </TR>
+      <TR>
+        <TD class=Item id = "t_internet_ip_addr">Internet IP Address:</TD>
+        <TD><SCRIPT type="text/javascript">
+document.write('<div id=InetAddr>-</div>');
+</SCRIPT></TD>
+      </TR>
+      <TR>
+        <TD class=Item id = "t_internet_dns">Internet DNS:</TD>
+        <TD><SCRIPT type="text/javascript">
+document.write('<div id=InetDns>-</div>');
+</SCRIPT></TD>
+      </TR>
+      <TR>
+        <TD colspan=2></TD>
+      </TR>
+      <TR>
+        <TD class=Item id = "t_mtu_size">MTU Size (in bytes):</TD>
+        <TD><INPUT name="mtu" type="text" class="text" value="" size="5" maxlength="5" onFocus="doClick();" onBlur="doOnblur()">
+          &nbsp;<SPAN id = "t_mtu_def">(The default is 1460, do not change unless necessary.)</SPAN></TD>
+      </TR>
+      <TR>
+        <TD class="Item" id = "t_max_idle_time">Max Idle Time:</TD>
+        <TD><INPUT name="idletime" class="text" value="5" size="5" maxlength="2" onFocus="doClick();" onBlur="doOnblur()">
+          &nbsp;<SPAN id = "t_time_def">minutes (0 means remain active at all times.)</SPAN></TD>
+      </TR>
+      <TR>
+        <TD colspan=2></TD>
+      </TR>
+      <TR>
+        <TD class=Item id = "t_wan_conn_mode">WAN Connection Mode:</TD>
+        <TD><INPUT name="linktype" type="radio" value="1" onFocus="doClick();" onBlur="doOnblur()">
+          <SPAN id = "t_conn_to_demand">Connect on Demand</SPAN></TD>
+      </TR>
+      <TR>
+        <TD class=Item></TD>
+        <TD><INPUT type="radio" name="linktype" value="2" onFocus="doClick();" onBlur="doOnblur()">
+          <SPAN id = "t_conn_auto">Connect Automatically</SPAN></TD>
+      </TR>
+      <TR>
+        <TD class=Item></TD>
+        <TD><INPUT name="linktype" type="radio" value="3" onFocus="doClick();" onBlur="doOnblur()">
+          <SPAN id = "t_conn_manu">Connect Manually</SPAN></TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+      <TR>
+        <TD></TD>
+        <TD><INPUT name="Save" type="submit" class="buttonBig" value="Save"></TD>
+      </TR>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+if(1==l2tpInf[25])
+{
+	window.setTimeout("doRefresh()",10000);
+}
+if(l2tpInf[0] > 1)
+{
+	document.forms[0].wan.selectedIndex = l2tpInf[1];
+}
+document.forms[0].wantype.value = l2tpInf[2];
+if (l2tpInf[3]==0)
+{
+	document.forms[0].IpType[0].checked =true;
+}
+else
+{
+	document.forms[0].IpType[1].checked =true;
+
+}
+
+document.getElementById("dyn_ip").innerHTML = l2tpInf[9];
+document.getElementById("dyn_mask").innerHTML = l2tpInf[10];
+document.getElementById("dyn_gw").innerHTML = l2tpInf[11];
+document.getElementById("dyn_dns").innerHTML = l2tpInf[23]+' , ' + l2tpInf[24];
+document.forms[0].sta_ip.value = l2tpInf[18];
+document.forms[0].sta_mask.value = l2tpInf[19];
+document.forms[0].sta_gw.value = l2tpInf[20];
+document.forms[0].sta_dns.value = l2tpInf[26];
+
+document.forms[0].L2TPServerName.value = l2tpInf[4];
+document.forms[0].L2TPName.value = l2tpInf[5];
+document.forms[0].L2TPPwd.value = l2tpInf[6];
+document.forms[0].Connect.disabled = (l2tpInf[7]==1 || l2tpInf[8] ==2)?true:false;
+document.forms[0].Disconnect.disabled = (l2tpInf[7]==1 || l2tpInf[8] ==2)?false:true;
+document.forms[0].mtu.value = l2tpInf[12];
+document.forms[0].idletime.value = l2tpInf[13];
+if (l2tpInf[14]==1)
+{
+	document.forms[0].linktype[0].checked =true;
+}
+else if(l2tpInf[14]==2)
+{
+	document.forms[0].linktype[1].checked =true;
+}
+else
+{
+	document.forms[0].linktype[2].checked =true;
+}
+document.getElementById("InetAddr").innerHTML = l2tpInf[17];
+document.getElementById("InetDns").innerHTML = l2tpInf[21]+' , ' + l2tpInf[22];
+</SCRIPT>

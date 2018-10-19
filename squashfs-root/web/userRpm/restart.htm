@@ -1,0 +1,115 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+<!--//
+
+function LoadMain()
+{
+	parent.location.href = "http://" + rebootInf[0] + ":" + rebootInf[1];
+}
+
+function doLoad()
+{
+	doReFresh();
+}
+var timeout = rebootInf[2] * 10;
+var rate = 0;
+function doReFresh()
+{
+	window.setTimeout("growUp()",timeout);
+}
+function growUp()
+{
+	rate = rate + 1;
+	document.getElementById("td1").style.width = rate + "%";
+    var per=document.getElementById("percent");
+    per.innerHTML=rate+"%";
+	if(rate >= 100)
+	{
+        var obj=document.getElementById("t_notice");
+        obj.style.display="block";
+        document.getElementById("t_restart").style.display="none";
+        document.getElementById("t_complete").style.display="block";
+        document.getElementById("t_complete").style.color="red";
+        per.style.color="red";
+        LoadMain();
+		return;
+	}
+	doReFresh();
+}
+
+//-->
+</SCRIPT>
+<SCRIPT language="JavaScript"  type="text/JavaScript">
+</SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'basic_restart');return doLoad()">
+<CENTER>
+  <FORM>
+    <TABLE border=0>
+      <TBODY>
+        <TR>
+          <TD class=h1 id = "t_title" >Restart</TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <SCRIPT type="text/javascript">
+<!--
+switch (rebootInf[3])
+{
+	case 0:
+		//document.write("<TR><TD class=h2 id = \"t_reboot\">Router Reboot Successfully!</TD></TR>");
+		break;	
+	case 1:
+		document.write("<TR><TD class=h2 id = \"t_def\">Factory Settings Restored Successfully!</TD></TR>");
+		break;	
+	case 2:
+		document.write("<TR><TD class=h2 id = \"t_upgrade\">Software Upgraded Successfully!</TD></TR>");
+		break;
+    case 3:
+    	document.write("<TR><TD class=h2 id = \"t_upload\">Configuration Uploaded Successfully!</TD></TR>");
+		break;
+	case 4:
+		document.write("<TR><TD class=h2 id = \"t_pppoe\">WLAN Configuration Saved Successfully!</TD></TR>");
+		break;
+	default:
+		document.write("<TR><TD class=h2 id = \"t_setting\">Configuration Completed Successfully.</TD></TR>");
+	break;
+}
+//-->
+</SCRIPT>
+        <!--added by ZQQ08.10.09-->
+        <TR>
+          <TD class=h2 id="t_restart">Restarting...</TD>
+        </TR>
+        <TR>
+          <TD class=h2 id="t_complete" style="display:none">Completed!</TD>
+        </TR>
+        <TR>
+          <TD align = "center" style="padding-left:5%"><TABLE border="0" cellpadding="0" cellspacing="0" height="10" align="center" class="space" width="40%">
+              <TR>
+                <TD><DIV id="percent"></DIV></TD>
+                <TD style = "width:98%"><TABLE id="td1"  class="guage" border="0" cellpadding="0" cellspacing="0" height="10" style="width:0px;">
+                    <TR>
+                      <TD></TD>
+                    </TR>
+                  </TABLE></TD>
+              </TR>
+            </TABLE></TD>
+        </TR>
+        <TR>
+          <TD class = "h2" id ="t_notice" style="display:none">Please wait a moment, if the browser does not refresh automatically, click Refresh on the top of your browser.</TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

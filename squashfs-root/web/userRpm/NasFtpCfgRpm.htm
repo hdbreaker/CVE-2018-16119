@@ -1,0 +1,209 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT language=JavaScript type="text/javascript">
+
+var n_mnt = ftpFolderArray[0];
+var n_item = ftpFolderArray[1];
+var ftp_started = ftpFolderArray[2];
+var enableAccess = ftpFolderArray[3];
+var haveUsb = ftpFolderArray[6];
+var events = ftpFolderArray[9];
+
+var FTP_EVENT_NO_CHANGE	=					0x00000000;
+var FTP_EVENT_CONFIG_CHANGED =				0x00000001;
+var FTP_EVENT_CONFIG_ERROR =				0x00000002;
+var FTP_EVENT_FOLDER_BUSY =					0x00000004;
+
+</SCRIPT></HEAD>
+<BODY onload="setTagStr(document,'ntw_vol_lst');LoadHelp('NasFtpCfgHelpRpm.htm');resize(this);" onResize="resize(this);">
+<center><form enctype="multipart/form-data" method="get">
+<TABLE id="autoWidth" border =0><TBODY>
+<TR><TD class=h1 id ="t_arp_list" >FTP Server Configuration</TD></TR>
+</TBODY></TABLE>
+<TR><TD><Br></TD></TR>
+
+<SCRIPT language = "JavaScript" type="text/javascript">
+function doStartFtp()
+{
+	location.href="NasFtpCfgRpm.htm?startFtp=1"; 
+}
+function doStopFtp()
+{
+	location.href="NasFtpCfgRpm.htm?startFtp=0";
+}
+</SCRIPT>
+
+
+<TABLE id="content" border=0><TBODY>
+ <TR>
+    <TD class=Item align=left><B><SPAN id="t_ftp_server">Server Status:</SPAN></B></TD>
+	
+	<SCRIPT language = "JavaScript" type="text/javascript">
+	document.write('<TD class=emp>');
+	if (ftp_started == 0)
+	{
+		document.write('<span id="t_disabled">Stopped&nbsp;<\/span>');
+		document.write('<INPUT name=\"start_ftp\"  type=\"button\" class=\"buttonBig\" value=\"Start\" onclick=\"doStartFtp();\">');
+	}
+	else
+	{
+		document.write('<span id="t_enabled">Started&nbsp;<\/span>');
+		document.write('<INPUT name=\"stop_ftp\" type=\"button\" class=\"buttonBig\" value=\"Stop\" onclick=\"doStopFtp();\">');
+	}
+	document.write('</TD>');
+	</SCRIPT>
+	
+
+ </TR>
+ <TR>
+      <TD class=Item align=left><B><SPAN id="t_internet_access">Internet Access:</SPAN></B></TD>
+	  
+<script language="Javascript" type="text/javascript">
+
+	if (enableAccess == 0)
+	{
+        document.write('<TD width = "100%"><INPUT type="radio" name="internetA" value=1 id="enable_internetA">');
+	    document.write('<SPAN id="t_enable_internetA">Enable</SPAN>');
+    	document.write('<INPUT type ="radio" name="internetA" value=0 id="disable_internetA" checked>');
+		document.write('<SPAN id="t_disable_internetA">Disable</SPAN></TD>');
+	}
+	else
+	{
+		document.write('<TD width = "100%"><INPUT type="radio" name="internetA" value=1 id="enable_internetA" checked>');
+	    document.write('<SPAN id="t_enable_internetA">Enable</SPAN>');
+    	document.write('<INPUT type ="radio" name="internetA" value=0 id="disable_internetA">');
+		document.write('<SPAN id="t_disable_internetA">Disable</SPAN></TD>');
+	}
+</script>
+       
+</TR>
+
+ <TR><TD class=Item id ="t_service_port">Service Port:</TD><TD><INPUT class="text" maxLength=5 size="5" name="service_port" value="21">
+ <span id="t_notice_ftp">
+ (The default is 21, do not change unless necessary.)</span></TD></TR>
+<TR>
+	<TD class=Item id ="t_ftp_addr">Internet Address:</TD>
+	<script language="Javascript" type="text/javascript">
+		document.write('<TD>'+ftpFolderArray[5]+'<\/TD>');
+	</script>
+</TR>
+<script language="Javascript" type="text/javascript">
+if (ftpFolderArray[7])
+{
+	document.write('<TR><TD class=Item id ="t_pulbic_addr">Public Address:</TD>');
+	document.write('<TD>'+ftpFolderArray[8]+'<\/TD><\/TR>');
+}
+</script>
+<script language="Javascript" type="text/javascript">
+function doClick()
+{
+	//document.write('turn away');
+
+	location.href="NasFolderAdvRpm.htm"; 
+	//return true;
+}
+
+function doSubmit()
+{
+	var val;
+	var port = document.forms[0].service_port.value;
+	
+	if (!is_port(port))
+	{
+		var element =document.forms[0].service_port;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+}
+
+</script>
+
+<TABLE id="content" border=0><TBODY>
+
+<TR align="center"><TD><INPUT class="buttonBigL" type="button" value="Add New Folder" name="AddFolder" onclick="doClick()">&nbsp; </TD></TR>	
+
+<TR><TD class=blue></TD></TR>
+
+<TR><TD><table border=0 >
+
+<SCRIPT language=JavaScript type="text/javascript">
+document.write(
+	'<TR><TD class=ListB id = \"t_name\"><font color=#003399>Name<\/font><\/TD>'
+	+ '<TD class=ListB id = \"t_partition\">Partition<\/TD>'
+	+ '<TD class=ListB id = \"t_folder\">Folder<\/TD>'
+	+ '<TD class=ListB id = \"t_modify\">Modify<\/TD> '
+	+ '<\/TR>'
+);
+if (n_mnt > 0)
+{
+	var row = 0;
+	var i = 0;
+	var k = 0;
+	var j;
+	
+	
+	for(i = 0; i < n_mnt; i++)
+	{	
+		var permissions;	
+		j = i + 1;
+		row = i * n_item;
+		
+		document.write('<TR align="center">');
+		document.write('<TD>' + folderListArray[row] + '<\/TD>');
+		document.write('<TD>' + folderListArray[row+1] + '<\/TD>');
+		//the length of '/tmp/usbdisk/' is 13
+		document.write('<TD>' + folderListArray[row+2].substr(13) + '<\/TD>');
+		document.write('<TD align="center"><a href=\"NasFolderAdvRpm.htm?modify='
+						+i
+						+'\" id="t_edit" name="t_edit">Edit&nbsp;<\/a>&nbsp;<a href=\"NasFtpCfgRpm.htm?flagDelete='
+						+i
+						+'\" id="t_del" name="t_del">Delete<\/a><\/td><\/tr>');
+	}
+}
+else
+{
+	document.write('<TR align="center"><TD class=info1 colspan="10" id = "t_empty">No folders set. Plug an external USB drive into this Router, and make sure it is connected to the Router.<\/TD><\/TR>');
+}
+</script>
+
+</TABLE></TD></TR>
+<TR><TD class=blue></TD></TR>
+<TR><TD>
+<INPUT class="buttonBig" type=submit value='Save' name="save" onclick="return doSubmit();">
+</TD></TR>
+<TR>
+<SCRIPT language="JavaScript">
+	if (events & FTP_EVENT_CONFIG_ERROR)
+	{
+		document.write( '<TD id ="t_notice_cfg" style="color:red;">Notice: Can not start FTP Server due to invalid configuration<\/TD>');
+	}
+	else if (events & FTP_EVENT_FOLDER_BUSY)
+	{
+		document.write( '<TD id ="t_notice_busy" style="color:red;">Notice: Can not modify share folder, because share folder is busy now<\/TD>');
+	}
+</SCRIPT>
+</TR>
+</TBODY></TABLE>
+</form></center></body></html>
+
+<SCRIPT language="JavaScript">
+document.forms[0].service_port.value = ftpFolderArray[4];
+if (ftp_started == 0)
+document.forms[0].start_ftp.disabled = (haveUsb == 0)?true:false;
+
+if (haveUsb == 0)
+document.forms[0].AddFolder.disabled = true;
+else
+document.forms[0].AddFolder.disabled = false;
+
+//FIX Me. 10 is the max support folders num.
+if (ftpFolderArray[0] == 10)
+{
+	document.forms[0].AddFolder.disabled = true;
+}
+</SCRIPT>
+

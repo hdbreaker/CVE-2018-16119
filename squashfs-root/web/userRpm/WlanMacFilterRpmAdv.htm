@@ -1,0 +1,231 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript"><!--//
+
+var 	keyLen64 = 10;
+var 	keyLen128 = 26;
+var 	keyLen152 = 32;
+function getKeyLen(type)
+{
+    var keyLen = 0;
+    if (3 == type)
+    keyLen = keyLen64;
+    else if (4 == type)
+    keyLen = keyLen128;
+    else if (5 == type)
+    keyLen = keyLen152;
+    return keyLen;
+}
+function auto_length()
+{
+    var cf = document.forms[0];
+    var keyLen = 0;
+    keyLen = getKeyLen(cf.Type.selectedIndex + 1);
+    if (keyLen > 0)
+    {
+        cf.key.disabled = false;
+        cf.key.maxLength = cf.key.size = keyLen;
+        cf.key.value = cf.key.value.substring(0, keyLen);
+    }
+    else
+    {
+        cf.key.disabled = true;
+        cf.key.maxLength = cf.key.size = keyLen152;
+    }
+}
+function checkKey(key, type)
+{
+    var c;
+    var zeronum = 0;
+    var ch = "0123456789ABCDEFabcdef";
+    var expectedLen = getKeyLen(type);
+    if (expectedLen <= 0)
+    return true;
+    if (key.length != expectedLen)
+    return false;
+    for (var i = 0; i < key.length; i++)
+    {
+        c = key.charAt(i);
+        if (c =="0")zeronum++;
+        if (ch.indexOf(c) == -1){
+        return false;}
+        if (zeronum == expectedLen)return false;
+    }
+    return true;
+}
+function onChangeType(){auto_length();}
+//temp enable
+//function doBack(nPage){location.href="WlanMacFilterRpm.htm?Page="+nPage;}
+//temp diable
+function doBack(nPage)
+{
+    location.href="/userRpm/WlanMacFilterRpm.htm? Page = "+nPage;
+}
+function is_spmac(mac_string)
+{
+    if(mac_string == "00-00-00-00-00-00")
+    {
+        alert(js_inv_mac_addr="Invalid MAC address, please input another one!");
+        return false;
+    }
+    var ch = "Ff-";
+    for (var i = 0; i < mac_string.length; i++)
+    {
+        c = mac_string.charAt(i);
+        if (ch.indexOf(c) == -1)
+        return true;
+    }
+    alert(js_inv_mac_addr="Invalid MAC address, please input another one!");
+    return false;
+}
+function doSubmit()
+{
+    if(document.forms[0].Mac.value=="")
+    {
+       alert(js_pl_cor_mac="Please input a correct MAC address!");
+        var element = document.forms[0].Mac;
+        if (element)
+        {
+            element.focus();element.select();}return false;
+        }
+        if(document.forms[0].Mac.value != "")
+        {
+            if (!is_macaddr(document.forms[0].Mac.value))
+            {
+                var element = document.forms[0].Mac;
+                if(element)
+                {
+                    element.focus();
+                    element.select();
+                }
+                return false;
+            }
+        if (!is_spmac(document.forms[0].Mac.value))
+        {
+            var element = document.forms[0].Mac;
+            if(element)
+            {
+                element.focus();
+                element.select();
+            }
+        return false;
+        }
+      }
+    if (document.forms[0].Desc.value != "")
+    {
+        if (!is_hostname(document.forms[0].Desc.value))
+        {
+        var element = document.forms[0].Desc;
+        if(element)
+        {
+            element.focus();
+            element.select();
+        }
+        return false;
+        }
+    }
+    if (!checkKey(document.forms[0].key.value, document.forms[0].Type.selectedIndex + 1))
+    {
+        var element = document.forms[0].key;
+       
+        alert(js_pl_cor_wep="Please input a correct WEP Key!")
+        if(element)
+        {
+            element.focus();
+            element.select();
+        }
+        return false;
+    }
+    return true;
+}
+//--></SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'wlan_mac_fil_adv');LoadHelp('WlanMacFilterHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="WlanMacFilterRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth">
+      <TR>
+        <TD class=h1 colspan=2 id = "t_title">Add or Modify Wireless MAC Address Filtering entry</TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+      <TR>
+        <TD class=Item id = "t_mac_addr">MAC Address:</TD>
+				<TD>
+					<INPUT name="Mac" type="text" class="text" value="-" size="17" maxlength="17">
+				</TD>
+      </TR>
+      <TR>
+        <TD class=Item id = "t_desc">Description:</TD>
+				<TD>
+					<INPUT name="Desc" type="text" class="text" value="-" size="30" maxlength="30">
+				</TD>
+      </TR>
+			<TR style="display:none">
+				<td class=Item id = "t_pri"> Privilege: </TD>
+				<TD>
+					<SELECT  size="1" name="Type" class="list" onChange="onChangeType()">
+            <SCRIPT type="text/javascript">
+var typeList = new Array("","allow","deny","64 bit","128 bit","152 bit"); 
+for(i = 1; i < 6; i++)	{
+	document.write('<option value=' + i + '>'+typeList[i]+'&nbsp;</option>');
+}
+</SCRIPT>
+					</SELECT>
+				</TD>
+      </TR>
+			<TR style="display:none">
+				<td style="display:none" class=Item id = "t_wep_key"> WEP Key: </TD>
+				<TD >
+					<INPUT name="key" type="text" class="text" value="" size="32" maxlength="32">
+        </TD>
+      </TR>
+      <TR>
+        <TD class=Item id = "t_sta">Status:</TD>
+				<TD>
+					<SELECT name="entryEnabled" class="list">
+            <OPTION value="1" id = "t_enabled">Enabled</OPTION>
+            <OPTION value="0" id = "t_disabled">Disabled</OPTION>
+					</SELECT>
+				</TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+      <TR>
+        <TD></TD>
+				<TD>
+					<INPUT name="Changed" type="hidden" value=0>
+          <INPUT name="SelIndex" type="hidden" value="0">
+          <INPUT name="Page" type="hidden" value="1">
+          <INPUT name="Save" type="submit" class="buttonBig" value="Save">
+          &nbsp;
+					<INPUT type="button" value="Back" name="Back" class="buttonBig" onClick="doBack(curPage);">
+				</TD>
+      </TR>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+document.forms[0].Mac.value =wlanFilterAdvPara[0];
+document.forms[0].Desc.value =wlanFilterAdvPara[1];
+document.forms[0].Type.value =wlanFilterAdvPara[2];
+document.forms[0].key.value =wlanFilterAdvPara[3];
+document.forms[0].key.size	=(getKeyLen(wlanFilterAdvPara[2]) == 0)?keyLen152:getKeyLen(wlanFilterAdvPara[2]);
+document.forms[0].key.maxLength=(getKeyLen(wlanFilterAdvPara[2]) == 0)?keyLen152:getKeyLen(wlanFilterAdvPara[2]);
+document.forms[0].key.disabled = (wlanFilterAdvPara[2] == 1 || wlanFilterAdvPara[2] ==2)?true:false;
+document.forms[0].entryEnabled.value =wlanFilterAdvPara[4];
+var  	curPage = wlanFilterAdvPara[7];
+document.forms[0].Changed.value =wlanFilterAdvPara[5];
+document.forms[0].SelIndex.value =wlanFilterAdvPara[6];
+document.forms[0].Page.value = curPage;
+document.getElementById("t_pri").style.display=(wlanFilterAdvPara[8])?"block":"none";
+document.getElementById("t_wep_key").style.display=(wlanFilterAdvPara[8])?"block":"none";
+onChangeType();
+</SCRIPT>

@@ -1,0 +1,237 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+<!-- 
+function doModifyStatus(){	
+	var btn = (wlanFilterPara[0] == 0)?"Enfilter":"Disfilter";
+	location.href="/userRpm/WlanMacFilterRpm.htm?Page="+curPage+"&"+btn+"=1";
+}
+function showKey(enable)
+{
+    if (sRule != enable)
+	{
+	location.href="/userRpm/WlanMacFilterRpm.htm?Page="+curPage+"&ShowKey="+enable;
+}
+}
+
+function ResetStatus(strInfo)
+{
+	window.status = strInfo;
+	return true;
+}
+function doAll(val)
+{
+    if ((val=="DelAll")&&(!confirm(js_to_del_rul="Are you sure to delete all entries?")))
+        {
+    return false;
+	}
+	
+    location.href="/userRpm/WlanMacFilterRpm.htm?Page="+curPage+"&DoAll="+val;
+    return true;
+}
+function doAdd(nPage)
+{
+    location.href="/userRpm/WlanMacFilterRpm.htm?Add=Add&Page="+nPage;
+}
+function doPage(nPage)
+{
+    location.href="/userRpm/WlanMacFilterRpm.htm?Page="+nPage;
+}
+function doClick(a)
+{
+    if ((filterRule != a)&&!confirm(js_to_change_rule="Do you want to change current Filtering Rules?"))
+    {
+        if (a == 0)
+        {
+            document.forms[0].ExcludeUnlisted[1].checked = 1;
+            document.forms[0].ExcludeUnlisted[1].focus();
+        }
+        else
+        {
+            document.forms[0].ExcludeUnlisted[0].checked = 1;
+            document.forms[0].ExcludeUnlisted[0].focus();
+        }
+    }
+    else if(filterRule != a)
+	{
+    location.href="/userRpm/WlanMacFilterRpm.htm?Page="+curPage+"&exclusive="+a;
+}
+}
+
+var wlanFIlterStringArray = new Array( 
+"",
+"<span name=\"t_allow1\" id=\"t_allow1\">allow</span>",
+"<span name==\"t_deny1\" id=\"t_deny1\">deny</span>",
+"<span name=\"t_64bit\" id=\"t_64bit\">64 bit</span>",
+"<span name=\"t_128bit\" id=\"t_128bit\">128 bit</span>",
+"<span name=\"t_152bit\" id=\"t_152bit\">152 bit</span>"
+);
+//-->
+</SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'wlan_mac_fil'); LoadHelp('WlanMacFilterHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="WlanMacFilterRpm.htm" enctype="multipart/form-data" method="get">
+    <TABLE id="autoWidth" border = 0 >
+      <TR>
+        <TD class=h1 colspan=2 id = "t_title">Wireless MAC Filtering</TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2>&nbsp;</TD>
+      </TR>
+      <TR>
+        <TD><TABLE border = 0 >
+            <TR>
+              <TD class=ListB id="t_macAddrFlt" style = "padding-left:45px">Wireless MAC Filtering:&nbsp;&nbsp;</TD>
+              <TD class=emp><SCRIPT type="text/javascript">
+(wlanFilterPara[0] == 0)?(document.write("<span id=\"t_disabled\">Disabled</span>")):(document.write("<span id=\"t_enabled\">Enabled</span>"));
+</SCRIPT>
+                &nbsp;&nbsp;</TD>
+              <TD><INPUT name="Enfilter" type="button" class="button" value="Enable"  onclick="doModifyStatus();" style="display:none">
+                <INPUT name="Disfilter" type="button" class="button" value="Disable"  onclick="doModifyStatus();" style="display:none"></TD>
+              <TD width = "50%">&nbsp;</TD>
+              <TD width = 50%>&nbsp;</TD>
+            </TR>
+          </TABLE></TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2>&nbsp;</TD>
+      </TR>
+      <TR>
+        <TD class=h2 colspan=2 id="t_fltRules">Filtering Rules</TD>
+      </TR>
+      <TR>
+        <TD colspan=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <INPUT name=ExcludeUnlisted type=radio value=1 onClick="doClick(0);">
+          <SPAN  style="color:#FF0000" id="t_deny">Deny</SPAN> <SPAN id="t_deny_note">the stations specified by any enabled entries in the list to access.</SPAN></TD>
+      </TR>
+      <TR>
+        <TD colspan=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <INPUT name=ExcludeUnlisted type=radio value=2 onClick="doClick(1);">
+          <SPAN style="color:#FF0000" id="t_allow">Allow</SPAN> <SPAN id="t_allow_note">the stations specified by any enabled entries in the list to access.</SPAN></TD>
+      </TR>
+      <TR>
+        <TD colspan=2>&nbsp;</TD>
+      </TR>
+      <TR>
+        <TD colspan=2><TABLE border=0>
+            <!-- Write Title Line -->
+            <TR>
+              <TD class=ListB id="t_id">ID</TD>
+              <TD class=ListB id="t_macAddr">MAC Address</TD>
+              <TD class=ListB id="t_status">Status</TD>
+              <SCRIPT type="text/javascript">
+	if (8 != wlanFilterPara[7])
+	{
+		document.write("<TD class=ListB id=\"t_priv\">Privilege</TD>");
+		document.write("<TD class=ListB id=\"t_wep_key\">WEP Key</TD>");
+	}
+</SCRIPT>
+              <TD class=ListB id="t_dsp">Description</TD>
+              <TD class=ListB id="t_modify">Modify</TD>
+            </TR>
+            <!-- Write the mac filter list  -->
+            <SCRIPT type="text/javascript">
+if (wlanFilterPara[5] > 0)
+{
+    var row = 0;
+    var statusString;
+    var idStart = (wlanFilterPara[3]-1)*8;
+    var privilegeIndex;
+    var modifyId;
+    for(var i = 0; i < wlanFilterPara[5]; i++)
+    {
+    	modifyId = idStart;
+    	idStart++;
+    	row = i * wlanFilterPara[6];
+    	privilegeIndex = wlanFilterList[row+2];
+			statusString = (wlanFilterList[row+1] == 1)?'<span id="t_wl_mac_en" name="t_wl_mac_en">Enabled</span>':'<span id="t_wl_mac_dis" name="t_wl_mac_dis">Disabled</span>';
+    	document.write('<tr><td class=ListB>' + idStart + '</td>');
+			document.write('<td class=ListB>' + wlanFilterList[row] + '</td>');
+			document.write('<td class=ListB>' + statusString + '</td>');
+			if (8 != wlanFilterPara[7])
+			{
+				document.write('<td class=ListB>' + wlanFIlterStringArray[privilegeIndex] + '</td>');
+				document.write('<td class=ListB>' + wlanFilterList[row+3] + '</td>');
+			}
+			document.write('<td class=ListB>' + wlanFilterList[row+4] + '</td>');
+			document.write('<td class=ListB><a href=\"/userRpm/WlanMacFilterRpm.htm?Modify=' 
+				+ modifyId
+				+ '&Page='
+				+ wlanFilterPara[3]
+				+ '\" OnMouseOver=\"return ResetStatus(\'modify\');\" id="t_but_modi" name="t_but_modi">Modify</a>&nbsp;<a href=\"/userRpm/WlanMacFilterRpm.htm?Del='
+				+ modifyId
+				+ '&Page='
+				+ wlanFilterPara[3]
+				+ '\" OnMouseOver=\"return ResetStatus(\'delete\');\" id="t_delete" name="t_delete">Delete</a></td></tr>'
+			);
+    }
+}
+</SCRIPT>
+          </TABLE></TD>
+      </TR>
+      <TR>
+        <TD colspan=2>&nbsp;</TD>
+      </TR>
+      <TR>
+        <TD colspan=2><INPUT type="button" value="Add New..." name="Add" class="buttonBig" onClick="doAdd(curPage);">
+          &nbsp;
+          <INPUT type="button" value="Enable All" name="EnAll" class="buttonBig" onClick="doAll('EnAll');">
+          &nbsp;
+          <INPUT type="button" value="Disable All" name="DisAll" class="buttonBig" onClick="doAll('DisAll');">
+          &nbsp;
+          <INPUT type="button" value="Delete All" name="DelAll" class="buttonBig" onClick="doAll('DelAll');"></TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2>&nbsp;</TD>
+      </TR>
+      <TR>
+        <TD class=mbtn colspan=2><INPUT name="PrevPage" type="button" class="buttonBig" onClick="doPage(pPage);" value="Previous">
+          &nbsp;
+          <INPUT name="NextPage" type="button" class="buttonBig" onClick="doPage(nPage);" value="Next"></TD>
+      </TR>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+</HTML>
+<SCRIPT type="text/javascript">
+var  curPage = wlanFilterPara[3];
+var  pPage = (wlanFilterPara[3] == 1)?1:(wlanFilterPara[3]-1);
+var  nPage = wlanFilterPara[3]+1;
+document.forms[0].PrevPage.disabled = (wlanFilterPara[3] < 2)?true:false;
+document.forms[0].NextPage.disabled = (wlanFilterPara[4] == 0)?true:false;
+var filterRule = wlanFilterPara[1];
+if (filterRule != 0) filterRule=1;
+document.forms[0].ExcludeUnlisted[filterRule].checked =true;
+var sRule =wlanFilterPara[2];
+if (sRule != 0) sRule=1;
+
+if(wlanFilterPara[0]==0)
+{
+    document.forms[0].Enfilter.style.display = "block";
+    document.forms[0].Disfilter.style.display = "none";
+}
+if(wlanFilterPara[0]==1)
+{
+    document.forms[0].Enfilter.style.display = "none";
+    document.forms[0].Disfilter.style.display = "block";
+}
+
+if (wlanFilterPara[0]== 0)
+{
+    document.forms[0].Enfilter.style.display = "block";
+}
+else
+{
+    document.forms[0].Disfilter.style.display = "block";
+}
+
+document.forms[0].EnAll.disabled = (wlanFilterPara[5] < 1)?true: false;
+document.forms[0].DisAll.disabled = (wlanFilterPara[5] < 1)?true: false;
+document.forms[0].DelAll.disabled = (wlanFilterPara[5] < 1)?true: false;
+
+document.forms[0].PrevPage.disabled = (wlanFilterPara[3] < 2)?true:false;
+document.forms[0].NextPage.disabled = (wlanFilterPara[4] > 0)?false:true;
+
+</SCRIPT>

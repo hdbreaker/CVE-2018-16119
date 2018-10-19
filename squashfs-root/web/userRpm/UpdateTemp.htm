@@ -1,0 +1,77 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+<!--//
+function doLoad()
+{
+	doReFresh();
+	location.href = tempPageInf[2];
+}
+var timeout = tempPageInf[0]*10;//0.6second per fresh, 100 times total.
+var rate = 0;
+function doReFresh()
+{
+	window.setTimeout("growUp()",timeout);
+}
+function growUp(){
+	rate = rate + 1;
+	document.getElementById("td1").style.width = rate + "%";
+    document.getElementById("percent").innerHTML=rate + "%";
+	if(rate >= 100)
+	{
+		return;
+	}
+	doReFresh();
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_tem_page');return doLoad()">
+<FORM>
+  <CENTER>
+    <TABLE border =0>
+      <TR>
+        <TD class="h1" NAME="title">
+        <SCRIPT type="text/javascript">
+		    if(tempPageInf[1] == 1)	//software upgrade
+		    {
+		        document.write("<SPAN id = \"t_title1\">Firmware Upgrade</SPAN>");
+		    }
+		    if(tempPageInf[1] == 2)	//upload config 
+		    {
+		        document.write("<SPAN id = \"t_title2\">Config Upload</SPAN>");
+		    }
+		</SCRIPT></TD>
+      </TR>
+      <TR>
+        <TD class=blue></TD>
+      </TR>
+      <TR>
+        <TD class=h2 id="t_processing">Processing...</TD>
+      </TR>
+      <TR>
+        <TD class=h2 id="t_please_wait">Please wait until system reboots...</TD>
+      </TR>
+      <TR>
+        <TD align="center" style="padding-left:5%"><TABLE border="0" cellpadding="0" cellspacing="0" height="10" align="center" class="space" width="40%">
+            <TR>
+              <TD><DIV id="percent"></DIV></TD>
+              <TD style = "width:98%"><TABLE id="td1" class="guage" border="0" cellpadding="0" cellspacing="0" height="10" style="width:0px;">
+                  <TR>
+                    <TD></TD>
+                  </TR>
+                </TABLE></TD>
+            </TR>
+          </TABLE></TD>
+      </TR>
+      <TR>
+        <TD class=blue></TD>
+      </TR>
+    </TABLE>
+  </CENTER>
+</FORM>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

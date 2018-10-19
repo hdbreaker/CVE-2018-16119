@@ -1,0 +1,116 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+<!--//
+
+function doAll(val)
+{
+	if(val=="DelAll")
+	{
+		if(!confirm(js_to_delete="Are you sure to delete all entries?"))
+		return;
+	}
+    alert(js_note_fixmap="Note: The function won't take effect until the Router reboot!");
+	location.href="/userRpm/FixMapCfgRpm.htm?doAll="+val+"&Page="+curPage;
+}
+function doAdd(nPage)
+{
+	location.href="/userRpm/FixMapCfgRpm.htm?Add=Add&Page="+nPage;
+}
+function doPage(nPage)
+{
+	location.href="FixMapCfgRpm.htm?Page="+nPage;
+}
+function ResetStatus(strInfo)
+{
+	window.status=strInfo; 
+	return true;
+}
+function showMsg()
+{
+    alert(js_reboot_take_effect = "Note: The function won't take effect until the Router reboot!");
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_fix_map_cfg');LoadHelp('FixMapCfgHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<FORM action="FixMapCfgRpm.htm" enctype="multipart/form-data" method="get">
+  <TABLE id="autoWidth">
+    <TR>
+      <TD class=h1 id="t_title">Address Reservation</TD>
+    </TR>
+    <TR>
+      <TD class=blue></TD>
+    </TR>
+    <TR>
+      <TD><TABLE border=0>
+          <TR>
+            <TD class="ListTC2" id="t_id">ID</TD>
+            <TD class="ListTC2" id="t_mac_addr">MAC Address</TD>
+            <TD class="ListTC2" id="t_ip_addr">Reserved IP Address</TD>
+            <TD class="ListTC2" id="t_status">Status</TD>
+            <TD class="ListTC2" id="t_modify">Modify</TD>
+          </TR>
+          <SCRIPT type="text/javascript">
+if (DHCPStaticPara[2]>0)
+{
+	var row=0;
+	var StatusString;
+	var IdStart = (DHCPStaticPara[0]-1)*DHCPStaticPara[4];
+	var modifyId;
+	for (i=0;i< DHCPStaticPara[2];i++)
+	{
+		modifyId = IdStart;
+		IdStart++;
+		row = i*DHCPStaticPara[3];
+StatusString = (dhcpList[row+2]==0)?"<span name=\"t_disable\" id = \"t_disabled\">Disabled<\/span>":"<span name=\"t_enabled\" id = \"t_enabled\">Enabled<\/span>";
+document.write('<tr><td class=ListC2>'+ IdStart + '<\/td>');
+document.write('<td class=ListC2>'+ dhcpList[row] +'<\/td>');
+document.write('<td class=ListC2>'+ dhcpList[row+1] +'<\/td>');
+document.write('<td class=ListC2>'+ StatusString +'<\/td>');
+document.write('<td class=ListC2><a href=\"/userRpm/FixMapCfgRpm.htm?Modify=' +
+						modifyId+'&Page='+DHCPStaticPara[0]+
+'\" OnMouseOver=\"return ResetStatus(\'modify\');\"><span name="t_but_modi" id = "t_but_modi">Modify<\/span><\/a>&nbsp;<a href=\"/userRpm/FixMapCfgRpm.htm?Del='+
+					 	modifyId+'&Page='+DHCPStaticPara[0]+
+'\" OnMouseOver=\"return ResetStatus(\'delete\');\"><span name="t_delete" id = "t_delete" onclick="showMsg();">Delete<\/span><\/a><\/td><\/tr>');
+	}
+}
+</SCRIPT>
+        </TABLE></TD>
+    </TR>
+    <TR>
+      <TD colspan = 2></TD>
+    </TR>
+    <TR>
+      <TD colspan=2><INPUT type="button" value="Add New..." name="Addnew" class="buttonBig" onClick="doAdd(curPage);">
+        &nbsp;
+        <INPUT type="button" value="Enable All" name="Enall" class="buttonBig" onClick="doAll('EnAll');">
+        &nbsp;
+        <INPUT type="button" value="Disable All" name="Disall" class="buttonBig" onClick="doAll('DisAll');">
+        &nbsp;
+        <INPUT type="button" value="Delete All" name="Delall" class="buttonBig" onClick="doAll('DelAll');"></TD>
+    </TR>
+    <TR>
+      <TD class=blue colspan=2></TD>
+    </TR>
+    <TR>
+      <TD class=mbtn><INPUT name="PrevPage" type="button" class="buttonBig" onClick="doPage(prePage);" value="Previous" >
+        &nbsp;
+        <INPUT name="NextPage" type="button" class="buttonBig" onClick="doPage(nextPage);" value="Next">
+        <INPUT name="Page" type="hidden" value="1"></TD>
+    </TR>
+  </TABLE>
+</FORM>
+</BODY>
+</HTML>
+<SCRIPT type="text/javascript">
+var curPage = DHCPStaticPara[0];
+var prePage = (DHCPStaticPara[0] == 1)?1:DHCPStaticPara[0]-1;
+var nextPage = DHCPStaticPara[0]+1;
+document.forms[0].Page.value = curPage;
+document.forms[0].Enall.disabled = (DHCPStaticPara[2] < 1)?true: false;
+document.forms[0].Disall.disabled = (DHCPStaticPara[2] < 1)?true: false;
+document.forms[0].Delall.disabled = (DHCPStaticPara[2] < 1)?true: false;
+document.forms[0].PrevPage.disabled = (DHCPStaticPara[0] < 2)?true:false;
+document.forms[0].NextPage.disabled = (DHCPStaticPara[1] > 0)?false:true;
+</SCRIPT>

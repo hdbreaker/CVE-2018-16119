@@ -1,0 +1,113 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript"><!--//
+function doBack(nPage)
+{
+	location.href="/userRpm/StaticRouteTableRpm.htm?Page="+nPage;
+}
+function doSubmit()
+{
+	if(document.forms[0].Ip.value=="")
+	{
+		alert(js_pl_ip_addr="Please input IP address!");
+		 return false;
+	}
+	if(!is_ipaddr(document.forms[0].Ip.value))
+	{
+		var element =document.forms[0].Ip;
+		if(element)
+		{
+			element.focus();element.select();
+		}
+		return false;
+	}
+	if(document.forms[0].Mask.value=="")
+	{
+		alert(js_pl_mask_addr="Please input the subnet mask address!");
+		 return false;
+	}
+	if(!is_maskaddr(document.forms[0].Mask.value))
+	{
+		var element =document.forms[0].Mask;
+		if(element)
+		{
+			element.focus();element.select();
+		}
+		return false;
+	}
+	if(document.forms[0].Gateway.value=="")
+	{
+		alert(js_pl_gate_addr="Please input Gateway address!");
+		 return false;
+	}
+	if(!is_gatewayaddr(document.forms[0].Gateway.value))
+	{
+		var element =document.forms[0].Gateway;
+		if(element)
+		{
+			element.focus();element.select();
+		}
+		return false;
+	}
+	return true;
+}
+--></SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_static_route_table_adv');LoadHelp('StaticRouteTableHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="StaticRouteTableRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth">
+      <TR>
+        <TD class=h1 colspan=2 id="t_title">Add or Modify a Static Route Entry</TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_dest_ip_addr">Destination Network:</TD>
+        <TD><INPUT name="Ip" type="text" class="text" value="" size="15" maxlength="15"></TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_submask">Subnet Mask:</TD>
+        <TD><INPUT name="Mask" type="text" class="text" value="" size="15" maxlength="15"></TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_gateway">Default Gateway:</TD>
+        <TD><INPUT name="Gateway" type="text" class="text" value="" size="15" maxlength="15"></TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_status">Status:</TD>
+        <TD><SELECT size="1" name="State" class="list">
+            <OPTION value="0" id="t_disabled" selected>Disabled</OPTION>
+            <OPTION value="1" id="t_enabled">Enabled</OPTION>
+          </SELECT></TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+      <TR>
+        <TD></TD>
+        <TD><INPUT name="Changed" type="hidden" value="">
+          <INPUT name="SelIndex" type="hidden" value="">
+          <INPUT name="Page" type="hidden" value="">
+          <INPUT name="Save" type="submit" class="buttonBig" value="Save">
+          &nbsp;
+          <INPUT type="button" value="Back" name="Back" class="buttonBig" onClick="doBack(srtEditInf[6]);"></TD>
+      </TR>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+document.forms[0].Ip.value =srtEditInf[0];
+document.forms[0].Mask.value =srtEditInf[1];
+document.forms[0].Gateway.value =srtEditInf[2];
+document.forms[0].State.value = srtEditInf[3];
+document.forms[0].Changed.value = srtEditInf[4];
+document.forms[0].SelIndex.value = srtEditInf[5];
+document.forms[0].Page.value = srtEditInf[6];
+</SCRIPT>

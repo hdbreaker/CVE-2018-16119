@@ -1,0 +1,201 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<!--JS-->
+<SCRIPT type="text/javascript">
+<!--
+function getValLen(val)
+{
+	var len = 0;
+	var i = 0;
+	for (i = 0; i < val.length; i ++)
+	{
+		var c = val.charAt(i);
+		len += ((c >= ' ') && (c <= '~')) ? 1 : 2;
+	}
+	return len;
+}
+function doBack()
+{
+	var LP = location.pathname;
+	location.href = LP + "?Return=Back";
+}
+function doSubmit()
+{
+	var desc_len = getValLen(document.forms[0].rule_name.value);
+	if ((desc_len < 1) || (desc_len > 24))
+	{
+		alert(js_pl_input_name="Please input name of the control rule (Length < 25)!");
+		var element = document.forms[0].rule_name;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	if (document.forms[0].hosts_lists.value==255)
+	{
+		alert(js_sel_host="Please select a host !");
+		return false;
+	}
+	
+	var LP = location.pathname;
+	var DF = document.forms[0];
+	var ruleName = DF.rule_name.value;
+	var hostId = DF.hosts_lists.value;
+	var targetId = DF.targets_lists.value;
+	var schedId = DF.scheds_lists.value;
+	var bEnable = DF.enable.value;
+	var clientId = DF.ClientId.value
+	
+	location.href = LP + "?rule_name=" + ruleName
+						+ "&hosts_lists=" + hostId
+						+ "&targets_lists=" + targetId
+						+ "&scheds_lists=" + schedId
+						+ "&enable=" + bEnable
+						+ "&Complete=Finish&ClientId=" + clientId;
+						
+	return false;
+}
+function style_display_on()
+{
+	if (window.ActiveXObject)
+	{ // IE
+		return "block";
+	}
+	else if (window.XMLHttpRequest)
+	{ // Mozilla, Safari,...
+		return "table-row";
+	}
+}
+function printfHostsLists()
+{
+	var i;
+	if (access_rules_adv_dyn_array[5] == 0)
+	{
+		document.write('<option value=\"255\" id="t_set_list">set host lists!</option>');
+		return;
+	}
+	else
+	{
+		for (i=0; i<access_rules_adv_dyn_array[5]; ++i)
+		{
+			document.write('<option value=\"' + i + '\">' + host_list_dyn_array[i] + '</option>');
+		}
+	}
+}
+function printfTargetsLists()
+{
+	var i;
+	if (access_rules_adv_dyn_array[6] == 0)
+	{
+		return;
+	}
+	else
+	{
+		for (i=0; i<access_rules_adv_dyn_array[6]; ++i)
+		{
+			document.write('<option value=\"' + i + '\">' + target_list_dyn_array[i] + '</option>');
+		}
+	}
+}
+function printfSchedsLists()
+{
+	var i;
+	if (access_rules_adv_dyn_array[7] == 0)
+	{
+		return;
+	}
+	else
+	{
+		for (i=0; i<access_rules_adv_dyn_array[7]; ++i)
+		{
+			document.write('<option value=\"' + i + '\">' + sched_list_dyn_array[i] + '</option>');
+		}
+	}
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_wzd_acc_ctl_rule');LoadHelp('WzdAccessCtrlRuleAddHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="WzdAccessCtrlRuleAddRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth" >
+      <TBODY>
+        <TR>
+          <TD class=h1 id = "t_title">Quick Setup - Create an Internet Access Control Entry</TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <TR>
+          <TD><TABLE>
+              <TR>
+                <TD class="item" width="90" id="t_rule_name">Rule Name: </TD>
+                <TD  colspan=2><INPUT name="rule_name" type="text" class="text" value="" size="25" maxlength="24"></TD>
+              </TR>
+              <TR>
+                <TD class="item" id="t_host_list">Host:</TD>
+                <TD colspan=2><SELECT size="1" name="hosts_lists" onChange="">
+                    <SCRIPT type="text/javascript">
+printfHostsLists();
+</SCRIPT>
+                  </SELECT>
+				  </TD>
+              </TR>
+              <TR>
+                <TD class="item" id="t_target_list">Target:</TD>
+                <TD  colspan=2><SELECT size="1" name="targets_lists" onChange="">
+                    <OPTION value="255" id="t_any_target">Any Target</OPTION>
+                    <SCRIPT type="text/javascript">
+printfTargetsLists();
+</SCRIPT>
+                  </SELECT>
+				  </TD>
+              </TR>
+              <TR>
+                <TD class="item" id="t_schedule">Schedule: </TD>
+                <TD  colspan=2><SELECT size="1" name="scheds_lists" onChange="">
+                    <OPTION value="255" id="t_anytime">Anytime</OPTION>
+                    <SCRIPT type="text/javascript">
+printfSchedsLists();
+</SCRIPT>
+                  </SELECT>
+				  </TD>
+              </TR>
+              <TR>
+                <TD class="item" id="t_status">Status:</TD>
+                <TD><SELECT size="1" name="enable" class="listS">
+                    <OPTION value="0" id="t_disble">Disabled</OPTION>
+                    <OPTION value="1"  id="t_enable">Enabled</OPTION>
+                  </SELECT></TD>
+              </TR>
+            </TABLE></TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <TR>
+          <TD class=mbtn colspan=2>
+			<INPUT name="Return" class=buttonBig id=PrevStep type=button value="Back" onClick="return doBack();">&nbsp;&nbsp;
+            <INPUT name="Complete" class=buttonBig id=Submit onClick="return doSubmit();" type=submit value=Finish>
+            <INPUT type=hidden name=ClientId>
+			</TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+<SCRIPT type="text/javascript">
+	document.forms[0].rule_name.value = access_rules_adv_dyn_array[0];
+	document.forms[0].hosts_lists.value = access_rules_adv_dyn_array[1];
+	document.forms[0].targets_lists.value = access_rules_adv_dyn_array[2];
+	document.forms[0].scheds_lists.value = access_rules_adv_dyn_array[3];
+	document.forms[0].enable.value = access_rules_adv_dyn_array[4];
+	document.forms[0].ClientId.value = access_rules_adv_dyn_array[8];
+</SCRIPT>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

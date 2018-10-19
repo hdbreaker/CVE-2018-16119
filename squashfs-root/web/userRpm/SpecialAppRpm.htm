@@ -1,0 +1,139 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript"><!--//
+function doAll(val)
+{
+	if(val=="DelAll")
+	{
+		if(specAppList.length < 7)
+		{
+			alert(js_no_entry="No entry existed in the table!");
+			return;
+		}
+		if(!confirm(js_to_delete="Are you sure to delete all entries?"))
+		return;
+	}
+	location.href="/userRpm/SpecialAppRpm.htm?doAll="+val+"&Page="+curPage;
+}
+
+function doAdd(nPage)
+{
+	location.href="/userRpm/SpecialAppRpm.htm?Add=Add&Page="+nPage;
+}
+
+function doPage(nPage)
+{
+	location.href="SpecialAppRpm.htm?Page="+nPage;
+}
+
+function ResetStatus(strInfo)
+{
+	window.status=strInfo; 
+	return true;
+}
+
+var protocolList = new Array(
+"",
+"<span id=\"t_all\" name=\"t_all\">ALL</span>",
+"TCP",
+"UDP"
+);
+//--></SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_special_app');LoadHelp('SpecialAppHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="SpecialAppRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth">
+      <TR>
+        <TD class=h1 colspan=3 id="t_title">Port Triggering</TD>
+      </TR>
+	  <TR>
+		<TD><B><SPAN id="t_pt_note">Note:&nbsp;&nbsp;&nbsp;&nbsp;Make sure the nat is <SPAN style="color:#FF0000">enable</SPAN> if you want the Port Triggering configuration take effect</SPAN></B></TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=3></TD>
+      </TR>
+      <TR>
+        <TD colspan=3><TABLE border=0>
+            <TR>
+              <TD class="LISTB" align="center" id="t_id">ID</TD>
+              <TD class="LISTB" align="center" id="t_trig_port">Trigger Port</TD>
+              <TD class="LISTB" align="center" id="t_trig_proto">Trigger Protocol</TD>
+              <TD class="LISTB" align="center" id="t_incom_port">Incoming Ports</TD>
+              <TD class="LISTB" align="center" id="t_incom_proto">Incoming Protocol</TD>
+              <TD class="LISTB" align="center" id="t_status">Status</TD>
+              <TD class="LISTB" align="center" id="t_modify">Modify</TD>
+            </TR>
+            <SCRIPT type="text/javascript">
+if (specAppPara[2]>0)
+{
+	var row=0;
+	var StatusString;
+	var IdStart = (specAppPara[0]-1)*specAppPara[4];
+	var modifyId;
+	var oprotocolType;
+	var iprotocolType;
+	for (i=0;i< specAppPara[2];i++)
+	{
+		modifyId = IdStart;
+		IdStart++;
+		row = i*specAppPara[3];
+StatusString = (specAppList[row+4]==0)?"<span name=\"t_disabled\" id=\"t_disabled\">Disabled</span>":"<span name=\"t_enabled\" id = \"t_enabled\">Enabled</span>";
+		oprotocolType = specAppList[row+1];
+		iprotocolType = specAppList[row+3];
+document.write('<tr><td align="center">'+ IdStart + '</td>');
+document.write('<td align="center">'+ specAppList[row] +'</td>');
+document.write('<td align="center">'+ protocolList[oprotocolType] +'</td>');
+document.write('<td align="center">'+ specAppList[row+2] +'</td>');
+document.write('<td align="center">'+ protocolList[iprotocolType] +'</td>');
+document.write('<td align="center">'+ StatusString +'</td>');
+document.write('<td align="center"><a href=\"/userRpm/SpecialAppRpm.htm?Modify=' +
+						modifyId+'&Page='+specAppPara[0]+
+'\" OnMouseOver=\"return ResetStatus(\'modify\');\" name="t_but_modi" id="t_but_modi">Modify</a>&nbsp;<a href=\"/userRpm/SpecialAppRpm.htm?Del='+
+					 	modifyId+'&Page='+specAppPara[0]+
+'\" OnMouseOver=\"return ResetStatus(\'delete\');\" name="t_delete" id = "t_delete">Delete</a></td></tr>');
+	}
+}
+</SCRIPT>
+          </TABLE></TD>
+      </TR>
+      <TR>
+        <TD colspan=3></TD>
+      </TR>
+      <TR>
+        <TD colspan=2><INPUT type="button" value="Add New..." name="Addnew" class="buttonBig" onClick="doAdd(curPage);">
+          &nbsp;
+          <INPUT type="button" value="Enable All" name="Enall" class="buttonBig" onClick="doAll('EnAll');">
+          &nbsp;
+          <INPUT type="button" value="Disable All" name="Disall" class="buttonBig" onClick="doAll('DisAll');">
+          &nbsp;
+          <INPUT type="button" value="Delete All" name="Delall" class="buttonBig" onClick="doAll('DelAll');"></TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=3></TD>
+      </TR>
+      <TR>
+        <TD class="mbtn" colspan="3"><INPUT name="PrevPage" type="button" class="buttonBig" onClick="doPage(prePage);" value="Previous" >
+          &nbsp;
+          <INPUT name="NextPage" type="button" class="buttonBig" onClick="doPage(nextPage);" value="Next">
+          <INPUT name="Page" type="hidden" value="1"></TD>
+      </TR>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+var curPage = specAppPara[0];
+var prePage = (specAppPara[0] == 1)?1:specAppPara[0]-1;
+var nextPage = specAppPara[0]+1;
+document.forms[0].Enall.disabled = (specAppPara[2] < 1)?true: false;
+document.forms[0].Disall.disabled = (specAppPara[2] < 1)?true: false;
+document.forms[0].Delall.disabled = (specAppPara[2] < 1)?true: false;
+document.forms[0].Page.value = curPage;
+document.forms[0].PrevPage.disabled = (specAppPara[0] < 2)?true:false;
+document.forms[0].NextPage.disabled = (specAppPara[1] > 0)?false:true;
+</SCRIPT>

@@ -1,0 +1,246 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript"><!-- 
+var g_txPower	 = wlanAdv[0];
+var g_bcPrd		 = wlanAdv[1];
+var g_rtsThd	 = wlanAdv[2];
+var g_fragThd	 = wlanAdv[3];
+var g_dtimThd	 = wlanAdv[4];
+var g_wmm		 = wlanAdv[5];
+var g_shotGI	 = wlanAdv[6];
+var g_apisolation= wlanAdv[7];
+
+function doSubmit()
+{
+	var df = document.forms[0];
+	
+	var ct_txPower = df.txPower;
+	if (!ct_txPower || ct_txPower.value < 0 || ct_txPower.value > 2)
+	{
+		alert(js_pl_sel_power="Please select the correct transmit power !");
+		ct_txPower.focus();
+		ct_txPower.select();
+		return false;
+	}
+	
+	var ct_beaconPeriod = df.beaconPeriod;
+    if(is_digit(ct_beaconPeriod.value) == false)
+    {
+		ct_beaconPeriod.focus();
+		ct_beaconPeriod.select();
+		return false;
+    }
+	if (!ct_beaconPeriod || ct_beaconPeriod.value < 40 || ct_beaconPeriod.value > 1000)
+	{
+		alert(js_beacon="The value of Beacon Interval should be between 40 and 1000, please input a correct one !");
+		ct_beaconPeriod.focus();
+		ct_beaconPeriod.select();
+		return false;
+	}
+
+	var ct_rtsThreshold = df.rtsThreshold;
+    if(is_digit(ct_rtsThreshold.value) == false)
+    {
+		ct_rtsThreshold.focus();
+		ct_rtsThreshold.select();
+		return false;
+    }
+	if (!ct_rtsThreshold || ct_rtsThreshold.value < 1 || ct_rtsThreshold.value > 2346)
+	{
+		alert(js_rts="The value of RTS Threshold should be between 1 and 2346, please input a correct one !");
+		ct_rtsThreshold.focus();
+		ct_rtsThreshold.select();
+		return false;
+	}
+
+	var ct_fragThreshold = df.fragThreshold;
+    if(is_digit(ct_fragThreshold.value) == false)
+    {
+		ct_fragThreshold.focus();
+		ct_fragThreshold.select();
+		return false;
+    }
+	if (!ct_fragThreshold || ct_fragThreshold.value < 256 || ct_fragThreshold.value > 2346)
+	{
+		alert(js_frag="The value of Fragmentation Threshold should be between 256 and 2346, please input a correct one !");
+		ct_fragThreshold.focus();
+		ct_fragThreshold.select();
+		return false;
+	}
+
+	var ct_dtimInterval = df.dtimInterval;
+    if(is_digit(ct_dtimInterval.value) == false)
+    {
+		ct_dtimInterval.focus();
+		ct_dtimInterval.select();
+		return false;
+    }
+	if (!ct_dtimInterval || ct_dtimInterval.value < 1 || ct_dtimInterval.value > 255)
+	{
+		alert(js_dtim="The value of DTIM Interval should be between 1 and 255, please input a correct number!");
+		ct_dtimInterval.focus();
+		ct_dtimInterval.select();
+		return false;
+	}
+
+	return true;
+}
+//--></SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_wlan_adv');LoadHelp('WlanAdvHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="WlanAdvRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth"  width="562" border="0" cellspacing="0" cellpadding="0">
+      <TR>
+        <TD colspan=2 class=h1 id="t_title">Wireless Advanced</TD>
+      </TR>
+      <TR>
+        <TD colspan=2 class=blue>&nbsp;</TD>
+      </TR>
+      <TR style="display">
+        <TD class="Item" id="t_transmit_power">Transmit Power:</TD>
+        <TD><SELECT name="txPower" class="listS" id="txPower">
+            <OPTION value="0" id="t_high">High</OPTION>
+            <OPTION value="1" id="t_middle">Middle</OPTION>
+            <OPTION value="2" id="t_low">Low</OPTION>
+          </SELECT></TD>
+      </TR>
+      <TR>
+        <TD class="Item" id="t_beacon_interval">Beacon Interval :</TD>
+        <TD><INPUT name="beaconPeriod" type="text" class="text" maxlength="4" size="4">
+          &nbsp; (40-1000) </TD>
+      </TR>
+      <TR>
+        <TD class="Item" id="t_rts_threshold">RTS Threshold:</TD>
+        <TD><INPUT name="rtsThreshold" type="text" class="text" maxlength="4" size="4">
+          &nbsp; (1-2346) </TD>
+      </TR>
+      <TR>
+        <TD class="Item" id="t_frag">Fragmentation Threshold:</TD>
+        <TD><INPUT name="fragThreshold" type="text" class="text" maxlength="4" size="4">
+          &nbsp; (256-2346) </TD>
+      </TR>
+      <TR>
+        <TD class="Item" id="t_dtim">DTIM Interval:</TD>
+        <TD><INPUT name="dtimInterval" type="text" class="text" maxlength="4" size="4">
+          &nbsp; (1-255) </TD>
+      </TR>
+      <TR>
+        <TD class="Item">&nbsp;</TD>
+        <TD><INPUT name="wmm" type="checkbox" value = "2">
+          &nbsp;<SPAN id="t_enable_wmm">Enable WMM</SPAN></TD>
+      </TR>
+      <TR>
+        <TD class="Item">&nbsp;</TD>
+        <TD><INPUT name="shortGI" type="checkbox" value = "2">
+          &nbsp;<SPAN id="t_enable_short_gi">Enable Short GI</SPAN></TD>
+      </TR>
+      <SCRIPT type="text/javascript">
+//if (wlanAdv[9] == 0)
+//{
+	document.write('<TR><TD class=Item>&nbsp;</TD><TD><INPUT type=checkbox value=2 name=apisolation>&nbsp;<span id="t_enable_ap">Enable AP Isolation</span></TD></TR>');
+//}
+</SCRIPT>
+<SCRIPT type="text/javascript">
+if(wlanAdv[8] == 1)
+{
+//added by ZQQ.08.12.05
+    document.write('<TR><TD colspan=2><span style="color:#FF0000" id="t_chng">The change of wireless config will not take effect until the Router reboots, please </span><A href="../userRpm/SysRebootRpm.htm" id="t_click">click here</A><span id="t_to_reboot" style="color:#FF0000"> to reboot.</span> </TD></TR>');  
+}
+</SCRIPT>
+      <TR>
+        <TD colspan=2 class=blue>&nbsp;</TD>
+      </TR>
+      <TR>
+        <TD class="Item">&nbsp;</TD>
+        <TD><INPUT name="Save" type="submit" class="buttonBig" id="Save" value="Save"></TD>
+      </TR>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+</HTML>
+<SCRIPT type="text/javascript">
+var df = document.forms[0];
+if (g_txPower >= 0 && g_txPower <= 2)
+{
+	df.txPower.value = g_txPower;
+}
+else
+{
+	df.txPower.value = 0;
+}
+
+if (g_bcPrd >= 40 && g_bcPrd <= 1000)
+{
+	df.beaconPeriod.value = g_bcPrd;
+}
+else
+{
+	df.beaconPeriod.value = 100;
+}
+
+if (g_rtsThd >= 1 && g_rtsThd <= 2346)
+{
+	df.rtsThreshold.value = g_rtsThd;
+}
+else
+{
+	df.rtsThreshold.value = 2346;
+}
+
+if (g_fragThd >= 256 && g_fragThd <= 2346)
+{
+	df.fragThreshold.value = g_fragThd;
+}
+else
+{
+	df.fragThreshold.value = 2346;
+}
+
+if (g_dtimThd >= 1 && g_dtimThd <= 255)
+{
+	df.dtimInterval.value = g_dtimThd;
+}
+else
+{
+	df.dtimInterval.value = 1;
+}
+
+if (g_wmm == 1)
+{
+	df.wmm.checked = true;
+}
+else
+{
+	df.wmm.checked = false;
+}
+
+if (g_shotGI == 1)
+{
+	df.shortGI.checked = true;
+}
+else
+{
+	df.shortGI.checked = false;
+}
+
+if (g_apisolation == 1)
+{
+	df.apisolation.checked = true;
+}
+else
+{
+	df.apisolation.checked = false;
+}
+//if enable bridge,disable apisolation
+if(wlanAdv[9] == 1)
+{
+	df.apisolation.disabled = true;
+}
+
+if (wlanAdv[11] == 1)
+{
+	df.fragThreshold.disabled = true;
+}
+</SCRIPT>

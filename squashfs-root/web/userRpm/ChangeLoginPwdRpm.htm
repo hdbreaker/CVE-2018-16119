@@ -1,0 +1,136 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+<!--//
+function charCompareA(szname,en_limit,cn_limit)
+{
+	var c;
+	var ch = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+	if(szname.length > en_limit)
+		return false;
+	for (var i = 0; i < szname.length; i++)
+	{
+		c = szname.charAt(i);
+		if (ch.indexOf(c) == -1)
+		{
+			if(szname.length > cn_limit)
+			return false;
+		}
+	}
+	return true;
+}
+function doClear()
+{
+	for(var i = 0; i < 5; i ++)
+	{
+		document.forms[0].elements[i].value = "";
+	}
+}
+function doSubmit()
+{
+	for(var i = 0; i < 5; i ++)
+	{
+		if(document.forms[0].elements[i].value != "")
+		{
+			if(!charCompare(document.forms[0].elements[i].value,14,0))
+			{
+				alert(js_ill_input="The input value contain illegal character, please input another one!");
+				var element = document.forms[0].elements[i];
+				if(element)
+				{
+					element.focus();
+					element.select();
+				}
+				return false;
+			}
+			if(2==i||3==i)
+				if(!charCompareA(document.forms[0].elements[i].value,14,0))
+				{
+					alert(js_illegal_input2="The input value contains illegal characters, please input another one! (The illegal character is the character except for alphabet, number, '-' and '_'.)");
+					var element = document.forms[0].elements[i];
+					if(element)
+					{
+						element.focus();
+						element.select();
+					}
+					return false;
+				}
+		}else{
+			alert(js_req_field="Required field!");
+			var element = document.forms[0].elements[i];
+			if(element){
+				element.focus();element.select();
+			}
+			return false;
+		}
+	}
+	if(document.forms[0].elements[3].value != document.forms[0].elements[4].value)
+	{
+		alert(js_bad_conf_pwd="The confirm password must accord with the new password!");
+		var element = document.forms[0].elements[4];
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	return true;
+}
+//--> 
+</SCRIPT>
+</HEAD>
+<BODY onLoad="LoadHelp('ChangeLoginPwdHelpRpm.htm');setTagStr(document,'ntw_change_login_pwd'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="ChangeLoginPwdRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth">
+      <TR>
+        <TD class=h1 colspan=2 id ="t_title">Password</TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+	  	<TR><TD colspan="2"><SPAN id="t_username_tips" style="color:#FF0000">
+	  		The username and password must not exceed 14 characters in length and must not include any spaces!</SPAN></TD><TR>
+      <TR>
+        <TD class=Item id ="t_old_user_name">Old User Name:</TD>
+        <TD><INPUT class="text" maxlength="14" size="15" value="" name="oldname"></TD>
+      </TR>
+      <TR>
+        <TD class=Item id ="t_old_pwd">Old Password:</TD>
+        <TD><INPUT class="text" type="password" maxlength="14" size="15" name="oldpassword"></TD>
+      </TR>
+	  <TR><TD></TD><TR>
+      <TR>
+        <TD class=Item id ="t_new_user_name">New User Name:</TD>
+        <TD><INPUT class="text" maxlength="14" size="15" name="newname"></TD>
+      </TR>
+      <TR>
+        <TD class=Item id ="t_new_pwd">New Password:</TD>
+        <TD><INPUT class="text" type="password" maxlength="14" size="15" name="newpassword"></TD>
+      </TR>
+      <TR>
+        <TD class=Item id ="t_conf_new_pwd">Confirm New Password:</TD>
+        <TD><INPUT class="text" type="password" maxlength="14" size="15" name="newpassword2"></TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+      <TR>
+        <TD></TD>
+        <TD>&nbsp;
+          <INPUT class="buttonBig" type="submit" value="Save" name="Save">
+          &nbsp;
+          <INPUT class="buttonBig" type="reset" value="Clear All" name="Clear"></TD>
+      </TR>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+// document.forms[0].oldname.value = LoginPwdInf[0];
+</SCRIPT>

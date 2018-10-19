@@ -1,0 +1,236 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT language=JavaScript type="text/javascript">
+var NAS_EVENT_START_NAS_FAILTURE =  0x00000001;
+var NAS_EVENT_STOP_NAS_FAILTURE =   0x00000002;
+var NAS_EVENT_EJECT_DISK_SUCCESS =  0x00000004;
+var NAS_EVENT_EJECT_DISK_FAILTURE = 0x00000008;
+var NAS_EVENT_NO_SHARED_ITEMS	=	0x00000020;
+var NAS_EVENT_NO_MOUNTED_VOLUMES =	0x00000040;
+var NAS_EVENT_PASSWORD_NOT_SET	=	0x00000080;
+
+var NAS_EVENT_SHARE_CHANGED		=	0x00010000;
+var NAS_EVENT_USERS_CHANGED		=	0x00020000;
+
+var locpath = location.pathname;
+var nas_status = NasInfoArray[0];
+var n_mnt = NasInfoArray[1];
+var n_item = NasInfoArray[2];
+var events = NasInfoArray[3];
+
+function OnRemoveMedia()
+{
+	if(false == confirm(js_remove_media="This operation will disable FTP Server and Media Server. Are you sure to continue?"))
+	{
+		return false;
+	}
+	location.href = locpath + "?remove=1";
+	return true;
+}
+
+function OnRescan()
+{
+	//location.href = locpath;
+	return true;	
+}
+function check()
+{
+	if (events & NAS_EVENT_START_NAS_FAILTURE)
+	{
+		alert(js_start_failure="NAS service can not be started.");
+	}
+	if (events & NAS_EVENT_NO_SHARED_ITEMS)
+	{
+		alert(js_no_shared_items="NAS service can not be started. No shared volumes found.");
+	}
+	if (events & NAS_EVENT_NO_MOUNTED_VOLUMES)
+	{
+		alert(js_no_volumes_found="NAS service can not be started. No volumes found.");
+	}
+	if (events & NAS_EVENT_STOP_NAS_FAILTURE)
+	{
+		alert(js_cant_stop="NAS service can not be stopped.");
+	}
+	if (events & NAS_EVENT_EJECT_DISK_SUCCESS)
+	{
+		alert(js_eject_success="The disk can be physically unplugged from the Router now.");
+	}
+	if (events & NAS_EVENT_EJECT_DISK_FAILTURE)
+	{
+		alert(js_device_inuse="The disk cannot be safely removed right now because this device is still in use.");
+	}
+			
+	if (events & NAS_EVENT_PASSWORD_NOT_SET)
+	{
+		alert(js_password_notset="NAS service can not be started. You need to set both the admin password and the guest password on the User Accounts page.");
+	}
+}
+
+function onClickUsePWDCheckbox()
+{
+	var isPwdAccess;
+	if (document.forms[0].use_passwd.checked == true)
+	{
+		isPwdAccess = 1;		
+	}
+	else
+	{
+		isPwdAccess = 0;		
+	}
+	location.href = "NasCfgRpm.htm?is_pwd_access=" + isPwdAccess;
+}
+
+function OnEnableShare(volIndex)
+{
+	location.href="NasCfgRpm.htm?disk_no="+ volIndex + "&share_status=" + 1;
+}
+function OnDisableShare(volIndex)
+{
+	location.href="NasCfgRpm.htm?disk_no="+ volIndex + "&share_status=" + 0;
+}
+
+</SCRIPT></HEAD>
+<BODY onload="setTagStr(document,'ntw_vol_lst');LoadHelp('NasCfgHelpRpm.htm');resize(this);check();" onResize="resize(this);">
+<center><form enctype="multipart/form-data" method="get">
+<TABLE id="autoWidth" border =0><TBODY>
+<TR><TD class=h1 id ="t_arp_list" >Storage Sharing</TD></TR>
+<TR><TD class=blue></TD></TR>
+
+
+<TR><TD><TABLE>
+<TR>
+	<TD class="Item" id="t_serv_status">Service Status:</TD>&nbsp;
+	<TD class=emp>
+		<SCRIPT language = "JavaScript" type="text/javascript">
+		if (nas_status == 0)
+		{
+			document.write('<span id="t_disabled">Stopped<\/span>')
+		}
+		else
+		{
+			document.write('<span id="t_enabled">Started<\/span>')
+		}
+		</SCRIPT>
+		&nbsp;&nbsp;
+		<INPUT name="start_nas"  type="submit" class="buttonBig" value="Start" >
+		<INPUT name="stop_nas" type="submit" class="buttonBig" value="Stop" >
+		<SCRIPT language = "JavaScript" type="text/javascript">
+		if (events & NAS_EVENT_SHARE_CHANGED)
+		{
+			document.write( '<TD id ="t_notice" style="color:red;">Settings will take effect after service restarts.<\/TD>');
+		}
+		</SCRIPT>
+	</TD>
+</TR>
+</TABLE></TD></TR>
+
+<TR><TD><TABLE>
+	<TD class="Item"></TD>
+	<TD><INPUT type="checkbox" name="use_passwd" onClick = "onClickUsePWDCheckbox();"> Access shared storage with password </TD>
+</TR>
+</TABLE></TD></TR>
+
+
+<TR><TD class=blue></TD></TR>
+
+<TR><TD><table border=0 >
+
+<SCRIPT language=JavaScript type="text/javascript">
+document.write(
+	'<TR><TD class=ListB id = \"t_volume\">Volume<\/TD>'
+	+ '<TD class=ListB id = \"t_capccity\">Capacity<\/TD>'
+	+ '<TD class=ListB id = \"t_used_space\">Used<\/TD> '
+	+ '<TD class=ListB id = \"t_free_space\">Free<\/TD> '
+	+ '<TD class=ListB id = \"t_used_percent\">Use%<\/TD> '
+	+ '<TD class=ListB id = \"t_shared\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Shared<\/TD> '
+	+ '<\/TR>'
+);
+if (n_mnt > 0)
+{
+	var row = 0;
+	var i = 0;
+	var k = 0;
+	var j;
+	
+	for(i = 0; i < n_mnt; i++)
+	{	
+		var permissions;	
+		j = i + 1;
+		row = i * n_item;
+		var is_shared = volumeListArray[row + n_item - 1] == "1"? true : false;		
+		
+		var item_color =  is_shared? "<font color=#000000>" : "<font color=#0F0F0F>";
+		document.write('<TR align="center">');
+		document.write('<TD>' + item_color + volumeListArray[row] + '<\/TD>');
+
+		for (k = row + 3; k < row + n_item - 2; k++)
+		{
+			document.write('<TD>' + item_color + volumeListArray[k] + '<\/TD>');
+		}
+		var shared = (is_shared? "<span name=\"t_yes\" id=\"t_yes\">&nbsp &nbsp Yes</span>" : "<span name=\"t_no\" id=\"t_no\">&nbsp &nbsp No</span>");
+		
+		if (is_shared)
+		{
+			document.write('<TD>' + item_color 
+					+ '<INPUT name="disable_share"  type="button" class="buttonBig" value="Disable" onclick="return OnDisableShare(' + i + ');" >'
+					+ '<\/TD><\/TR>');
+		}
+		else
+		{
+			document.write('<TD>' + item_color 
+					+ '<INPUT name="enable_share" type="button" class="buttonBig" value="Enable" onclick="return OnEnableShare(' + i + ');" >'
+					+ '<\/TD><\/TR>');
+		}
+	}
+}
+else
+{
+	document.write('<TR align="center"><TD class=info1 colspan="10" id = "t_empty">No volumes found. Plug an external USB drive into this Router, wait for 10 seconds and then rescan the volume.<\/TD><\/TR>');
+}
+</script>
+
+</TABLE></TD></TR>
+<TR><TD class=blue></TD></TR>
+<TR><TD class =" mbtn">
+<SCRIPT language=JavaScript type="text/javascript">
+var usb_port1=0;
+var usb_port2=0;
+var n = 0;
+var s = "";
+for(i=0; i<n_mnt; i++){
+	s = volumeListArray[i*n_item];
+	n = parseInt(s.substring(6, s.length));
+	if(n < 9 && n > 0)
+		usb_port1 = 1;
+	else if(n <= 16 && n >= 9)
+		usb_port2 = 1;
+	}
+if(usb_port1&&usb_port2){
+	document.write("<SELECT name='safelyRemoveOpt' id='safelyRemoveOpt'>");
+	document.write("<OPTION value='3' id='t_all_usb' name='t_all_usb'> All USB Port</OPTION>");
+	document.write("<OPTION value='1'>USB1</OPTION>");
+	document.write("<OPTION value='2'>USB2</OPTION>");
+	document.write("</SELECT>");
+}
+</SCRIPT>
+&nbsp;<INPUT class="buttonBig" type=submit value='Eject Disk' name="safely_remove" onclick="return OnRemoveMedia();">
+&nbsp;<INPUT class="buttonBig" type=submit value='Rescan' name="rescan" onclick="return OnRescan();">
+</TD></tr>
+</TBODY></TABLE>
+</form></center></body></html>
+
+<SCRIPT language=JavaScript type="text/javascript">
+
+if (nas_status == 1)
+{
+	document.forms[0].start_nas.style.display = "none";
+}
+else
+{
+	document.forms[0].stop_nas.style.display = "none";
+}
+
+document.forms[0].start_nas.disabled = (n_mnt == 0)?true:false;
+document.forms[0].safely_remove.disabled = (n_mnt == 0)?true:false;
+document.forms[0].use_passwd.checked = usePassWdArray[0];
+</SCRIPT>

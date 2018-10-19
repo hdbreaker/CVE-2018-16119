@@ -1,0 +1,84 @@
+
+
+<SCRIPT type="text/javascript">
+function doRefresh()
+{
+	location.href="PrintServerCfgRpm.htm";
+	return true;
+}
+function doLoad()
+{
+	window.setTimeout("doRefresh()",6000);
+}
+function doSubmit()
+{			
+	return true;
+}
+</SCRIPT>
+
+</HEAD>
+<BODY onload = "setTagStr(document,'ntw_nas_print_server_cfg');LoadHelp('PrintServerCfgHelpRpm.htm');resize(this);doLoad();" onResize="resize(this);">
+<CENTER>
+	<FORM action="PrintServerCfgRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();"> 
+	<TABLE id="autoWidth">
+      <TR>
+        <TD align="left" valign="middle" class=h1 id = "t_title">Print Server Setting</TD>
+      </TR>
+      <TR>
+        <TD class = "blue"></TD>
+      </TR>
+      <TR>
+        <TD><TABLE border="0" cellspacing="0" cellpadding="0">
+            <TR>
+				<TD class="Item" id="t_serv_status">Server Status:</TD>&nbsp;
+				<TD class=emp>
+					<SCRIPT language = "JavaScript" type="text/javascript">
+					if (usbipServInfo[0] == 0)
+					{
+						document.write('<span id="t_disabled">Offline<\/span>');					
+					}
+					else if(usbipServInfo[0] == 1)
+					{
+						document.write('<span id="t_enabled">Online<\/span>')					
+					}
+					else if(usbipServInfo[0] >= 2)
+					{
+						document.write('<span id="t_enabled">Busy<\/span>')					
+					}
+					</SCRIPT>
+					&nbsp;<INPUT name="start_serv"  type="submit" class="buttonBig" value="Start" >
+					<INPUT name="stop_serv" type="submit" class="buttonBig" value="Stop" >	
+				</TD>			
+			</TR>
+				<script language="JavaScript" type="text/javascript">
+				if (usbipServInfo[0] == 1)
+				{
+					document.forms[0].start_serv.style.display = "none";
+				}
+				else if (usbipServInfo[0] == 0)
+				{
+					document.forms[0].stop_serv.style.display = "none";
+				}
+				else
+				{
+					document.forms[0].start_serv.style.display = "none";
+					document.forms[0].stop_serv.disabled = true;
+				}
+				</script>
+          </TABLE></TD>
+      </TR>
+	  <TR>
+        <TD class = "blue"></TD>
+      </TR>
+    </TABLE>
+	</FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+<!--
+-->
+</SCRIPT>

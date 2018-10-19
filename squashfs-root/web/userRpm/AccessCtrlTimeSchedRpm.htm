@@ -1,0 +1,200 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<!--JS-->
+<SCRIPT type="text/javascript">
+<!--
+var LP = location.pathname;
+function doAll(val)
+{
+    if(val=="DelAll")
+    {
+        if(!confirm(js_del_all_items="Delete all items?"))
+        return;
+    }
+    location.href="AccessCtrlTimeSchedRpm.htm?doAll="+val+"&Page="+curPage;
+}
+function doAdd(nPage)
+{
+    location.href="AccessCtrlTimeSchedRpm.htm?Add=Add&Page="+nPage;
+}
+function doPage(nPage)
+{
+    location.href="AccessCtrlTimeSchedRpm.htm?Page="+nPage;
+}
+function doHelp()
+{
+    location.href="/help/LanArpBindingHelpRpm.htm";
+}
+
+function ResetStatus(strInfo)
+{
+    window.status='';
+	return true;
+}
+//-->
+</SCRIPT>
+</HEAD>
+<!-- change XXXX to your dest page.-->
+<BODY onLoad="setTagStr(document,'ntw_acc_ctl_time_sche');LoadHelp('AccessCtrlTimeSchedHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="AccessCtrlTimeSchedRpm.htm" enctype="multipart/form-data" method="get">
+    <TABLE id="autoWidth" >
+      <TBODY>
+        <!--chang your title below.-->
+        <TR>
+          <TD class=h1 id = "t_title">Schedule Settings</TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <!--Content-->
+        <TR>
+          <TD><TABLE>
+              <TR>
+                <TD class="LISTB" align="center" id="t_id">ID</TD>
+                <TD class="LISTB" align="center" width="200" id="t_sch">Schedule Description</TD>
+                <TD class="LISTB" align="center" nowrap id="t_day">Day</TD>
+                <TD class="LISTB" align="center" nowrap id="t_time">Time</TD>
+                <TD class="LISTB" align="center" nowrap id="t_modify">Modify</TD>
+              </TR>
+              <SCRIPT type="text/javascript">
+		function getDaysString(weekDaysArray)
+		{
+			var weekDaysStr = "";
+			if (weekDaysArray[0] == 1)
+			{
+				weekDaysStr = "<span id=\"t_ever_day\" name=\"t_ever_day\">Every Day </span>";
+				return weekDaysStr;
+			}
+			if (weekDaysArray[1] == 1)
+			{
+				weekDaysStr += "<span id=\"t_mon\" name=\"t_mon\">Mon </span>"; 
+			}
+			if (weekDaysArray[2] == 1)
+			{
+				weekDaysStr += "&nbsp;<span id=\"t_tue\" name=\"t_tue\">Tue </span>"; 
+			}
+			if (weekDaysArray[3] == 1)
+			{
+				weekDaysStr += "&nbsp;<span id=\"t_wen\" name=\"t_wen\">Wed </span>"; 
+			}
+			if (weekDaysArray[4] == 1)
+			{
+				weekDaysStr += "&nbsp;<span id=\"t_thu\" name=\"t_thu\">Thu </span>"; 
+			}
+			if (weekDaysArray[5] == 1)
+			{
+				weekDaysStr += "&nbsp;<span id=\"t_fri\" name=\"t_fri\">Fri </span>"; 
+			}
+			if (weekDaysArray[6] == 1)
+			{
+				weekDaysStr += "&nbsp;<span id=\"t_sat\" name=\"t_sat\">Sat </span>"; 
+			}
+			if (weekDaysArray[7] == 1)
+			{
+				weekDaysStr += "&nbsp;<span id=\"t_sun\" name=\"t_sun\">Sun </span>"; 
+			}
+			return weekDaysStr;
+		}
+		function getHoursString(start, end)
+		{
+			var hoursStr = "";
+			if ((start == "0000") && (end=="2400"))
+			{
+				hoursStr = "00:00&nbsp;-&nbsp;24:00";
+			}
+			else
+			{
+				hoursStr = start.substr(0,2) + ":" + start.substr(2,2) + "&nbsp;-&nbsp;" + end.substr(0,2) + ":" + end.substr(2,2);
+			}
+			return hoursStr;
+		}
+	if (timeSchedPara[2] > 0)
+	{
+		var row = 0;
+		var statusString;
+		var weekDaysString = "";
+		var hoursString = "";
+		var idStart = (timeSchedPara[0] - 1) * 8;
+		var modifyId;
+		for(var i = 0; i < timeSchedPara[2]; i++)
+		{
+		modifyId = idStart;
+		idStart++;
+		row = i * timeSchedPara[3];
+		var dayArray = new Array(
+		timeSchedList[row + 1],timeSchedList[row + 2],
+		timeSchedList[row + 3],timeSchedList[row + 4],
+		timeSchedList[row + 5],timeSchedList[row + 6],
+		timeSchedList[row + 7],timeSchedList[row + 8]
+		);
+		weekDaysString = getDaysString(dayArray);
+		document.write('<tr id="tr'+idStart+'"><td align="center">' + idStart + '</td>');
+		document.write('<td align="center">' + timeSchedList[row] + '</td>');
+		document.write('<td align="center">'
+					 + weekDaysString + '&nbsp;</td>');
+		
+		hoursString = getHoursString(timeSchedList[row + 10], timeSchedList[row + 11]);
+		document.write('<td align="center">' + 
+						hoursString +
+						'</td>');
+		document.write('<td align="center"><a href=\"AccessCtrlTimeSchedRpm.htm?Modify=' +
+						i+'&Page='+timeSchedPara[0]+
+						'\" OnMouseOver=\"return ResetStatus(\'modify\');\" id="t_edit" name="t_edit">Edit</a>&nbsp;<a href=\"AccessCtrlTimeSchedRpm.htm?Del='+
+					 	i+'&Page='+timeSchedPara[0]+
+						'\" OnMouseOver=\"return ResetStatus(\'delete\');\" id="t_del" name="t_del">Delete</a></td></tr>');
+		}
+	}
+	
+	</SCRIPT>
+            </TABLE>
+            <TABLE>
+              <TR>
+                <TD><INPUT type="button" value="Add New..." name="Add" class="buttonBig" onClick="doAdd(curPage);">
+                  <INPUT type="button" value="Delete All" name="DelAll" class="buttonBig" onClick="doAll('DelAll');"></TD>
+              </TR>
+            </TABLE></TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <TR>
+          <TD class = "mbtn"><!--Button-->
+            <INPUT name="PrevPage" type="button" class="buttonBig" onClick="doPage(prePage);" value="Prevoius" disabled>
+            &nbsp;
+            <INPUT name="NextPage" type="button" class="buttonBig" onClick="doPage(nextPage);" value="Next" disabled>
+            &nbsp;
+            <SPAN id="t_page1">Current No.</SPAN>
+            <SELECT onChange="doPage(document.forms[0].selPage.value);" size="1" name="selPage">
+              <SCRIPT type="text/javascript">
+var pageNum = timeSchedPara[4]/8 + 1;
+var pIndex = 1;
+do
+{
+	document.write("<option value='" + pIndex + "' selected>"+ pIndex +"</option>");
+}while(++pIndex < pageNum)
+</SCRIPT>
+            </SELECT>
+			<SPAN id="t_page2">Page</SPAN>
+            <INPUT name="Page" type="hidden" value="1"></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+<!--JS page up & page down-->
+<SCRIPT type="text/javascript">
+var curPage = timeSchedPara[0];
+var prePage = (timeSchedPara[0] == 1)?1:timeSchedPara[0]-1;
+var nextPage = timeSchedPara[0]+1;
+document.forms[0].Page.value = curPage;
+document.forms[0].PrevPage.disabled = (timeSchedPara[0] < 2)?true:false;
+document.forms[0].NextPage.disabled = (timeSchedPara[1] >0)?false:true;
+document.forms[0].DelAll.disabled = (timeSchedPara[2] >0)?false:true;
+document.forms[0].selPage.value = curPage;
+</SCRIPT>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

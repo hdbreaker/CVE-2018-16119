@@ -1,0 +1,108 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript"><!--//
+
+function Click(){ window.event.returnValue=false;}
+document.oncontextmenu=Click;
+var i=0;
+function doRestore(nIndex)
+{
+	if(nIndex > macCloneInf[0])
+	{
+		return false;
+	}
+	else
+	{
+		document.forms[0].elements['mac'+nIndex].value = macCloneList[(nIndex - 1)*2 + 1];
+		return true;
+	}
+}
+function doClone()
+{
+    var n = document.forms[0].wan.value;
+    document.forms[0].elements['mac'+n].value = document.forms[0].pcmac.value;
+}
+function doSubmit()
+{
+	for(i = 1; i <= macCloneInf[0]; i++)
+	{
+		if(!is_macaddr(document.forms[0].elements['mac'+i].value))
+		{
+			var element =document.forms[0].elements['mac'+i];
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+	}
+	return true;
+}
+//--></SCRIPT>
+</HEAD>
+<BODY onLoad="LoadHelp('MacCloneCfgHelpRpm.htm');setTagStr(document,'ntw_mac_clone_cfg'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="MacCloneCfgRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth" border = 0>
+      <TR>
+        <TD class=h1 colspan=3 id="t_title">MAC Clone</TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=3></TD>
+      </TR>
+      <SCRIPT type="text/javascript">
+var Row;
+for(i=1;i<=macCloneInf[0];i++)
+{
+    Row = (i-1)*2;
+   if(macCloneInf[0] == 1)
+    {
+document.write('<TR><TD class=Item>' + "<span id = \"t_mac_addr\">WAN MAC Address:</span>"+'</TD><TD><input type=\"text\" class=\"text\" name =\"mac'+i+'\" value=\"'+macCloneList[Row]+'\" size=\"18\" maxlength=\"17\">&nbsp;');
+    }
+	else
+    {
+document.write('<TR><TD class=Item>WAN'+ i +" " + "<span id = \"t_mac_addr\">MAC Address:</span>"+'</TD><TD><input type=\"text\" class=\"text\" name =\"mac'+i+'\" value=\"'+macCloneList[Row]+'\" size=\"18\" maxlength=\"17\">&nbsp;');
+    }
+document.write('<input name=\"RestoreMAC\" type=\"button\" class=\"buttonL\" value=\"Restore Factory MAC\" onClick=\"doRestore('+i+');\"></td></tr>');
+}
+</SCRIPT>
+      <TR>
+        <TD class=Item id = "t_pc_mac_addr">Your PC's MAC Address:</TD>
+        <TD><INPUT name="pcmac" type="text" class="text" value = "" size="18" maxlength="17" disabled>
+          <INPUT name="CloneMAC" id="clone" type="button" class="buttonL" onClick="doClone();" value="Clone MAC Address To" >
+          <SELECT name="wan" id = "wanList">
+            ;
+
+            <SCRIPT type="text/javascript">
+for(i = 1; i <= macCloneInf[0]; i++)
+{
+    document.write('<option value=\"'+i+'\">WAN'+i+'</option>');
+}
+</SCRIPT>
+          </SELECT></TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=3></TD>
+      </TR>
+      <TR>
+        <TD class = "mbtn" colspan=3><INPUT name="Save" type="submit" class="buttonBig" id="Save" value="Save"></TD>
+      </TR>
+      <SCRIPT type="text/javascript">
+document.forms[0].pcmac.value = macCloneInf[1].toUpperCase();
+document.forms[0].CloneMAC.disabled = (macCloneInf[2]==1)?true:false;
+if(macCloneInf[0] == 1)
+{
+    var obj = document.getElementById('wanList');
+    obj.style.display = 'none';
+    document.getElementById('clone').value = "Clone MAC Address";
+}
+</SCRIPT>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

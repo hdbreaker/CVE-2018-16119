@@ -1,0 +1,111 @@
+#!/bin/sh
+
+test -d /lib/modules/2.6.31
+
+kver_is_2615=$?
+
+if [ $kver_is_2615 -eq 1 ]
+then
+echo "This board use 2.6.15"
+
+insmod /lib/modules/2.6.15/kernel/ip_tables.ko
+insmod /lib/modules/2.6.15/kernel/ip_conntrack.ko
+insmod /lib/modules/2.6.15/kernel/ip_nat.ko
+insmod /lib/modules/2.6.15/kernel/ipt_MASQUERADE.ko
+insmod /lib/modules/2.6.15/kernel/ipt_comment.ko
+insmod /lib/modules/2.6.15/kernel/ipt_conntrack.ko
+insmod /lib/modules/2.6.15/kernel/ipt_iprange.ko
+insmod /lib/modules/2.6.15/kernel/ipt_mac.ko
+insmod /lib/modules/2.6.15/kernel/ipt_multiport.ko
+insmod /lib/modules/2.6.15/kernel/ipt_state.ko
+insmod /lib/modules/2.6.15/kernel/ipt_string.ko
+insmod /lib/modules/2.6.15/kernel/iptable_nat.ko
+insmod /lib/modules/2.6.15/kernel/iptable_filter.ko
+insmod /lib/modules/2.6.15/kernel/ipt_time.ko
+insmod /lib/modules/2.6.15/kernel/ipt_TRIGGER.ko
+insmod /lib/modules/2.6.15/kernel/ip_conntrack_pptp.ko
+insmod /lib/modules/2.6.15/kernel/ipt_TCPMSS.ko
+insmod /lib/modules/2.6.15/kernel/statistics.ko
+insmod /lib/modules/2.6.15/kernel/ipt_multiurl.ko
+insmod /lib/modules/2.6.15/kernel/ip_conntrack_h323.ko
+
+insmod /lib/modules/2.6.15/kernel/ipt_MARK.ko
+insmod /lib/modules/2.6.15/kernel/sch_htb.ko
+insmod /lib/modules/2.6.15/kernel/sch_prio.ko
+insmod /lib/modules/2.6.15/kernel/sch_sfq.ko
+insmod /lib/modules/2.6.15/kernel/cls_basic.ko
+insmod /lib/modules/2.6.15/kernel/cls_fw.ko
+
+insmod /lib/modules/2.6.15/kernel/ts_kmp.ko
+insmod /lib/modules/2.6.15/kernel/flashid.ko
+insmod /lib/modules/2.6.15/kernel/br_filter.ko
+
+insmod /lib/modules/2.6.15/kernel/pppol2tp.ko
+insmod /lib/modules/2.6.15/kernel/pptp.ko
+insmod /lib/modules/2.6.15/kernel/wlan_warn.ko
+
+insmod /lib/modules/2.6.15/kernel/harmony.ko
+
+insmod /lib/modules/2.6.15/kernel/cdc-acm.ko
+
+else
+echo "This Board use 2.6.31"
+
+# netfilter
+insmod /lib/modules/2.6.31/kernel/x_tables.ko
+insmod /lib/modules/2.6.31/kernel/xt_tcpudp.ko
+insmod /lib/modules/2.6.31/kernel/xt_MARK.ko
+insmod /lib/modules/2.6.31/kernel/xt_TCPMSS.ko
+insmod /lib/modules/2.6.31/kernel/xt_comment.ko
+insmod /lib/modules/2.6.31/kernel/xt_iprange.ko
+insmod /lib/modules/2.6.31/kernel/xt_mac.ko
+insmod /lib/modules/2.6.31/kernel/xt_multiport.ko
+insmod /lib/modules/2.6.31/kernel/xt_string.ko
+insmod /lib/modules/2.6.31/kernel/xt_time.ko
+insmod /lib/modules/2.6.31/kernel/ipt_multiurl.ko
+
+insmod /lib/modules/2.6.31/kernel/nf_conntrack.ko
+insmod /lib/modules/2.6.31/kernel/nf_conntrack_proto_gre.ko
+insmod /lib/modules/2.6.31/kernel/nf_conntrack_h323.ko
+
+insmod /lib/modules/2.6.31/kernel/xt_conntrack.ko
+insmod /lib/modules/2.6.31/kernel/xt_state.ko
+
+# kernel dir: net/ipv4/netfilter/
+
+insmod /lib/modules/2.6.31/kernel/nf_defrag_ipv4.ko
+insmod /lib/modules/2.6.31/kernel/nf_conntrack_ipv4.ko
+
+insmod /lib/modules/2.6.31/kernel/nf_nat.ko
+insmod /lib/modules/2.6.31/kernel/nf_nat_proto_gre.ko
+
+insmod /lib/modules/2.6.31/kernel/ip_tables.ko
+insmod /lib/modules/2.6.31/kernel/iptable_filter.ko
+insmod /lib/modules/2.6.31/kernel/iptable_nat.ko
+insmod /lib/modules/2.6.31/kernel/iptable_raw.ko
+insmod /lib/modules/2.6.31/kernel/ipt_MASQUERADE.ko
+insmod /lib/modules/2.6.31/kernel/ipt_REDIRECT.ko
+insmod /lib/modules/2.6.31/kernel/ipt_REJECT.ko
+insmod /lib/modules/2.6.31/kernel/ipt_TRIGGER.ko
+
+# qos
+insmod /lib/modules/2.6.31/kernel/sch_htb.ko
+insmod /lib/modules/2.6.31/kernel/sch_prio.ko
+insmod /lib/modules/2.6.31/kernel/sch_sfq.ko
+insmod /lib/modules/2.6.31/kernel/cls_basic.ko
+insmod /lib/modules/2.6.31/kernel/cls_fw.ko
+
+insmod /lib/modules/2.6.31/kernel/ts_kmp.ko
+insmod /lib/modules/2.6.31/kernel/flashid.ko
+insmod /lib/modules/2.6.31/kernel/br_filter.ko
+
+#ppp
+insmod /lib/modules/2.6.31/kernel/pppol2tp.ko
+insmod /lib/modules/2.6.31/kernel/pptp.ko
+
+insmod /lib/modules/2.6.31/kernel/harmony.ko
+insmod /lib/modules/2.6.31/kernel/wlan_warn.ko
+
+#statistics
+insmod /lib/modules/2.6.31/kernel/statistics.ko
+fi

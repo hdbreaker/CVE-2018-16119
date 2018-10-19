@@ -1,0 +1,51 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<!--JS-->
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+function LoadPage()
+{
+	window.location.href = "/userRpm/WzdWanAutoTypeRpm.htm?detected=1"; 
+}
+function goBack()
+{
+	window.location.href="/userRpm/WzdWanTypeRpm.htm";
+}
+window.setTimeout("LoadPage()", 4500);
+</SCRIPT>
+</HEAD>
+<!-- change XXXX to your dest page.-->
+<BODY onLoad="setTagStr(document,'ntw_wzd_wan_auto_type');LoadHelp('WzdWanTypeHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+<FORM action="WzdWanAutoTypeRpm.htm" enctype=multipart/form-data method="get">
+  <TABLE id="autoWidth" >
+    <TBODY>
+      <!--chang your title below.-->
+      <TR>
+        <TD class=h1 id = "t_title">Quick Setup - WAN Connection Type</TD>
+      </TR>
+      <TR>
+        <TD class=blue></TD>
+      </TR>
+      <!--Content-->
+      <TR>
+        <TD><B><SPAN id="t_detecting_network">Detecting the connection type your ISP provides, please wait...</SPAN></B></TD>
+      </TR>
+      <TR>
+        <TD class=blue></TD>
+      </TR>
+      <TR>
+        <TD class = "mbtn"><!--Button-->
+          <INPUT name="Back" type="button" class="buttonBig" id="Back" value="Back" onClick="return goBack();">
+          &nbsp; </TD>
+      </TR>
+    </TBODY>
+  </TABLE>
+</FORM>
+</CENTER>
+<!--JS page up & page down-->
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

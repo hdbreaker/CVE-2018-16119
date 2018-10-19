@@ -1,0 +1,223 @@
+
+<SCRIPT type="text/javascript">
+var LP = location.pathname;
+function doBack(nPage)
+{
+location.href="LanArpBindingRpm.htm?Page="+nPage;
+}
+function doAll(val)
+{
+if(val=="DelAll")
+{
+if(!confirm(js_to_delete="Are you sure delete all entries?"))
+return;
+}
+location.href="LanArpBindingRpm.htm?doAll="+val+"&Page="+curPage;}
+function doAdd(nPage)
+{
+location.href="LanArpBindingRpm.htm?Add=Add&Page="+nPage;
+}
+function doPage(nPage)
+{
+location.href=LP + "?Page="+nPage;
+}
+function doHelp()
+{
+location.href="/userRpm/LanArpBindingHelpRpm.htm";
+}
+function is_spmac(mac_string)
+{
+if(mac_string == "00-00-00-00-00-00")
+{
+alert(js_bad_mac="Invalid MAC address, please input again!");
+return false;
+}
+var ch = "Ff-";
+for (var i = 0; i < mac_string.length; i++)
+{
+c = mac_string.charAt(i);
+if(ch.indexOf(c) == -1)
+return true;
+}
+alert(js_bad_mac="Invalid MAC address, please input again!");
+return false;
+}
+function doFindbyIpMac(ip, mac)
+{
+var method = 'strict';
+var str = '';
+if(!ip)
+method = 'bymac';
+else
+str += '&ip='+ ip;
+if(!mac)
+{
+if(method == 'bymac')
+{
+alert(js_not_both_none="The MAC address and IP Address can not be null at the same time!");
+return false;
+}
+else
+method = 'byip';
+}
+else
+str += '&mac=' + mac;
+if(document.forms[0].Mac.value != "")
+{
+if(!is_macaddr(document.forms[0].Mac.value))
+{
+var element = document.forms[0].Mac;
+if(element)
+{
+element.focus();
+element.select();
+}
+return false;
+}
+if(!is_spmac(document.forms[0].Mac.value))
+{
+var element = document.forms[0].Mac;
+if(element)
+{
+element.focus();
+element.select();
+}
+return false;
+}
+}
+if(document.forms[0].Ip.value != "")
+{
+if(!is_ipaddr(document.forms[0].Ip.value))
+{
+var element =document.forms[0].Ip;
+if(element)
+{
+element.focus();element.select();
+}
+return false;
+}
+}
+location.href= LP + "?findmethod=" + method + str;
+}
+function ResetStatus(strInfo)
+{
+window.status='';return true;
+}
+function enableId(id)
+{
+var enable;
+if(document.forms[0].elements['enable'+id].checked == true)
+enable = 1;
+else
+enable = 0;
+location.href = LP + "?enable=" + enable + "&enableId=" + id ;
+}
+function doSave()
+{
+var DF = document.forms[0];
+var n = DF.elements['arpServer'][1].checked?1:0;
+location.href = LP + "?arpServer=" + n +"&Page=" + arpFixmapFindPara[1];
+return true;
+}
+//-->
+</SCRIPT>
+</head>
+<BODY onLoad="setTagStr(document,'ntw_lan_arp_binding_find');LoadHelp('LanArpBindingHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="LanArpBindingFindRpm.htm" enctype="multipart/form-data" method="get" >
+    <TABLE id="autoWidth" border =0>
+      <TBODY>
+        <TR>
+          <TD class=h1 colspan=6 id = "t_title">Find IP & MAC Binding Entry</TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=6></TD>
+        </TR>
+        <TR>
+          <TD class=Item align=left id = "t_mac_add" name="t_mac_add">MAC Address:</TD>
+          <TD colspan=5><INPUT name="Mac" type="text" class="text" value="" size="18" maxlength="17"></TD>
+        </TR>
+        <TR>
+          <TD class=Item align=left id = "t_ip_addr" name="t_ip_addr">IP Address:</TD>
+          <TD colspan=5 ><INPUT name="Ip" type="text" class="text" value="" size="18" maxlength="15"></TD>
+        </TR>
+        <TR>
+          <TD class="Item" id = "t_id">ID</TD>
+          <TD class="ListB" id = "t_mac_add"  name="t_mac_add">MAC Address</TD>
+          <TD class="ListB" id = "t_ip_addr"  name="t_ip_addr">IP Address</TD>
+          <TD class="ListB" id = "t_bind">Bind</TD>
+          <TD class="ListB" id = "t_link">Link</TD>
+          <TD width = 30%>&nbsp;</TD>
+        </TR>
+        <SCRIPT type="text/javascript">
+if (arpFixmapFindPara[1] > 0)
+{
+var row = 0;
+var idStart = 0;
+var DisplayId = 0;
+for(var i = 0; i < arpFixmapFindPara[1]; i++)
+{
+idStart++;
+row = i * arpFixmapFindPara[2];
+var modifyId = row + 3;
+DisplayId = arpFixmapFindList[modifyId] + 1;
+document.write('<tr><td style="text-align: right;padding-right:30;width:30%"; >' + DisplayId + '</td>');
+document.write('<td class="Listm">' + arpFixmapFindList[row] + '</td>');
+document.write('<td class="Listm">'
++ arpFixmapFindList[row+1] + '&nbsp;</td>');
+var enableStatus = arpFixmapFindList[row+2]?"checked":"";
+document.write('<td class="Listm"><input disabled type="checkbox" '
++ enableStatus +' name="enable' + arpFixmapFindList[modifyId]
++ '" value="1" onClick="enableId('
++ arpFixmapFindList[modifyId]
++ ');"></td>');
+document.write('<td class="Listm"><a href=\"LanArpBindingRpm.htm?Page='
++ ((arpFixmapFindList[modifyId]-arpFixmapFindList[modifyId]%8)/8+1)
++ '&EntryIndex='
++ arpFixmapFindList[modifyId]
++'\" OnMouseOver=\"return ResetStatus(\'delete\');\" id="t_to_page" name="t_to_page">To page</a></td>');
+document.write('<td width = 30%>&nbsp;</td></tr>');
+}
+}
+else
+{
+document.write('<tr><td style="text-align: center;padding-right:30;width:30%"; class= "ListB" colspan =6 id="t_empty">Now the current list is empty.</td></tr>');
+}
+</SCRIPT>
+        <TR>
+          <TD class=blue colspan=6></TD>
+        </TR>
+        <TR>
+          <TD colspan=6 class = "mbtn">&nbsp;
+            <INPUT type="button" value="Find" name="Find" class="buttonBig" onClick="doFindbyIpMac(document.forms[0].Ip.value, document.forms[0].Mac.value);">
+            &nbsp;
+            <INPUT type="button" value="Back" name="Back" class="buttonBig" onClick="doBack(1);"></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+<SCRIPT type="text/javascript">
+var df = document.forms[0];
+if(arpFixmapFindList[0] == 0)
+{
+df.elements['Mac'].value = '';
+df.elements['Ip'].value = '';
+}
+else
+{
+if(arpFixmapFindPara[3] & 0x1)
+{
+df.elements['Mac'].value = arpFixmapFindList[0];
+}
+if(arpFixmapFindPara[3] &0x2)
+{
+df.elements['Ip'].value = arpFixmapFindList[1];
+}
+}
+</SCRIPT>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

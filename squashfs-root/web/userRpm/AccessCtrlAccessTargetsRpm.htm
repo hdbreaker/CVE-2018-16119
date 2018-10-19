@@ -1,0 +1,135 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<!--JS-->
+<SCRIPT type="text/javascript">
+<!--
+var LP = location.pathname;
+function doAll(val){if(val=="DelAll"){if(!confirm(js_del_all_items="Delete all items")) return;} location.href="AccessCtrlAccessTargetsRpm.htm?doAll="+val+"&Page="+curPage;}
+function doAdd(nPage){location.href="AccessCtrlAccessTargetsRpm.htm?Add=Add&Page="+nPage;}
+function doPage(nPage){location.href="AccessCtrlAccessTargetsRpm.htm?Page="+nPage;}
+function doHelp(){location.href="/help/AccessCtrlAccessTargetsHelpRpm.htm";}
+
+function ResetStatus(strInfo){window.status='';return true;}
+/*
+function enableId(id){
+	var enable;
+	if(document.forms[0].elements['enable'+id].checked == true)
+		enable = 1;
+	else
+		enable = 0;
+	location.href = LP + "?enable=" + enable + "&enableId=" + id +"&Page=" + access_targets_page_param[1];
+}
+*/
+/*
+function doSave()
+{
+	var DF = document.forms[0];
+	var n = DF.elements['arpServer'][1].checked?1:0;
+	location.href = LP + "?arpServer=" + n +"&Page=" + access_targets_page_param[1];
+	return true;
+}
+*/
+//-->
+</SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_acc_ctl_acc_tar');LoadHelp('AccessCtrlAccessTargetsHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="AccessCtrlAccessTargetsRpm.htm" enctype="multipart/form-data" method="get"  >
+    <TABLE id="autoWidth" >
+      <TBODY>
+        <TR>
+          <TD class=h1 id = "t_title">Target Settings</TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <TR>
+          <TD><TABLE width="570" border="0" align="center" cellpadding="0" cellspacing="0" class="space">
+              <TR>
+                <TD class=ListB align="center" id="t_id">ID</TD>
+                <TD class=ListB align="center" width="200" id="t_target_desc">Target Description</TD>
+                <TD class=ListB align="center" nowrap id="t_info">Information</TD>
+                <TD class=ListB align="center" nowrap id="t_modify">Modify</TD>
+              </TR>
+              <SCRIPT type="text/javascript">
+if (access_targets_page_param[2] > 0)
+{
+	var row = 0;
+	var idStart = (access_targets_page_param[0] - 1) * 8;
+	for(var i = 0; i < access_targets_page_param[2]; i++)
+	{
+	idStart++;
+	row = i * access_targets_page_param[3];
+
+	document.write('<tr id="tr'+idStart+'"><td align="center">' + idStart + '</td>');
+	document.write('<td align="center">' + access_targets_data_param[row+1] + '</td>');
+	if (access_targets_data_param[row] == 1)
+	document.write('<td align="center">'
+				 + access_targets_data_param[row+2] + '&nbsp;</td>');
+	else
+	document.write('<td align="center">'
+				 + access_targets_data_param[row+3] + '&nbsp;</td>');	
+	document.write('<td align="center"><a href=\"AccessCtrlAccessTargetsRpm.htm?Modify=' +
+					i+'&Page='+access_targets_page_param[0]+
+					'\" OnMouseOver=\"return ResetStatus(\'modify\');\" id="t_edit" name="t_edit">Edit</a>&nbsp;<a href=\"AccessCtrlAccessTargetsRpm.htm?Del='+
+				 	i+'&Page='+access_targets_page_param[0]+
+					'\" OnMouseOver=\"return ResetStatus(\'delete\');\" id="t_del" name="t_del">Delete</a></td></tr>');
+	}
+}
+</SCRIPT>
+            </TABLE></TD>
+        </TR>
+        <TR>
+          <TD><TABLE width="570" align="center" border="0" cellpadding="0" cellspacing="0" class="space">
+              <TR>
+                <TD colspan="3" width="568"><INPUT type="button" value="Add New..." name="Add" class="buttonBig" onClick="doAdd(curPage);">
+                  <!--<input type="button" value="Enalbe All" name="EnAll" class="button" onClick="doAll('EnAll');">-->
+                  <INPUT type="button" value="Delete All" name="DelAll" class="buttonBig" onClick="doAll('DelAll');">
+                  <!--<input type="button" value="Find Item" name="Find" class="button" onClick="location.href=LP + '?Find=Find';">--></TD>
+              </TR>
+            </TABLE></TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <TR>
+          <TD class = "mbtn"><INPUT name="PrevPage" type="button" class="buttonBig" onClick="doPage(prePage);" value="Previous" disabled>
+            &nbsp;
+            <INPUT name="NextPage" type="button" class="buttonBig" onClick="doPage(nextPage);" value="Next" disabled>
+            &nbsp;
+            <SPAN id="t_page1">Current No.</SPAN>
+            <SELECT onChange="doPage(document.forms[0].selPage.value);" size="1" name="selPage">
+              <SCRIPT type="text/javascript">
+var pageNum = access_targets_page_param[4]/8 + 1;
+var pIndex = 1;
+do
+{
+	document.write("<option value='" + pIndex + "' selected>"+ pIndex +"</option>");
+}while(++pIndex < pageNum)
+</SCRIPT>
+            </SELECT>
+			<SPAN id="t_page2">Page</SPAN>
+            <INPUT name="Page" type="hidden" value="1"></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+<SCRIPT type="text/javascript">
+var curPage = access_targets_page_param[0];
+var prePage = (access_targets_page_param[0] == 1)?1:access_targets_page_param[0]-1;
+var nextPage = access_targets_page_param[0]+1;
+//document.forms[0].arpServer[0].checked = access_targets_page_param[0]?0:1;
+document.forms[0].Page.value = curPage;
+document.forms[0].PrevPage.disabled = (access_targets_page_param[0] < 2)?true:false;
+document.forms[0].NextPage.disabled = (access_targets_page_param[1] >0)?false:true;
+//document.forms[0].EnAll.disabled = (access_targets_page_param[2] >0)?false:true;
+document.forms[0].DelAll.disabled = (access_targets_page_param[2] >0)?false:true;
+//document.forms[0].Find.disabled = (access_targets_page_param[2] >0)?false:true;
+document.forms[0].selPage.value = curPage;
+</SCRIPT>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

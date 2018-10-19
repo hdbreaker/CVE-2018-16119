@@ -1,0 +1,357 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<!--JS-->
+<SCRIPT type="text/javascript">
+<!--
+function doBack(nPage)
+{
+	location.href="ParentCtrlRpm.htm?Page="+nPage;
+}
+function getValLen(val)
+{
+	var len = 0;
+	var i = 0;
+	for (i = 0; i < val.length; i ++)
+	{
+		var c = val.charAt(i);
+		len += ((c >= ' ') && (c <= '~')) ? 1 : 2;
+	}
+	return len;
+}
+function doSubmit()
+{
+	if (document.forms[0].child_mac.value != "")
+	{
+	if (false == is_macaddr(document.forms[0].child_mac.value))
+	{
+		var element = document.forms[0].child_mac;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	}
+	var desc_len = getValLen(document.forms[0].url_comment.value);
+
+	if ((desc_len < 1) || (desc_len > 16))
+	{
+		alert(js_pl_give_desc="Please give a description for allowed website (Length < 17)!");
+		var element = document.forms[0].url_comment;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	if (
+	(document.forms[0].url_0.value=="") && 
+	(document.forms[0].url_1.value=="") && 
+	(document.forms[0].url_2.value=="") && 
+	(document.forms[0].url_3.value=="") && 
+	(document.forms[0].url_4.value=="") && 
+	(document.forms[0].url_5.value=="") && 
+	(document.forms[0].url_6.value=="") && 
+	(document.forms[0].url_7.value=="")
+	)
+	{
+		alert(js_pl_add="Please add at least a URL of a website!");
+		var element = document.forms[0].url_0;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	else
+	{
+		if (document.forms[0].url_0.value!="")
+		{
+		if (false == is_domain(document.forms[0].url_0.value))
+		{
+			var element = document.forms[0].url_0;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+		}
+		if (document.forms[0].url_1.value!="")
+		{
+		if (false == is_domain(document.forms[0].url_1.value))
+		{
+			var element = document.forms[0].url_1;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+		}
+		if (document.forms[0].url_2.value!="")
+		{
+		if (false == is_domain(document.forms[0].url_2.value))
+		{
+			var element = document.forms[0].url_2;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+		}
+		if (document.forms[0].url_3.value!="")
+		{
+		if (false == is_domain(document.forms[0].url_3.value))
+		{
+			var element = document.forms[0].url_3;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+		}
+		if (document.forms[0].url_4.value!="")
+		{
+		if (false == is_domain(document.forms[0].url_4.value))
+		{
+			var element = document.forms[0].url_4;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+		}
+		if (document.forms[0].url_5.value!="")
+		{
+		if (false == is_domain(document.forms[0].url_5.value))
+		{
+			var element = document.forms[0].url_5;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+		}
+		if (document.forms[0].url_6.value!="")
+		{
+		if (false == is_domain(document.forms[0].url_6.value))
+		{
+			var element = document.forms[0].url_6;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+		}
+		if (document.forms[0].url_7.value!="")
+		{
+		if (false == is_domain(document.forms[0].url_7.value))
+		{
+			var element = document.forms[0].url_7;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+		}
+	}
+	return true;
+}
+function style_display_on()
+{
+	if (window.ActiveXObject)
+	{ // IE
+		return "block";
+	}
+	else if (window.XMLHttpRequest)
+	{ // Mozilla, Safari,...
+		return "table-row";
+	}
+}
+
+function printfSchedsLists()
+{
+	var i;
+	if (parent_ctrl_adv_dyn_array[4] == 0)
+	{
+		return;
+	}
+	else
+	{
+		for (i=0; i<parent_ctrl_adv_dyn_array[4]; ++i)
+		{
+			document.write('<option value=\"' + i + '\">' + schedule_name_list_dyn_array[i] + '<\/option>');
+		}
+	}
+}
+function printfLanLists()
+{
+	var i;
+	for (i=0; i<lan_pc_mac_dyn_array.length-2; i=i+2)
+	{
+		document.write('<option value=\"' + i + '\">' + lan_pc_mac_dyn_array[i] + '(' + lan_pc_mac_dyn_array[i+1] + ')' + '<\/option>');
+	}
+}
+function fillChildMac()
+{
+	if (document.forms[0].lan_lists.value != 888)
+		document.forms[0].child_mac.value=lan_pc_mac_dyn_array[document.forms[0].lan_lists.value];
+}
+function doHelp()
+{
+    location.href="/help/ParentCtrlAdvHelpRpm.htm";
+}
+//-->
+</SCRIPT>
+</HEAD>
+<!-- change XXXX to your dest page.-->
+<BODY onLoad="setTagStr(document,'ntw_parent_ctl_adv');LoadHelp('ParentCtrlAdvHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<FORM action="ParentCtrlRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+  <TABLE id="autoWidth" >
+    <TBODY>
+      <!--chang your title below.-->
+      <TR>
+        <TD class=h1 id = "t_title">Add or Modify Parental Control Entry</TD>
+      </TR>
+      <TR>
+        <TD class=blue></TD>
+      </TR>
+      <!--Content-->
+      <TR>
+        <TD><TABLE width="420" border="0" align="center" cellpadding="2" cellspacing="0" class="space">
+            <TR>
+              <TD colspan=2><SPAN id="t_based_on_time1">The Schedule is based on the time of the Router. The time can be set in</SPAN> "<SPAN id="t_based_on_time2">System Tools</SPAN> -> </SPAN><A href="DateTimeCfgRpm.htm"><SPAN style="color:#FF0000" id="t_based_on_time3">Time settings</SPAN></A>".</TD>
+            </TR>
+            <TR>
+              <TD><BR></TD>
+            </TR>
+            <TR id="cmac">
+              <TD class="item" width="160" id="t_mac_addr_child">MAC Address of Child PC:</TD>
+              <TD width="240"><INPUT name="child_mac" type="text" class="text" value="" size="17" maxlength="17"></TD>
+            </TR>
+            <TR>
+              <TD class="item" id="t_all_mac_addr">All MAC Address In Current LAN:</TD>
+              <TD><SELECT name="lan_lists" onChange="fillChildMac()">
+                  <OPTION value="888" id="t_pl_sel">--please select--</OPTION>
+                  <SCRIPT type="text/javascript">
+printfLanLists();
+</SCRIPT>
+                </SELECT></TD>
+            </TR>
+            <TR>
+              <TD class="item" id="t_website">Website Description:</TD>
+              <TD><INPUT name="url_comment" type="text" class="text" value="" size="16" maxlength="16"></TD>
+            </TR>
+            <TR>
+              <TD class="item" id="t_all_domain_name">Allowed Domain Name:</TD>
+              <TD><INPUT name="url_0" type="text" class="text" value="" size="31" maxlength="30"></TD>
+            </TR>
+            <TR>
+              <TD>&nbsp;</TD>
+              <TD><INPUT name="url_1" type="text" class="text" value="" size="31" maxlength="30"></TD>
+            </TR>
+            <TR>
+              <TD>&nbsp;</TD>
+              <TD><INPUT name="url_2" type="text" class="text" value="" size="31" maxlength="30"></TD>
+            </TR>
+            <TR>
+              <TD>&nbsp;</TD>
+              <TD><INPUT name="url_3" type="text" class="text" value="" size="31" maxlength="30"></TD>
+            </TR>
+            <TR>
+              <TD>&nbsp;</TD>
+              <TD><INPUT name="url_4" type="text" class="text" value="" size="31" maxlength="30"></TD>
+            </TR>
+            <TR>
+              <TD>&nbsp;</TD>
+              <TD><INPUT name="url_5" type="text" class="text" value="" size="31" maxlength="30"></TD>
+            </TR>
+            <TR>
+              <TD>&nbsp;</TD>
+              <TD><INPUT name="url_6" type="text" class="text" value="" size="31" maxlength="30"></TD>
+            </TR>
+            <TR>
+              <TD>&nbsp;</TD>
+              <TD><INPUT name="url_7" type="text" class="text" value="" size="31" maxlength="30"></TD>
+            </TR>
+            <TR>
+              <TD class="item" id="t_effect_time">Effective Time:</TD>
+              <TD><SELECT size="1" name="scheds_lists" class="list" onChange="">
+                  <OPTION value="255" id="t_anytime">Anytime</OPTION>
+                  <SCRIPT type="text/javascript">
+printfSchedsLists();
+</SCRIPT>
+                </SELECT></TD>
+            </TR>
+            <TR>
+              <TD>&nbsp;</TD>
+              <TD><SPAN id="t_time_acc1">The time schedule can be set in</SPAN> "<SPAN id="t_time_acc2">Access Control</SPAN> -> </SPAN><A href="AccessCtrlTimeSchedRpm.htm?Add=Add&Page=1"><SPAN style="color:#FF0000" id="t_time_acc3">Schedule</SPAN></A>&quot;</TD>
+            </TR>
+            <TR>
+              <TD class="item" id="t_status">Status:</TD>
+              <TD><SELECT size="1" name="enable" class="list" onChange="">
+                  <OPTION value="0" id="t_disabled">Disabled</OPTION>
+                  <OPTION value="1" id="t_enabled">Enabled</OPTION>
+                </SELECT></TD>
+            </TR>
+          </TABLE></TD>
+      </TR>
+      <TR>
+        <TD class=blue></TD>
+      </TR>
+      <TR>
+        <TD class = "mbtn"><!--Button-->
+          <INPUT name="Changed" type="hidden" value="">
+          <INPUT name="SelIndex" type="hidden" value="">
+          <INPUT name="Page" type="hidden" value="">
+          <INPUT name="rule_mode" type="hidden" value="">
+          &nbsp;
+          <INPUT name="Save" type="submit" class="buttonBig" value="Save">
+          &nbsp;
+          <INPUT type="button" value="Back" name="Back" class="buttonBig" onClick="doBack(parent_ctrl_adv_dyn_array[8]);"></TD>
+      </TR>
+    </TBODY>
+  </TABLE>
+</FORM>
+<!--JS page up & page down-->
+<SCRIPT type="text/javascript">
+	document.forms[0].child_mac.value = parent_ctrl_adv_dyn_array[2];
+	document.forms[0].url_comment.value = parent_ctrl_adv_dyn_array[3];
+	document.forms[0].url_0.value = parent_ctrl_adv_dyn_array[9];
+	document.forms[0].url_1.value = parent_ctrl_adv_dyn_array[10];
+	document.forms[0].url_2.value = parent_ctrl_adv_dyn_array[11];
+	document.forms[0].url_3.value = parent_ctrl_adv_dyn_array[12];
+	document.forms[0].url_4.value = parent_ctrl_adv_dyn_array[13];
+	document.forms[0].url_5.value = parent_ctrl_adv_dyn_array[14];
+	document.forms[0].url_6.value = parent_ctrl_adv_dyn_array[15];
+	document.forms[0].url_7.value = parent_ctrl_adv_dyn_array[16];
+	document.forms[0].enable.value = parent_ctrl_adv_dyn_array[1];
+	document.forms[0].scheds_lists.value = parent_ctrl_adv_dyn_array[5];
+	document.forms[0].Changed.value = parent_ctrl_adv_dyn_array[6];
+	document.forms[0].SelIndex.value = parent_ctrl_adv_dyn_array[7];
+	document.forms[0].Page.value = parent_ctrl_adv_dyn_array[8];
+	document.forms[0].rule_mode.value = parent_ctrl_adv_dyn_array[0];
+</SCRIPT>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

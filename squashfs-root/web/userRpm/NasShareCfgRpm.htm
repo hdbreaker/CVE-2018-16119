@@ -1,0 +1,193 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+
+<script language=javascript><!--//
+
+var id = shareInfo[0];
+var volume = shareInfo[1];
+var share_name = shareInfo[2];
+var share = shareInfo[3];
+var writable = shareInfo[4];
+var events = shareInfo[5];
+
+function check_duplicate_share_name()
+{
+	var  NAS_EVENT_DUPLICATE_SHARE_NAME	= 0x00000010;
+
+	if (events & NAS_EVENT_DUPLICATE_SHARE_NAME)
+	{
+		alert(js_duplicate_sharename="Duplicate share name.");
+	}
+	else
+	{
+		
+	}
+}
+
+function charCompareA(szname, en_limit, cn_limit)
+{
+	var c;
+	var ch = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+
+	if (szname.length > en_limit)
+	{
+		return false;
+	}
+	for (var i = 0; i < szname.length; i++)
+	{
+		c = szname.charAt(i);
+		if (ch.indexOf(c) == -1)
+		{
+			if(szname.length > cn_limit)
+			{				
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+function updateCheckbox()
+{
+	if (document.forms[0].share.checked == false)
+	{
+		document.forms[0].writable.checked = false;
+		document.forms[0].writable.disabled = true;
+	}
+	else if  (document.forms[0].share.checked == true)
+	{
+		document.forms[0].writable.disabled = false;
+	}	
+}
+
+function checkShareName(name)
+{
+	var forbidden = new Array(
+		"bin", "lib", "mnt", "sbin", "var", 
+		"dev", "linuxrc", "proc", "tmp", "web",
+		"etc", "root", "usr", 
+		"boot", "opt", "initrd", "sys", "mnt",
+		"None", "tptest"
+		);
+	var i = 0;
+
+	if (name == "")
+	{
+		if (document.forms[0].share.checked == true)
+			alert(js_none_sharename="Share Name is required.");
+		return false;
+	}
+
+	if (name == volume)
+	{
+		if (document.forms[0].share.checked == true)
+			alert(js_not_volume_name="Don't use the volume name.");
+		return false;
+	}
+	if (!charCompareA(name, 15, 0))
+	{
+		if (document.forms[0].share.checked == true)
+			alert(js_wrong_sharename_format="The Share Name must be composed of alphanumeric symbols not exceeding 15 characters in length.");
+		return false;
+	}
+	while (forbidden[i] != "tptest")
+	{
+		if (name == forbidden[i])
+		{
+			if (document.forms[0].share.checked == true)
+				alert(js_wrong_share_name="Sorry. That Share Name is not available.\nCheck the availability of another Share Name.");
+			return false;
+		}
+		i++;
+	}
+	return true;
+}
+
+function doSubmit()
+{
+	if (!checkShareName(document.forms[0].share_name.value))
+	{
+		var element = document.forms[0].share_name;
+		if(element)
+		{
+			if (document.forms[0].share.checked == true)
+			{
+				element.focus();
+				element.select();
+			}
+			else
+			{
+				element.value = "";
+				return true;				
+			}
+		}
+		return false;
+	}	
+}
+
+function doBack()
+{
+	location.href="NasCfgRpm.htm";
+}
+
+function doHelp()
+{
+	location.href="/help/NasShareCfgHelpRpm.htm";
+}
+
+//--></script></head>
+<META content="MSHTML 6.00.2800.1106" name=GENERATOR></HEAD>
+<BODY onload="setTagStr(document,'nas_share_cfg_rpm');LoadHelp('NasShareCfgHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER><FORM action="NasShareCfgRpm.htm" enctype="multipart/form-data" method="get">
+<TABLE id="autoWidth"><TBODY>
+<TR><TD class=h1 colspan=2 id = "t_nas_share_settings">Sharing Settings</TD></TR>
+<TR><TD class=blue colspan=2></TD></TR>
+
+<input name="id" type="hidden" value="">
+
+<SCRIPT language="JavaScript">
+document.write('<TR><TD class=Item id = "t_volume">Volume:</TD><TD colspan=2>' + volume +'</TD></TR>');
+document.write('<input name="volume" type="hidden" value=' + volume + '>');
+</SCRIPT>
+
+<TR>
+	<TD class=Item id = "t_share_name">Share Name:</TD>
+	<TD>
+		<input name="share_name" type="text" class="text" value="" size="15" maxlength="15">
+	</TD>
+</TR>
+
+<TR>
+	<TD></TD>
+	<TD>
+		<INPUT type="checkbox" value=1 name="share" onClick = "updateCheckbox();">&nbsp;<a id="t_share">Share this volume on the network</a>
+	</TD>
+</TR>
+
+<TR>
+	<TD></TD>
+	<TD>
+		<INPUT type="checkbox" value=1 name="writable">&nbsp;<a id="t_writable">Allow Administrator to change files</a>
+	</TD>
+</TR>
+
+<TR><TD class=blue colspan=2></TD></TR>
+<TR>
+	<TD></TD>
+	<TD>
+		<input name="Save" type="submit" class="buttonBig" value="Save" onClick="return doSubmit();">
+		&nbsp;&nbsp;
+		<input name="Back" type="button" class="buttonBig" onClick="doBack();" value="Back">
+	</TD>
+</TR>
+</TBODY></TABLE>
+</FORM></CENTER></BODY><HEAD><META http-equiv="pragma" content="no-cache"></HEAD></HTML>
+
+<SCRIPT language="JavaScript">
+document.forms[0].id.value = id;
+document.forms[0].share_name.value = share_name;
+document.forms[0].share.checked = share;
+document.forms[0].writable.checked = writable;
+check_duplicate_share_name();
+updateCheckbox();
+</SCRIPT>

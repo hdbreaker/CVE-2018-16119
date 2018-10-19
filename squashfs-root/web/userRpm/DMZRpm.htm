@@ -1,0 +1,61 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+<!--//
+function doSubmit()
+{
+    var hostIP = document.forms[0].ipAddr.value;
+    if(!ipverify(hostIP))
+    {
+        alert(js_bad_dmz_ip="The DMZ Host IP Address is invalid, please input again!");
+        return false;
+    }
+	return true;
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_dmz');LoadHelp('DMZHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM name="DMZ" action="DMZRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+    <TABLE id="autoWidth" border =0>
+      <TR>
+        <TD class=h1 colspan=2 id="t_title">DMZ</TD>
+      </TR>
+	  <TR>
+        <TD colspan=2><B><SPAN id="t_dmz_note">Note:&nbsp;&nbsp;&nbsp;&nbsp;Make sure the nat is <SPAN style="color:#FF0000">enable</SPAN> if you want the DMZ configuration take effect</SPAN></B></TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_status">Current DMZ Status:</TD>
+        <TD><INPUT type="radio" value="1" name="enable" >
+          <SPAN id = "t_enable">Enable</SPAN>
+          <INPUT type="radio" value="0" name="enable" checked>
+          <SPAN id = "t_disable">Disable</SPAN></TD>
+      </TR>
+      <TR>
+        <TD class=Item id="t_dmz_ip">DMZ Host IP Address:</TD>
+        <TD><INPUT type="text" value="" name="ipAddr" size="15" maxlength="15">
+<INPUT class="text" value="255.255.255.0" name="netmask" size="15" maxlength="15" style ="display:none"></TD>
+      </TR>
+      <TR>
+        <TD class=blue colspan=2></TD>
+      </TR>
+      <TR>
+        <TD class = "mbtn" colspan=2><INPUT name="Save" type="submit" class="buttonBig" value="Save"></TD>
+      </TR>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+document.forms[0].enable[0].checked = DMZInf[0];
+document.forms[0].enable[1].checked = !(DMZInf[0]);
+document.forms[0].ipAddr.value = DMZInf[1];
+</SCRIPT>

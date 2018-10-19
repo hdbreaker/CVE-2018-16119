@@ -1,0 +1,58 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+function goRetry()
+{
+	window.location.href = "/userRpm/WzdWanAutoTypeRpm.htm"; 
+}
+function goBack()
+{
+	window.location.href="/userRpm/WzdWanTypeRpm.htm";
+}
+
+function Click(){ window.event.returnValue=false;}
+document.oncontextmenu=Click;
+
+</SCRIPT>
+</HEAD>
+<!-- change XXXX to your dest page.-->
+<BODY onLoad="setTagStr(document,'ntw_wzd_wan_disconn');LoadHelp('WzdWanTypeHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action="WzdWanTypeRpm.htm" enctype="multipart/form-data" method="get">
+    <TABLE id="autoWidth" >
+      <TBODY>
+        <!--chang your title below.-->
+        <TR>
+          <TD class=h1 id = "t_title">Setup Wizard - WAN Connection Type</TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <!--Content-->
+        <TR>
+          <TD><SPAN style="color:#FF0000" id="t_cable_unplgged">The cable is unplugged.</SPAN></TD>
+        </TR>
+        <TR>
+          <TD><B><SPAN id="t_pl_plug">Before continuing, please make sure the cable of the WAN port is well connected to your device.</SPAN></B></TD>
+        </TR>
+        <TR>
+          <TD class=blue></TD>
+        </TR>
+        <TR>
+          <TD class = "mbtn"><!--Button-->
+            <INPUT name="Return" type="button" class="buttonBig" value="Back" onClick="goBack();">
+            &nbsp;
+            <INPUT name="Retry" type="button" class="buttonBig" id="submit" value="Retry" onClick="goRetry();">
+            &nbsp;
+            <INPUT type="hidden" name="ClientId" value=""></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+<!--JS page up & page down-->
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>

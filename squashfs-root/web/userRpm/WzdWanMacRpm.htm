@@ -1,0 +1,77 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+function Click(){ window.event.returnValue=false;}
+document.oncontextmenu=Click;
+
+function doSubmit()
+{
+	if(!is_macaddr(document.forms[0].wan_mac.value))
+	{
+		var element =document.forms[0].wan_mac;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	return true;
+}
+
+function doBack()
+{	
+	location.href="WzdWanMacRpm.htm?Return=Back";
+}
+</SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_wzd_wanmac');LoadHelp('WzdWanMacHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+	<FORM action="WzdWanMacRpm.htm" enctype="multipart/form-data" method="get" onSubmit="return doSubmit();">
+	<TABLE id="autoWidth" border = "0">
+	</TBODY>
+		<TR>
+			<TD class="h1" colspan = "2" id="t_title">Quick Setup - MAC Clone</TD>
+		</TR>
+	<TR>
+			<TD class="blue" colspan = "2"></TD>
+	</TR>
+        <TR>
+        	<TD colspan = "2"><SPAN id="t_mac_info0">MAC Clone is necessary for most users using Cable Modem. It's highly recommended to do this on the MAIN COMPUTER<br>that was originally connected to your Cable Modem.</SPAN><br><br></TD>
+        </TR>
+        <TR>
+			<TD colspan="2"><SPAN id="t_mac_info1">If you are unsure, please select YES. For more information, please read the HELP section on the right.</SPAN><br><br></TD>
+		</TR>
+		<TR>
+			<TD colspan=2>
+				<INPUT name="is_need_clone" type="radio" value="1" checked>&nbsp;
+				<SPAN id = "t_need_clone">Yes, I am using cable modem and connected by the main computer (clone MAC address)</SPAN><br><br>
+				<INPUT name="is_need_clone" type="radio" value="0">&nbsp;
+				<SPAN id = "t_not_need_clone">No, I am using non-cable modem service (do NOT clone MAC address)</SPAN><br><br>
+			</TD>
+		</TR>
+		<TR>
+			<TD colspan=2><SPAN style="color:#FF0000" id="t_macClone_note">Note: It is strongly recommended to restart the <u>Cable Modem</u> after the Quick Setup is done.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This important operation will solve most issues.</SPAN><br></TD>
+		</TR>
+		<TR>
+			<TD class="blue" colspan = "2"></TD>
+		</TR>
+		<TR>
+			<TD class=mbtn colspan=2><INPUT name="Return" class=buttonBig id=PrevStep type="button" value="Back" onClick="doBack();">
+			&nbsp;&nbsp;
+			<INPUT name="Next" class=buttonBig id=Submit onClick="return doSubmit();" type=submit value="Next">
+			<INPUT type=hidden name=ClientId></TD>
+		</TR>
+	</TBODY>
+	</TABLE>
+	</FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+
+<SCRIPT type="text/javascript">
+document.forms[0].ClientId.value=wzdMacClone[0];
+</SCRIPT>

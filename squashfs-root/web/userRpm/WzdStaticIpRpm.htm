@@ -1,0 +1,168 @@
+
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<SCRIPT type="text/javascript">
+function Click(){ window.event.returnValue=false;}
+document.oncontextmenu=Click;
+function doBack()
+{	
+	location.href="WzdStaticIpRpm.htm?Return=Back";
+}
+</SCRIPT>
+
+<SCRIPT type="text/javascript">
+function doSubmit()
+{
+	// Check ip address. Must input a valid ip address.
+	if(document.forms[0].wanip.value == "0.0.0.0")
+	{
+		alert(js_bad_ip_2="The IP address is invalid, please input another one!");
+		return false;
+	}
+	if(!is_ipaddr(document.forms[0].wanip.value))
+	{
+		var element =document.forms[0].wanip;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+
+	// Check mask. Must input a valid mask.
+	if(document.forms[0].wanmask.value == "0.0.0.0")
+	{
+		alert(js_bad_mask="The Subnet Mask is invalid, please input another one (for example: 255.255.255.0)!");
+		return false;
+	}
+	if(!is_maskaddr(document.forms[0].wanmask.value))
+	{
+		var element =document.forms[0].wanmask;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+
+	// Check gateway. Must input a valid gateway.
+	if(document.forms[0].gateway.value == "0.0.0.0")
+	{
+		alert(js_bad_gateway="The gateway is invalid, please input another one!");
+		return false;
+	}
+	if(!is_gatewayaddr(document.forms[0].gateway.value))
+	{
+		var element =document.forms[0].gateway;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+
+	// Check primary dns server. Must input a valid dns server
+	if(document.forms[0].dnsserver.value == "0.0.0.0")
+	{
+		alert(js_bad_dns="The DNS server address is invalid, please input another one!");
+		return false;
+	}
+	if(!is_dnsaddr(document.forms[0].dnsserver.value))
+	{
+		var element =document.forms[0].dnsserver;
+		if(element)
+		{
+			element.focus();
+			element.select();
+		}
+		return false;
+	}
+	
+	// Check second dns server. It's optional.
+	if(document.forms[0].dnsserver2.value != "0.0.0.0")
+	{
+		if(!is_dnsaddr(document.forms[0].dnsserver2.value))
+		{
+			var element =document.forms[0].dnsserver2;
+			if(element)
+			{
+				element.focus();
+				element.select();
+			}
+			return false;
+		}
+	}
+	
+	return true;
+}
+</SCRIPT>
+</HEAD>
+<BODY onLoad="setTagStr(document,'ntw_wzd_static_ip');LoadHelp('WzdStaticIpHelpRpm.htm'); resize(this);" onResize="resize(this);">
+<CENTER>
+  <FORM action=WzdStaticIpRpm.htm method=get enctype=multipart/form-data>
+    <TABLE id=autoWidth>
+      <TBODY>
+        <TR>
+          <TD class=h1 colspan=2 id="t_title">Quick Setup - Static IP</TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_ip">IP Address:</TD>
+          <TD><INPUT class=text id=wanip maxlength=15 size=16 name=wanip></TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_submask">Subnet Mask:</TD>
+          <TD><INPUT class=text id=wanmask maxlength=15 size=16 name=wanmask></TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_def_gt">Default Gateway:</TD>
+          <TD><INPUT class=text id=gateway maxlength=15 size=16 name=gateway>
+            &nbsp;<SPAN id = "t_option" name="t_option"></SPAN></TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_prima_dns">Primary DNS:</TD>
+          <TD><INPUT class=text id=dnsserver maxlength=15 size=16 name=dnsserver>
+            &nbsp;<SPAN id = "t_option" name="t_option"></SPAN></TD>
+        </TR>
+        <TR>
+          <TD class=Item id="t_second_dns">Secondary DNS:</TD>
+          <TD><INPUT class=text id=dnsserver2 maxlength=15 size=16 name=dnsserver2>
+            &nbsp;<SPAN id = "t_option" name="t_option">(Optional)</SPAN></TD>
+        </TR>
+        <TR>
+          <TD class=blue colspan=2></TD>
+        </TR>
+        <TR>
+          <TD class=mbtn colspan=2>
+			<INPUT name="Return" class=buttonBig id=PrevStep type="button" value="Back" onClick="doBack();">
+            &nbsp;&nbsp;
+            <INPUT name="Next" class=buttonBig id=Submit onClick="return doSubmit();" type=submit value=Next>
+            <INPUT type=hidden name=ClientId>
+            <SCRIPT type="text/javascript">
+if(wzdStaticIPInf[0])
+{
+	document.write('<input type=\"hidden\" name=\"PopupWindow\" value=\"255\">');
+}
+</SCRIPT></TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </FORM>
+</CENTER>
+</BODY>
+<HEAD>
+<META http-equiv="pragma" content="no-cache">
+</HEAD>
+</HTML>
+<SCRIPT type="text/javascript">
+document.forms[0].wanip.value = wzdStaticIPInf[1];
+document.forms[0].wanmask.value = wzdStaticIPInf[2];
+document.forms[0].gateway.value = wzdStaticIPInf[3];
+document.forms[0].dnsserver.value = wzdStaticIPInf[4];
+document.forms[0].dnsserver2.value = wzdStaticIPInf[5];
+document.forms[0].ClientId.value = wzdStaticIPInf[6];
+</SCRIPT>
